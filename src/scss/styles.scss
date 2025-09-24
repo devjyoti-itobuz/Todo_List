@@ -1,0 +1,201 @@
+@import "bootstrap/scss/bootstrap";
+
+$primary: #000000;
+$danger: #dc3545;
+$warning: #ffc107;
+$success: #000000;
+$secondary: #6c757d;
+$light: #f8f9fa;
+$dark: #212529;
+$muted: #6c757d;
+$font-stack: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+
+body {
+  font-family: $font-stack;
+  background-color: $light;
+  color: $dark;
+  line-height: 1.6;
+}
+
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+.card-body {
+  border-radius: 1rem;
+  height: 97vh;
+  background: radial-gradient(white, lightgrey);
+}
+
+.card-title {
+  font-weight: 500;
+  font-size: 3rem;
+  color: $primary;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+}
+
+form {
+  input,
+  select,
+  button {
+    border-radius: 0.5rem;
+  }
+
+  input:focus,
+  select:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    border-color: $primary;
+  }
+}
+
+button {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary, 0.15);
+  }
+}
+
+#searchInput {
+  border-radius: 0.5rem 0 0 0.5rem;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    border-color: $primary;
+  }
+}
+
+.input-group-text {
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: $primary;
+  color: white;
+  font-size: 1.2rem;
+}
+
+#taskList {
+  max-height: 50vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: $primary transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border-radius: 5px;
+  }
+
+  .list-group-item {
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: white;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba($primary, 0.05);
+    }
+
+    .btn-group {
+      gap: 4px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: $muted;
+      opacity: 0.75;
+    }
+  }
+}
+
+.priority-badge {
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  padding: 0.35em 0.65em;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+
+  &.Low {
+    background-color: $primary;
+  }
+
+  &.Medium {
+    background-color: $warning;
+    color: black;
+  }
+
+  &.High {
+    background-color: $danger;
+  }
+}
+
+.tag-badge {
+  background-color: $secondary;
+  font-size: 0.7rem;
+  margin-left: 6px;
+  padding: 3px 6px;
+  border-radius: 0.35rem;
+  color: white;
+}
+
+#clearAllBtn {
+  border-radius: 0.5rem;
+
+  &:hover {
+    background-color: darken($danger, 5%);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  form {
+    .col-md-4,
+    .col-md-2 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .d-grid {
+      margin-top: 0.5rem;
+    }
+  }
+
+  #taskList {
+    max-height: 40vh;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .priority-badge,
+  .tag-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .btn-group .btn {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+  }
+
+  #clearAllBtn {
+    font-size: 0.875rem;
+  }
+}

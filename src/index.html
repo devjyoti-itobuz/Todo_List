@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap w/ Vite</title>
+    <script type="module" src="./js/main.js"></script>
+  </head>
+  <body class="bg-dark">
+    <div class="container my-2">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">📝 Just Do It...</h2>
+
+          <div class="input-group mb-4">
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control"
+              placeholder="Search tasks, tags, or priority..."
+            />
+            <span class="input-group-text bg-dark text-white"> 🔍 </span>
+          </div>
+
+          <form id="taskForm" class="row g-2 mb-4">
+            <div class="col-md-4">
+              <input
+                type="text"
+                id="taskInput"
+                class="form-control"
+                placeholder="Enter task"
+                required
+              />
+            </div>
+            <div class="col-md-2">
+              <select id="prioritySelect" class="form-select">
+                <option value="Low">Low 🔵</option>
+                <option value="Medium">Medium 🟠</option>
+                <option value="High">High 🔴</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                id="tagInput"
+                class="form-control"
+                placeholder="Tags (comma separated)"
+              />
+            </div>
+            <div class="col-md-1 d-grid">
+              <button type="submit" class="btn btn-dark">Add Task</button>
+            </div>
+            <div class="col-md-2 d-grid">
+              <button class="btn btn-danger" id="clearAllBtn">
+                Clear All Tasks
+              </button>
+            </div>
+          </form>
+
+          <ul id="taskList" class="list-group mb-3"></ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
