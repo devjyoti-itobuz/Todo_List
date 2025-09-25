@@ -3,15 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap w/ Vite</title>
+    <title>Todo</title>
     <script type="module" src="./js/main.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
   </head>
   <body class="bg-dark">
-    <div class="container my-2">
-      <div class="card shadow">
-        <div class="card-body">
-          <h2 class="card-title text-center mb-4">📝 Just Do It...</h2>
-
+    <div class="vh-100 px-2 pt-2">
+      <div class="card shadow h-100 d-flex flex-column">
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title text-center fw-semibold pt-lg-3 mb-4">
+            <i class="fa-regular fa-pen-to-square"></i> To Do List
+          </h2>
           <div class="input-group mb-4">
             <input
               type="text"
@@ -19,11 +24,13 @@
               class="form-control"
               placeholder="Search tasks, tags, or priority..."
             />
-            <span class="input-group-text bg-dark text-white"> 🔍 </span>
+            <span class="input-group-text bg-dark text-white">
+              <i class="fas fa-magnifying-glass"></i>
+            </span>
           </div>
 
           <form id="taskForm" class="row g-2 mb-4">
-            <div class="col-md-4">
+            <div class="col-md-8 col-lg-4">
               <input
                 type="text"
                 id="taskInput"
@@ -32,14 +39,17 @@
                 required
               />
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-4 col-lg-2">
               <select id="prioritySelect" class="form-select">
-                <option value="Low">Low 🔵</option>
-                <option value="Medium">Medium 🟠</option>
-                <option value="High">High 🔴</option>
+                <option value="" selected disabled hidden>
+                  Select priority...
+                </option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-8 col-md-6 col-lg-3">
               <input
                 type="text"
                 id="tagInput"
@@ -47,18 +57,29 @@
                 placeholder="Tags (comma separated)"
               />
             </div>
-            <div class="col-md-1 d-grid">
-              <button type="submit" class="btn btn-dark">Add Task</button>
+            <div class="col-md-2 d-grid col-lg-1">
+              <button type="submit" class="btn btn-dark">
+                <i class="fa-solid fa-plus"></i>
+              </button>
             </div>
-            <div class="col-md-2 d-grid">
-              <button class="btn btn-danger" id="clearAllBtn">
+            <div class="col-md d-grid">
+              <button class="btn btn-secondary" id="clearAllBtn">
                 Clear All Tasks
               </button>
             </div>
           </form>
 
-          <ul id="taskList" class="list-group mb-3"></ul>
+          <div class="bg-lgt rounded-2 p-2 d-flex flex-column flex-grow-1">
+            <ul id="taskList" class="list-group flex-grow-1 overflow-auto"></ul>
+          </div>
         </div>
+      </div>
+    </div>
+    <div id="deleteModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <p>Are you sure you want to delete?</p>
+        <button id="confirmBtn" class="btn btn-dark">Delete</button>
+        <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
       </div>
     </div>
   </body>

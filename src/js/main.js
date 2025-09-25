@@ -72,30 +72,34 @@ function renderTasks(filter = "") {
 
   filteredTasks.forEach((task) => {
     const li = document.createElement("li");
-    li.className = `list-group-item d-flex justify-content-between align-items-start`;
+    li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center`;
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "ms-2 me-auto";
     contentDiv.innerHTML = `
-      <div class="${task.completed ? "completed" : ""}">
-        <span class="priority-badge ${task.priority}">${task.priority}</span>
-        <strong>${task.text}</strong>
+      <div class="${task.completed ? "completed" : ""} justify-content-center">
+      <span class="priority-badge ${task.priority}">${task.priority}</span>
+        <strong>${task.text}</strong> <br>
         ${task.tags
-          .map((tag) => `<span class="badge tag-badge">${tag}</span>`)
+          .map(
+            (tag) =>
+              `<span class="badge align-items-center tag-badge">${tag}</span>`
+          )
           .join("")}
       </div>
     `;
 
     const btnGroup = document.createElement("div");
-    btnGroup.className = "btn-group btn-group-sm";
+    btnGroup.className = "btn-group";
 
     const completeBtn = document.createElement("button");
     completeBtn.className = "btn btn-dark";
-    completeBtn.innerText = "✓";
+    if (task.completed === true) completeBtn.innerText = "↺";
+    else completeBtn.innerText = "✓";
     completeBtn.title = "Complete / Undo";
     completeBtn.onclick = () => {
       task.completed = !task.completed;
-      saveTasks(); 
+      saveTasks();
       renderTasks(searchInput.value);
     };
 
@@ -104,22 +108,61 @@ function renderTasks(filter = "") {
     editBtn.innerText = "✎";
     editBtn.title = "Edit Task";
     editBtn.onclick = () => {
-      const newText = prompt("Edit task:", task.text);
-      if (newText && newText.trim()) {
-        task.text = newText.trim();
-        saveTasks(); 
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "form-control";
+      input.value = task.text;
+
+      const saveBtn = document.createElement("button");
+      saveBtn.className = "btn btn-dark btn-sm";
+      saveBtn.innerText = "Save";
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "btn btn-secondary btn-sm";
+      cancelBtn.innerText = "Cancel";
+
+      const editGroup = document.createElement("div");
+      editGroup.className = "d-flex gap-2 mt-2";
+      editGroup.append(input, saveBtn, cancelBtn);
+
+      contentDiv.innerHTML = "";
+      contentDiv.appendChild(editGroup);
+
+      saveBtn.onclick = () => {
+        const newText = input.value.trim();
+        if (newText) {
+          task.text = newText;
+          saveTasks();
+          renderTasks(searchInput.value);
+        }
+      };
+
+      cancelBtn.onclick = () => {
         renderTasks(searchInput.value);
-      }
+      };
     };
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.className = "btn btn-danger";
-    deleteBtn.innerText = "🗑";
+    deleteBtn.className = "btn btn-secondary";
+    deleteBtn.innerText = "✘";
     deleteBtn.title = "Delete Task";
     deleteBtn.onclick = () => {
-      tasks = tasks.filter((t) => t.id !== task.id);
-      saveTasks(); 
-      renderTasks(searchInput.value);
+      const deleteModal = document.getElementById("deleteModal");
+      deleteModal.classList.add("show");
+
+      const confirmBtn = document.getElementById("confirmBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      const closeModal = () => deleteModal.classList.remove("show");
+
+      confirmBtn.onclick = () => {
+        tasks = tasks.filter((t) => t.id !== task.id);
+        saveTasks();
+        renderTasks(searchInput.value);
+        closeModal();
+      };
+
+      cancelBtn.onclick = closeModal;
     };
 
     btnGroup.append(completeBtn, editBtn, deleteBtn);
@@ -129,11 +172,22 @@ function renderTasks(filter = "") {
 }
 
 clearAllBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to delete all tasks?")) {
+  const clearModal = document.getElementById("deleteModal");
+  clearModal.classList.add("show");
+
+  const confirmBtn = document.getElementById("confirmBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
+
+  const closeModal = () => clearModal.classList.remove("show");
+
+  confirmBtn.onclick = () => {
     tasks = [];
-    saveTasks(); 
+    saveTasks();
     renderTasks(searchInput.value);
-  }
+    closeModal();
+  };
+
+  cancelBtn.onclick = closeModal;
 });
 
 searchInput.addEventListener("input", (e) => {

@@ -10,26 +10,45 @@ $dark: #212529;
 $muted: #6c757d;
 $font-stack: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: $font-stack;
   background-color: $light;
   color: $dark;
   line-height: 1.6;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bg-lgt {
+  background: linear-gradient(rgb(239, 239, 239), rgb(234, 234, 234));
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   border-radius: 1rem;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.01);
-  }
 }
 
 .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   border-radius: 1rem;
-  height: 97vh;
+  overflow: hidden;
+  // height: 97vh;
   background: radial-gradient(white, lightgrey);
 }
 
@@ -81,8 +100,9 @@ button {
 }
 
 #taskList {
-  max-height: 50vh;
+  flex-grow: 1;
   overflow-y: auto;
+  min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: $primary transparent;
 
@@ -112,14 +132,13 @@ button {
     .completed {
       text-decoration: line-through;
       color: $muted;
-      opacity: 0.75;
+      opacity: 0.5;
     }
   }
 }
 
 .priority-badge {
   font-size: 0.75rem;
-  margin-right: 0.5rem;
   padding: 0.35em 0.65em;
   border-radius: 0.375rem;
   font-weight: 600;
@@ -127,23 +146,23 @@ button {
   color: white;
 
   &.Low {
-    background-color: $primary;
-  }
-
-  &.Medium {
-    background-color: $warning;
+    background: linear-gradient(white, rgb(217, 217, 217));
     color: black;
   }
 
+  &.Medium {
+    background: linear-gradient(rgb(83, 80, 59), rgb(141, 141, 141));
+  }
+
   &.High {
-    background-color: $danger;
+    background: linear-gradient(rgb(94, 68, 68), black);
   }
 }
 
 .tag-badge {
   background-color: $secondary;
   font-size: 0.7rem;
-  margin-left: 6px;
+  margin-right: 5px;
   padding: 3px 6px;
   border-radius: 0.35rem;
   color: white;
@@ -157,25 +176,39 @@ button {
   }
 }
 
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-modal.show {
+  display: flex;
+}
+
+.custom-modal-content {
+  background: linear-gradient(white, lightgrey);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .card-body {
     padding: 1rem;
   }
 
   form {
-    .col-md-4,
-    .col-md-2 {
-      flex: 0 0 100%;
-      max-width: 100%;
-    }
-
     .d-grid {
       margin-top: 0.5rem;
     }
-  }
-
-  #taskList {
-    max-height: 40vh;
   }
 }
 
