@@ -12,6 +12,7 @@ const clearAllBtn = document.getElementById("clearAllBtn");
 const searchInput = document.getElementById("searchInput");
 
 let tasks = [];
+let currentFilter = "all";
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -94,18 +95,20 @@ function renderTasks(filter = "") {
   const filteredTasks = tasks
     .filter((task) => {
       const searchText = filter.toLowerCase();
-      return (
+      const matchesSearch =
         task.text.toLowerCase().includes(searchText) ||
         task.priority.toLowerCase().includes(searchText) ||
-        task.tags.some((tag) => tag.toLowerCase().includes(searchText))
-      );
+        task.tags.some((tag) => tag.toLowerCase().includes(searchText));
+
+      const matchesStatus =
+        currentFilter === "all" ||
+        (currentFilter === "completed" && task.isCompleted) ||
+        (currentFilter === "pending" && !task.isCompleted);
+
+      return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
-      const priorityOrder = {
-        high: 1,
-        medium: 2,
-        low: 3,
-      };
+      const priorityOrder = { high: 1, medium: 2, low: 3 };
       return (
         priorityOrder[a.priority.toLowerCase()] -
         priorityOrder[b.priority.toLowerCase()]
@@ -122,7 +125,7 @@ function renderTasks(filter = "") {
 
   filteredTasks.forEach((task) => {
     const li = document.createElement("li");
-    li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center priority-${task.priority}`;
+    li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center priority-${task.priority} bg-${task.isCompleted}`;
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "ms-2 me-auto";
@@ -229,6 +232,22 @@ function renderTasks(filter = "") {
     taskList.appendChild(li);
   });
 }
+
+const filterButtons = document.querySelectorAll("#filterButtons button");
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    // Update filter state
+    currentFilter = button.dataset.filter;
+
+    // Update button styles
+    filterButtons.forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    // Re-render tasks based on current search and filter
+    renderTasks(searchInput.value);
+  });
+});
 
 clearAllBtn.addEventListener("click", () => {
   const clearModal = document.getElementById("deleteModal");
