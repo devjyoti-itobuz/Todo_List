@@ -260,3 +260,13 @@ button {
     font-size: 0.875rem;
   }
 }
+
+.priority-High {
+  border-left: 4px solid black; 
+}
+.priority-Medium {
+  border-left: 4px solid grey; 
+}
+.priority-Low {
+  border-left: 4px solid lightgrey; 
+}

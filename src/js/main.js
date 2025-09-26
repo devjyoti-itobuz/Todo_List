@@ -122,7 +122,7 @@ function renderTasks(filter = "") {
 
   filteredTasks.forEach((task) => {
     const li = document.createElement("li");
-    li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center`;
+    li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center priority-${task.priority}`;
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "ms-2 me-auto";
