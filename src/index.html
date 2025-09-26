@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="./assets/logo.png" />
     <title>Todo</title>
     <script type="module" src="./js/main.js"></script>
     <link
@@ -28,46 +29,51 @@
               <i class="fas fa-magnifying-glass"></i>
             </span>
           </div>
+          <div id="queryModal" class="queryModal">Validation message here</div>
+          <div class="row g-2 mb-4 align-items-start">
+            <form id="taskForm" class="row g-2 col-12 col-md-10 m-0 p-0">
+              <div class="col-12 col-sm-6 col-md-4 col-lg-6">
+                <input
+                  type="text"
+                  id="taskInput"
+                  class="form-control"
+                  placeholder="Enter task"
+                />
+              </div>
 
-          <form id="taskForm" class="row g-2 mb-4">
-            <div class="col-md-8 col-lg-4">
-              <input
-                type="text"
-                id="taskInput"
-                class="form-control"
-                placeholder="Enter task"
-                required
-              />
-            </div>
-            <div class="col-4 col-md-4 col-lg-2">
-              <select id="prioritySelect" class="form-select">
-                <option value="" selected disabled hidden>
-                  Select priority...
-                </option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-            <div class="col-8 col-md-6 col-lg-3">
-              <input
-                type="text"
-                id="tagInput"
-                class="form-control"
-                placeholder="Tags (comma separated)"
-              />
-            </div>
-            <div class="col-md-2 d-grid col-lg-1">
-              <button type="submit" class="btn btn-dark">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-            <div class="col-md d-grid">
+              <div class="col-6 col-md-3 col-lg-2">
+                <select id="prioritySelect" class="form-select">
+                  <option value="" selected disabled hidden>
+                    Select priority...
+                  </option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              <div class="col-6 col-md-3 col-lg-3">
+                <input
+                  type="text"
+                  id="tagInput"
+                  class="form-control"
+                  placeholder="Tags (comma separated)"
+                />
+              </div>
+
+              <div class="col-12 col-md-2 col-lg-1 d-grid">
+                <button type="submit" class="btn btn-dark">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </form>
+
+            <div class="col-12 col-md-2 col-lg-2 d-grid">
               <button class="btn btn-secondary" id="clearAllBtn">
-                Clear All Tasks
+                Clear All
               </button>
             </div>
-          </form>
+          </div>
 
           <div class="bg-lgt rounded-2 p-2 d-flex flex-column flex-grow-1">
             <ul id="taskList" class="list-group flex-grow-1 overflow-auto"></ul>
@@ -75,11 +81,71 @@
         </div>
       </div>
     </div>
-    <div id="deleteModal" class="custom-modal">
+    <div id="deleteModal" class="custom-modal fade">
       <div class="custom-modal-content">
         <p>Are you sure you want to delete?</p>
         <button id="confirmBtn" class="btn btn-dark">Delete</button>
         <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel fw-semibold">
+              Edit Task
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="bg-ligt modal-body">
+            <form id="editTaskForm">
+              <div class="mb-3">
+                <label for="editTaskInput" class="form-label">Task</label>
+                <input type="text" class="form-control" id="editTaskInput" />
+              </div>
+              <div class="mb-3">
+                <label for="editPrioritySelect" class="form-label"
+                  >Priority</label
+                >
+                <select class="form-select" id="editPrioritySelect">
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editTagInput" class="form-label"
+                  >Tags (comma-separated)</label
+                >
+                <input type="text" class="form-control" id="editTagInput" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-dark" id="saveEditBtn">
+              Save Changes
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

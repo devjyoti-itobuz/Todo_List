@@ -17,6 +17,31 @@ function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+function getISTLocalizedTime() {
+  const now = new Date();
+  const options = {
+    timeZone: "Asia/Kolkata",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour12: true, // Use 12-hour clock with AM/PM
+  };
+  return now.toLocaleString("en-IN", options);
+}
+
+function showModal(message) {
+  const queryModal = document.getElementById("queryModal");
+  queryModal.textContent = message;
+  queryModal.classList.add("show");
+
+  setTimeout(() => {
+    queryModal.classList.remove("show");
+  }, 2000);
+}
+
 function loadTasks() {
   const saved = localStorage.getItem("tasks");
   tasks = saved ? JSON.parse(saved) : [];
@@ -26,21 +51,34 @@ taskForm.addEventListener("submit", function (e) {
   e.preventDefault();
   const taskInput = document.getElementById("taskInput");
   const priority = document.getElementById("prioritySelect").value;
+
+  const taskRegex = /^[A-Za-z\s]{2,}$/;
+
+  if (!taskInput.value.trim() || !taskRegex.test(taskInput.value.trim())) {
+    showModal("Please enter a valid task (letters only, min 3 characters).");
+    return;
+  }
+  if (!priority) {
+    showModal("Please enter priority.");
+    return;
+  }
+
   const tags = document
     .getElementById("tagInput")
     .value.split(",")
     .map((tag) => tag.trim())
     .filter((tag) => tag);
 
-  if (!taskInput.value.trim()) return;
-
   const task = {
     id: Date.now(),
     text: taskInput.value.trim(),
     priority,
     tags,
-    completed: false,
+    isCompleted: false,
+    createdAt: getISTLocalizedTime(),
+    updatedAt: getISTLocalizedTime(),
   };
+  console.log(task);
 
   tasks.push(task);
   saveTasks();
@@ -53,14 +91,26 @@ taskForm.addEventListener("submit", function (e) {
 function renderTasks(filter = "") {
   taskList.innerHTML = "";
 
-  const filteredTasks = tasks.filter((task) => {
-    const searchText = filter.toLowerCase();
-    return (
-      task.text.toLowerCase().includes(searchText) ||
-      task.priority.toLowerCase().includes(searchText) ||
-      task.tags.some((tag) => tag.toLowerCase().includes(searchText))
-    );
-  });
+  const filteredTasks = tasks
+    .filter((task) => {
+      const searchText = filter.toLowerCase();
+      return (
+        task.text.toLowerCase().includes(searchText) ||
+        task.priority.toLowerCase().includes(searchText) ||
+        task.tags.some((tag) => tag.toLowerCase().includes(searchText))
+      );
+    })
+    .sort((a, b) => {
+      const priorityOrder = {
+        high: 1,
+        medium: 2,
+        low: 3,
+      };
+      return (
+        priorityOrder[a.priority.toLowerCase()] -
+        priorityOrder[b.priority.toLowerCase()]
+      );
+    });
 
   if (filteredTasks.length === 0) {
     const emptyMsg = document.createElement("li");
@@ -77,7 +127,9 @@ function renderTasks(filter = "") {
     const contentDiv = document.createElement("div");
     contentDiv.className = "ms-2 me-auto";
     contentDiv.innerHTML = `
-      <div class="${task.completed ? "completed" : ""} justify-content-center">
+      <div class="${
+        task.isCompleted ? "completed" : ""
+      } justify-content-center">
       <span class="priority-badge ${task.priority}">${task.priority}</span>
         <strong>${task.text}</strong> <br>
         ${task.tags
@@ -86,6 +138,7 @@ function renderTasks(filter = "") {
               `<span class="badge align-items-center tag-badge">${tag}</span>`
           )
           .join("")}
+          <span class="text-muted badge">${task.updatedAt}</span>
       </div>
     `;
 
@@ -94,52 +147,58 @@ function renderTasks(filter = "") {
 
     const completeBtn = document.createElement("button");
     completeBtn.className = "btn btn-dark";
-    if (task.completed === true) completeBtn.innerText = "↺";
+    if (task.isCompleted === true) completeBtn.innerText = "↺";
     else completeBtn.innerText = "✓";
     completeBtn.title = "Complete / Undo";
     completeBtn.onclick = () => {
-      task.completed = !task.completed;
+      task.isCompleted = !task.isCompleted;
       saveTasks();
       renderTasks(searchInput.value);
     };
 
     const editBtn = document.createElement("button");
     editBtn.className = "btn btn-light";
-    editBtn.innerText = "✎";
+    editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
     editBtn.onclick = () => {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.className = "form-control";
-      input.value = task.text;
+      const editTaskInput = document.getElementById("editTaskInput");
+      const editPrioritySelect = document.getElementById("editPrioritySelect");
+      const editTagInput = document.getElementById("editTagInput");
+      const saveEditBtn = document.getElementById("saveEditBtn");
 
-      const saveBtn = document.createElement("button");
-      saveBtn.className = "btn btn-dark btn-sm";
-      saveBtn.innerText = "Save";
+      editTaskInput.value = task.text;
+      editPrioritySelect.value = task.priority;
+      editTagInput.value = task.tags.join(", ");
 
-      const cancelBtn = document.createElement("button");
-      cancelBtn.className = "btn btn-secondary btn-sm";
-      cancelBtn.innerText = "Cancel";
+      const editModal = new bootstrap.Modal(
+        document.getElementById("editModal")
+      );
+      editModal.show();
 
-      const editGroup = document.createElement("div");
-      editGroup.className = "d-flex gap-2 mt-2";
-      editGroup.append(input, saveBtn, cancelBtn);
+      const newSaveBtn = saveEditBtn.cloneNode(true);
+      saveEditBtn.parentNode.replaceChild(newSaveBtn, saveEditBtn);
 
-      contentDiv.innerHTML = "";
-      contentDiv.appendChild(editGroup);
+      newSaveBtn.addEventListener("click", () => {
+        const newText = editTaskInput.value.trim();
+        const newPriority = editPrioritySelect.value;
+        const newTags = editTagInput.value
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag);
 
-      saveBtn.onclick = () => {
-        const newText = input.value.trim();
-        if (newText) {
-          task.text = newText;
-          saveTasks();
-          renderTasks(searchInput.value);
+        if (!newText || newText.length < 2) {
+          showModal("Please enter a valid task (min 2 letters).");
+          return;
         }
-      };
 
-      cancelBtn.onclick = () => {
+        task.text = newText;
+        task.priority = newPriority;
+        task.tags = newTags;
+        task.updatedAt = getISTLocalizedTime();
+        saveTasks();
         renderTasks(searchInput.value);
-      };
+        editModal.hide();
+      });
     };
 
     const deleteBtn = document.createElement("button");
