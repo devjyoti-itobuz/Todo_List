@@ -1,7 +1,7 @@
 // Import our custom CSS
 import "../scss/styles.scss";
 
-// Import all of Bootstrap's JS
+// Import all of Bootstrap’s JS
 import * as bootstrap from "bootstrap";
 import Alert from "bootstrap/js/dist/alert";
 import { Tooltip, Toast, Popover } from "bootstrap";
@@ -14,129 +14,8 @@ const searchInput = document.getElementById("searchInput");
 let tasks = [];
 let currentFilter = "all";
 
-const API_BASE_URL = "http://localhost:3000/api/tasks"; 
-
-// Update with your backend URL
-
-// API Functions
-// async function fetchTasks() {
-//   try {
-//     const response = await fetch(API_BASE_URL);
-//     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-//     return await response.json();
-//   } catch (error) {
-//     console.error('Error fetching tasks:', error);
-//     showModal('Failed to load tasks.');
-//     // return JSON.parse(localStorage.getItem("tasks") || "[]");
-//   }
-// }
-
-async function fetchTasks() {
-  try {
-    const res = await fetch(API_BASE_URL);
-    if (!res.ok) throw new Error("Failed to fetch tasks");
-    const data = await res.json();
-
-    return (data || []).map((task) => ({
-      id: task.id,
-      text: task.title,
-      priority: task.isImportant || "", 
-      tags: Array.isArray(task.tags) ? task.tags : [],
-      isCompleted: !!task.isCompleted,
-      createdAt: task.createdAt,
-      updatedAt: task.updatedAt,
-      //       ...task,
-      // text: task.title,
-      // priority: task.isImportant || "",
-    }));
-  } catch (error) {
-    console.error("Error creating task:", error);
-    showModal("Could not load tasks from server");
-    return []; // No fallback!
-  }
-}
-
-async function createTaskAPI(taskData) {
-  try {
-    const response = await fetch(API_BASE_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: taskData.text,
-        tags: taskData.tags,
-        isImportant: taskData.priority || "Low",
-      }),
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating task:", error);
-    showModal("Failed to create task.");
-    // Fallback to localStorage
-
-    // taskData.id = Date.now();
-    // const localTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    // localTasks.push(taskData);
-    // localStorage.setItem("tasks", JSON.stringify(localTasks));
-    return null;
-  }
-}
-
-async function updateTaskAPI(taskId, updates) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: updates.text,
-        tags: updates.tags,
-        isImportant: updates.priority,
-        isCompleted: updates.isCompleted,
-      }),
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating task:", error);
-    showModal("Failed to update task");
-    return null;
-  }
-}
-
-async function deleteTaskAPI(taskId) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return true;
-  } catch (error) {
-    console.error("Error deleting task:", error);
-    showModal("Failed to delete task");
-    return false;
-  }
-}
-
-async function clearAllTasksAPI() {
-  try {
-    const response = await fetch(API_BASE_URL, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return true;
-  } catch (error) {
-    console.error("Error clearing tasks:", error);
-    showModal("Failed to clear all tasks");
-    return false;
-  }
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function getISTLocalizedTime() {
@@ -149,7 +28,7 @@ function getISTLocalizedTime() {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour12: true,
+    hour12: true, // Use 12-hour clock with AM/PM
   };
   return now.toLocaleString("en-IN", options);
 }
@@ -164,12 +43,12 @@ function showModal(message) {
   }, 2000);
 }
 
-async function loadTasks() {
-  tasks = await fetchTasks();
-  renderTasks();
+function loadTasks() {
+  const saved = localStorage.getItem("tasks");
+  tasks = saved ? JSON.parse(saved) : [];
 }
 
-taskForm.addEventListener("submit", async function (e) {
+taskForm.addEventListener("submit", function (e) {
   e.preventDefault();
   const taskInput = document.getElementById("taskInput");
   const priority = document.getElementById("prioritySelect").value;
@@ -191,7 +70,8 @@ taskForm.addEventListener("submit", async function (e) {
     .map((tag) => tag.trim())
     .filter((tag) => tag);
 
-  const taskData = {
+  const task = {
+    id: Date.now(),
     text: taskInput.value.trim(),
     priority,
     tags,
@@ -199,23 +79,10 @@ taskForm.addEventListener("submit", async function (e) {
     createdAt: getISTLocalizedTime(),
     updatedAt: getISTLocalizedTime(),
   };
+  console.log(task);
 
-  const newTask = await createTaskAPI(taskData);
-
-  // Update local tasks array with the response from API
-  if (newTask) {
-    // Map API response to frontend format
-    const formattedTask = {
-      id: newTask.id,
-      text: newTask.title,
-      priority: newTask.isImportant,
-      tags: newTask.tags,
-      isCompleted: newTask.isCompleted,
-      createdAt: newTask.createdAt,
-      updatedAt: newTask.updatedAt,
-    };
-    tasks.push(formattedTask);
-  }
+  tasks.push(task);
+  saveTasks();
 
   taskInput.value = "";
   document.getElementById("tagInput").value = "";
@@ -229,9 +96,9 @@ function renderTasks(filter = "") {
     .filter((task) => {
       const searchText = filter.toLowerCase();
       const matchesSearch =
-        task.text?.toLowerCase().includes(searchText) ||
-        task.priority?.toLowerCase().includes(searchText) ||
-        task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
+        task.text.toLowerCase().includes(searchText) ||
+        task.priority.toLowerCase().includes(searchText) ||
+        task.tags.some((tag) => tag.toLowerCase().includes(searchText));
 
       const matchesStatus =
         currentFilter === "all" ||
@@ -243,8 +110,8 @@ function renderTasks(filter = "") {
     .sort((a, b) => {
       const priorityOrder = { high: 1, medium: 2, low: 3 };
       return (
-        priorityOrder[a.priority?.toLowerCase()] -
-        priorityOrder[b.priority?.toLowerCase()]
+        priorityOrder[a.priority.toLowerCase()] -
+        priorityOrder[b.priority.toLowerCase()]
       );
     });
 
@@ -267,8 +134,8 @@ function renderTasks(filter = "") {
         task.isCompleted ? "completed" : ""
       } justify-content-center">
       <span class="priority-badge ${task.priority}">${task.priority}</span>
-        <strong>${task.text || task.title}</strong> <br>
-        ${(task.tags || [])
+        <strong>${task.text}</strong> <br>
+        ${task.tags
           .map(
             (tag) =>
               `<span class="badge align-items-center tag-badge">${tag}</span>`
@@ -286,19 +153,10 @@ function renderTasks(filter = "") {
     if (task.isCompleted === true) completeBtn.innerText = "↺";
     else completeBtn.innerText = "✓";
     completeBtn.title = "Complete / Undo";
-    completeBtn.onclick = async () => {
-      const updatedTask = await updateTaskAPI(task.id, {
-        text: task.text || task.title,
-        priority: task.priority || task.isImportant,
-        tags: task.tags || [],
-        isCompleted: !task.isCompleted,
-      });
-
-      if (updatedTask) {
-        task.isCompleted = !task.isCompleted;
-        task.updatedAt = updatedTask.updatedAt;
-        renderTasks(searchInput.value);
-      }
+    completeBtn.onclick = () => {
+      task.isCompleted = !task.isCompleted;
+      saveTasks();
+      renderTasks(searchInput.value);
     };
 
     const editBtn = document.createElement("button");
@@ -311,9 +169,9 @@ function renderTasks(filter = "") {
       const editTagInput = document.getElementById("editTagInput");
       const saveEditBtn = document.getElementById("saveEditBtn");
 
-      editTaskInput.value = task.text || task.title;
-      editPrioritySelect.value = task.priority || task.isImportant;
-      editTagInput.value = (task.tags || []).join(", ");
+      editTaskInput.value = task.text;
+      editPrioritySelect.value = task.priority;
+      editTagInput.value = task.tags.join(", ");
 
       const editModal = new bootstrap.Modal(
         document.getElementById("editModal")
@@ -323,7 +181,7 @@ function renderTasks(filter = "") {
       const newSaveBtn = saveEditBtn.cloneNode(true);
       saveEditBtn.parentNode.replaceChild(newSaveBtn, saveEditBtn);
 
-      newSaveBtn.addEventListener("click", async () => {
+      newSaveBtn.addEventListener("click", () => {
         const newText = editTaskInput.value.trim();
         const newPriority = editPrioritySelect.value;
         const newTags = editTagInput.value
@@ -336,23 +194,13 @@ function renderTasks(filter = "") {
           return;
         }
 
-        const updatedTask = await updateTaskAPI(task.id, {
-          text: newText,
-          priority: newPriority,
-          tags: newTags,
-          isCompleted: task.isCompleted,
-        });
-
-        if (updatedTask) {
-          task.text = newText;
-          task.title = newText;
-          task.priority = newPriority;
-          task.isImportant = newPriority;
-          task.tags = newTags;
-          task.updatedAt = updatedTask.updatedAt;
-          renderTasks(searchInput.value);
-          editModal.hide();
-        }
+        task.text = newText;
+        task.priority = newPriority;
+        task.tags = newTags;
+        task.updatedAt = getISTLocalizedTime();
+        saveTasks();
+        renderTasks(searchInput.value);
+        editModal.hide();
       });
     };
 
@@ -369,12 +217,10 @@ function renderTasks(filter = "") {
 
       const closeModal = () => deleteModal.classList.remove("show");
 
-      confirmBtn.onclick = async () => {
-        const success = await deleteTaskAPI(task.id);
-        if (success) {
-          tasks = tasks.filter((t) => t.id !== task.id);
-          renderTasks(searchInput.value);
-        }
+      confirmBtn.onclick = () => {
+        tasks = tasks.filter((t) => t.id !== task.id);
+        saveTasks();
+        renderTasks(searchInput.value);
         closeModal();
       };
 
@@ -391,9 +237,14 @@ const filterButtons = document.querySelectorAll("#filterButtons button");
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    // Update filter state
     currentFilter = button.dataset.filter;
+
+    // Update button styles
     filterButtons.forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
+
+    // Re-render tasks based on current search and filter
     renderTasks(searchInput.value);
   });
 });
@@ -407,12 +258,10 @@ clearAllBtn.addEventListener("click", () => {
 
   const closeModal = () => clearModal.classList.remove("show");
 
-  confirmBtn.onclick = async () => {
-    const success = await clearAllTasksAPI();
-    if (success) {
-      tasks = [];
-      renderTasks(searchInput.value);
-    }
+  confirmBtn.onclick = () => {
+    tasks = [];
+    saveTasks();
+    renderTasks(searchInput.value);
     closeModal();
   };
 
@@ -423,5 +272,5 @@ searchInput.addEventListener("input", (e) => {
   renderTasks(e.target.value);
 });
 
-// Initialize the app
 loadTasks();
+renderTasks();
