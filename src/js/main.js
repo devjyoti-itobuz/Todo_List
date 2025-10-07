@@ -234,31 +234,8 @@ taskForm.addEventListener("submit", async function (e) {
 });
 
 function renderTasks(filter = "") {
+  tasks.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
   taskList.innerHTML = "";
-
-  //   const filteredTasks = tasks
-  // .filter((task) => {
-  //   const searchText = filter.toLowerCase();
-  //   const matchesSearch =
-  //     task.text?.toLowerCase().includes(searchText) ||
-  //     task.priority?.toLowerCase().includes(searchText) ||
-  //     task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
-
-  //   const matchesStatus =
-  //     currentFilter === "all" ||
-  //     (currentFilter === "completed" && task.isCompleted) ||
-  //     (currentFilter === "pending" && !task.isCompleted);
-
-  //   return matchesStatus;
-  // })
-
-  // const filteredTasks = tasks.sort((a, b) => {
-  //   const priorityOrder = { high: 1, medium: 2, low: 3 };
-  //   return (
-  //     priorityOrder[a.priority?.toLowerCase()] -
-  //     priorityOrder[b.priority?.toLowerCase()]
-  //   );
-  // });
 
   if (tasks.length === 0) {
     const emptyMsg = document.createElement("li");
