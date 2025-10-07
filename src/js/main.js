@@ -16,22 +16,13 @@ let currentFilter = "all";
 
 const API_BASE_URL = "http://localhost:3000/api/tasks";
 
-// API Functions
-// async function fetchTasks() {
-//   try {
-//     const response = await fetch(API_BASE_URL);
-//     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-//     return await response.json();
-//   } catch (error) {
-//     console.error('Error fetching tasks:', error);
-//     showModal('Failed to load tasks.');
-//     // return JSON.parse(localStorage.getItem("tasks") || "[]");
-//   }
-// }
+async function fetchTasks(searchTerm = "") {
+  const url = searchTerm
+    ? `${API_BASE_URL}?search=${encodeURIComponent(searchTerm)}`
+    : API_BASE_URL;
 
-async function fetchTasks() {
   try {
-    const res = await fetch(API_BASE_URL);
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch tasks");
     const data = await res.json();
 
@@ -48,7 +39,7 @@ async function fetchTasks() {
       // priority: task.isImportant || "",
     }));
   } catch (error) {
-    console.error("Error creating task:", error);
+    console.error("Error loading tasks:", error);
     showModal("Could not load tasks from server");
     return [];
   }
@@ -166,10 +157,10 @@ taskForm.addEventListener("submit", async function (e) {
   const taskInput = document.getElementById("taskInput");
   const priority = document.getElementById("prioritySelect").value;
 
-  const taskRegex = /^[A-Za-z\s]{3,}$/;
+  const taskRegex = /^[A-Za-z0-9\s]{3,}$/;
 
   if (!taskInput.value.trim() || !taskRegex.test(taskInput.value.trim())) {
-    showModal("Please enter a valid task (letters only, min 3 characters).");
+    showModal("Please enter a valid task (min 3 characters).");
     return;
   }
   if (!priority) {
@@ -217,18 +208,18 @@ function renderTasks(filter = "") {
 
   const filteredTasks = tasks
     .filter((task) => {
-      const searchText = filter.toLowerCase();
-      const matchesSearch =
-        task.text?.toLowerCase().includes(searchText) ||
-        task.priority?.toLowerCase().includes(searchText) ||
-        task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
+      //   const searchText = filter.toLowerCase();
+      //   const matchesSearch =
+      //     task.text?.toLowerCase().includes(searchText) ||
+      //     task.priority?.toLowerCase().includes(searchText) ||
+      //     task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
 
       const matchesStatus =
         currentFilter === "all" ||
         (currentFilter === "completed" && task.isCompleted) ||
         (currentFilter === "pending" && !task.isCompleted);
 
-      return matchesSearch && matchesStatus;
+      return matchesStatus;
     })
     .sort((a, b) => {
       const priorityOrder = { high: 1, medium: 2, low: 3 };
@@ -409,9 +400,14 @@ clearAllBtn.addEventListener("click", () => {
   cancelBtn.onclick = closeModal;
 });
 
-searchInput.addEventListener("input", (e) => {
-  renderTasks(e.target.value);
+searchInput.addEventListener("input", async (e) => {
+  const searchTerm = e.target.value.trim();
+
+  tasks = await fetchTasks(searchTerm);
+
+  renderTasks();
 });
+
 
 // Initialize the app
 loadTasks();
