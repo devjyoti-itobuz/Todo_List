@@ -14,7 +14,7 @@ const searchInput = document.getElementById("searchInput");
 let tasks = [];
 let currentFilter = "all";
 
-const API_BASE_URL = "http://localhost:3000/api/tasks"; 
+const API_BASE_URL = "http://localhost:3000/api/tasks";
 
 // Update with your backend URL
 
@@ -40,7 +40,7 @@ async function fetchTasks() {
     return (data || []).map((task) => ({
       id: task.id,
       text: task.title,
-      priority: task.isImportant || "", 
+      priority: task.isImportant || "",
       tags: Array.isArray(task.tags) ? task.tags : [],
       isCompleted: !!task.isCompleted,
       createdAt: task.createdAt,
@@ -52,7 +52,7 @@ async function fetchTasks() {
   } catch (error) {
     console.error("Error creating task:", error);
     showModal("Could not load tasks from server");
-    return []; // No fallback!
+    return [];
   }
 }
 
@@ -75,12 +75,6 @@ async function createTaskAPI(taskData) {
   } catch (error) {
     console.error("Error creating task:", error);
     showModal("Failed to create task.");
-    // Fallback to localStorage
-
-    // taskData.id = Date.now();
-    // const localTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    // localTasks.push(taskData);
-    // localStorage.setItem("tasks", JSON.stringify(localTasks));
     return null;
   }
 }
@@ -174,7 +168,7 @@ taskForm.addEventListener("submit", async function (e) {
   const taskInput = document.getElementById("taskInput");
   const priority = document.getElementById("prioritySelect").value;
 
-  const taskRegex = /^[A-Za-z\s]{2,}$/;
+  const taskRegex = /^[A-Za-z\s]{3,}$/;
 
   if (!taskInput.value.trim() || !taskRegex.test(taskInput.value.trim())) {
     showModal("Please enter a valid task (letters only, min 3 characters).");
@@ -202,9 +196,7 @@ taskForm.addEventListener("submit", async function (e) {
 
   const newTask = await createTaskAPI(taskData);
 
-  // Update local tasks array with the response from API
   if (newTask) {
-    // Map API response to frontend format
     const formattedTask = {
       id: newTask.id,
       text: newTask.title,
