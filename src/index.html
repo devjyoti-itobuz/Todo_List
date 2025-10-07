@@ -19,7 +19,7 @@
             <i class="fa-regular fa-pen-to-square"></i> To Do List
           </h2>
           <div class="row align-items-center mb-2 mb-lg-3 g-2">
-            <div class="col-12 col-md-6 col-xl-9">
+            <div class="col-12 col-lg-5 col-xl-6">
               <div class="input-group">
                 <input
                   type="text"
@@ -33,7 +33,7 @@
               </div>
             </div>
 
-            <div class="col">
+            <div class="col-lg-3">
               <div class="btn-group w-100" id="filterButtons">
                 <button
                   type="button"
@@ -58,9 +58,43 @@
                 </button>
               </div>
             </div>
+
+            <div class="col-xl-3 col-lg-3">
+              <div class="btn-group w-100" id="priorityFilterButtons">
+                <button
+                  type="button"
+                  class="btn btn-outline-dark active"
+                  data-filter="all"
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-dark"
+                  data-filter="low"
+                >
+                  Low
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-dark"
+                  data-filter="medium"
+                >
+                  Medium
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-dark"
+                  data-filter="high"
+                >
+                  High
+                </button>
+              </div>
+            </div>
           </div>
 
           <div id="queryModal" class="queryModal">Validation message here</div>
+
           <div class="row g-2 mb-4 align-items-start">
             <form id="taskForm" class="row g-2 col-12 col-md-10 m-0 p-0">
               <div class="col-12 col-sm-6 col-md-4 col-lg-6">
@@ -119,6 +153,8 @@
         <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
       </div>
     </div>
+
+    <div id="qModal" class="qModal">Validation message here</div>
 
     <div
       class="modal fade"

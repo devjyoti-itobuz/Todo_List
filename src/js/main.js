@@ -13,17 +13,38 @@ const searchInput = document.getElementById("searchInput");
 
 let tasks = [];
 let currentFilter = "all";
+let currentPriority = "all";
 
 const API_BASE_URL = "http://localhost:3000/api/tasks";
 
-async function fetchTasks(searchTerm = "") {
-  const url = searchTerm
-    ? `${API_BASE_URL}?search=${encodeURIComponent(searchTerm)}`
-    : API_BASE_URL;
+const priorityFilterButtons = document.querySelectorAll(
+  "#priorityFilterButtons button"
+);
+
+priorityFilterButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    currentPriority = button.dataset.filter;
+    priorityFilterButtons.forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+    await loadTasks();
+  });
+});
+
+async function fetchTasks(
+  searchTerm = "",
+  statusFilter = "all",
+  priorityFilter = "all"
+) {
+  const url = new URL(API_BASE_URL);
+  if (searchTerm) url.searchParams.append("search", searchTerm);
+  if (statusFilter !== "all") url.searchParams.append("status", statusFilter);
+  if (priorityFilter !== "all")
+    url.searchParams.append("priority", priorityFilter);
 
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch tasks");
+
     const data = await res.json();
 
     return (data || []).map((task) => ({
@@ -34,9 +55,6 @@ async function fetchTasks(searchTerm = "") {
       isCompleted: !!task.isCompleted,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
-      //       ...task,
-      // text: task.title,
-      // priority: task.isImportant || "",
     }));
   } catch (error) {
     console.error("Error loading tasks:", error);
@@ -60,6 +78,7 @@ async function createTaskAPI(taskData) {
     });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    shownModal("task added successfully");
     return await response.json();
   } catch (error) {
     console.error("Error creating task:", error);
@@ -147,8 +166,19 @@ function showModal(message) {
   }, 2000);
 }
 
+function shownModal(message) {
+  const qModal = document.getElementById("qModal");
+  qModal.textContent = message;
+  qModal.classList.add("show");
+
+  setTimeout(() => {
+    qModal.classList.remove("show");
+  }, 2000);
+}
+
 async function loadTasks() {
-  tasks = await fetchTasks();
+  const searchTerm = searchInput.value.trim();
+  tasks = await fetchTasks(searchTerm, currentFilter, currentPriority);
   renderTasks();
 }
 
@@ -206,30 +236,31 @@ taskForm.addEventListener("submit", async function (e) {
 function renderTasks(filter = "") {
   taskList.innerHTML = "";
 
-  const filteredTasks = tasks
-    .filter((task) => {
-      //   const searchText = filter.toLowerCase();
-      //   const matchesSearch =
-      //     task.text?.toLowerCase().includes(searchText) ||
-      //     task.priority?.toLowerCase().includes(searchText) ||
-      //     task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
+  //   const filteredTasks = tasks
+  // .filter((task) => {
+  //   const searchText = filter.toLowerCase();
+  //   const matchesSearch =
+  //     task.text?.toLowerCase().includes(searchText) ||
+  //     task.priority?.toLowerCase().includes(searchText) ||
+  //     task.tags?.some((tag) => tag.toLowerCase().includes(searchText));
 
-      const matchesStatus =
-        currentFilter === "all" ||
-        (currentFilter === "completed" && task.isCompleted) ||
-        (currentFilter === "pending" && !task.isCompleted);
+  //   const matchesStatus =
+  //     currentFilter === "all" ||
+  //     (currentFilter === "completed" && task.isCompleted) ||
+  //     (currentFilter === "pending" && !task.isCompleted);
 
-      return matchesStatus;
-    })
-    .sort((a, b) => {
-      const priorityOrder = { high: 1, medium: 2, low: 3 };
-      return (
-        priorityOrder[a.priority?.toLowerCase()] -
-        priorityOrder[b.priority?.toLowerCase()]
-      );
-    });
+  //   return matchesStatus;
+  // })
 
-  if (filteredTasks.length === 0) {
+  // const filteredTasks = tasks.sort((a, b) => {
+  //   const priorityOrder = { high: 1, medium: 2, low: 3 };
+  //   return (
+  //     priorityOrder[a.priority?.toLowerCase()] -
+  //     priorityOrder[b.priority?.toLowerCase()]
+  //   );
+  // });
+
+  if (tasks.length === 0) {
     const emptyMsg = document.createElement("li");
     emptyMsg.className = "list-group-item text-center text-muted";
     emptyMsg.innerText = "No tasks found.";
@@ -237,7 +268,7 @@ function renderTasks(filter = "") {
     return;
   }
 
-  filteredTasks.forEach((task) => {
+  tasks.forEach((task) => {
     const li = document.createElement("li");
     li.className = `list-group-item d-flex flex-column flex-md-row gap-3 justify-content-between align-items-center priority-${task.priority} bg-${task.isCompleted}`;
 
@@ -371,11 +402,11 @@ function renderTasks(filter = "") {
 const filterButtons = document.querySelectorAll("#filterButtons button");
 
 filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", async () => {
     currentFilter = button.dataset.filter;
     filterButtons.forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
-    renderTasks(searchInput.value);
+    await loadTasks(); // fetch + render
   });
 });
 
@@ -401,13 +432,8 @@ clearAllBtn.addEventListener("click", () => {
 });
 
 searchInput.addEventListener("input", async (e) => {
-  const searchTerm = e.target.value.trim();
-
-  tasks = await fetchTasks(searchTerm);
-
-  renderTasks();
+  await loadTasks();
 });
-
 
 // Initialize the app
 loadTasks();

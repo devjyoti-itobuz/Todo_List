@@ -60,7 +60,7 @@ body {
   overflow: hidden;
   // height: 97vh;
   background: radial-gradient(white, lightgrey);
-  background: #F8F9FA;
+  background: #f8f9fa;
 }
 
 .card-title {
@@ -205,6 +205,30 @@ button {
 }
 
 .queryModal.show {
+  opacity: 1;
+  display: block;
+}
+
+.qModal {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-right: 25px;
+  width: fit-content;
+  height: fit-content;
+  background: linear-gradient(white, lightgrey);
+  color: black;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  display: none;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  z-index: 9999;
+}
+
+.qModal.show {
   opacity: 1;
   display: block;
 }
