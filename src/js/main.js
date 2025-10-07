@@ -16,8 +16,6 @@ let currentFilter = "all";
 
 const API_BASE_URL = "http://localhost:3000/api/tasks";
 
-// Update with your backend URL
-
 // API Functions
 // async function fetchTasks() {
 //   try {

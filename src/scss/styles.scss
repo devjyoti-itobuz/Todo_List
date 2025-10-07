@@ -37,6 +37,12 @@ body {
   overflow: hidden;
 }
 
+.btn-outline-dark:hover {
+  color: white;
+  background-color: $secondary;
+  border-color: #000;
+}
+
 .card {
   height: 100%;
   display: flex;
@@ -54,6 +60,7 @@ body {
   overflow: hidden;
   // height: 97vh;
   background: radial-gradient(white, lightgrey);
+  background: #F8F9FA;
 }
 
 .card-title {
@@ -135,8 +142,8 @@ button {
 
     .completed {
       text-decoration: line-through;
-      color: $muted;
-      opacity: 0.5;
+      color: $primary;
+      opacity: 0.25;
     }
   }
 }
@@ -262,14 +269,14 @@ button {
 }
 
 .priority-High {
-  border-left: 4px solid black;
+  border-left: 8px solid black;
 }
 .priority-Medium {
-  border-left: 4px solid grey;
+  border-left: 8px solid grey;
 }
 .priority-Low {
-  border-left: 4px solid lightgrey;
+  border-left: 8px solid lightgrey;
 }
 .bg-true {
-  border-left: 4px solid transparent;
+  border-left: 8px solid transparent;
 }
