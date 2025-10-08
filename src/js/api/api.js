@@ -20,7 +20,7 @@ export async function fetchTasks(
     const data = await res.json();
 
     return (data || []).map((task) => ({
-      id: task.id,
+      id: task._id,
       text: task.title,
       priority: task.isImportant || "",
       tags: Array.isArray(task.tags) ? task.tags : [],
