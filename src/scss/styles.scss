@@ -8,6 +8,7 @@ $secondary: #6c757d;
 $light: #f8f9fa;
 $dark: #212529;
 $muted: #6c757d;
+$low: #dee2e6;
 $font-stack: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 
 * {
@@ -26,11 +27,12 @@ body {
 }
 
 .bg-ligt {
-  background: linear-gradient(rgb(239, 239, 239), rgb(234, 234, 234));
+  background: rgb(225, 228, 230);
 }
 
 .bg-lgt {
-  background: linear-gradient(rgb(239, 239, 239), rgb(234, 234, 234));
+  // background: linear-gradient(rgb(239, 239, 239), rgb(234, 234, 234));
+  background: rgb(250, 250, 250);
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -58,9 +60,8 @@ body {
   flex-direction: column;
   border-radius: 1rem;
   overflow: hidden;
-  // height: 97vh;
-  background: radial-gradient(white, lightgrey);
-  background: #f8f9fa;
+  // background: radial-gradient(white, lightgrey);
+  background: #f2f3f5;
 }
 
 .card-title {
@@ -89,7 +90,7 @@ button {
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    transform: translateY(-1px);
+    // transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba($primary, 0.15);
   }
 }
@@ -157,21 +158,24 @@ button {
   color: white;
 
   &.Low {
-    background: linear-gradient(white, rgb(217, 217, 217));
+    // background: linear-gradient(rgb(217, 217, 217), white);
+    background: $low;
     color: black;
   }
 
   &.Medium {
-    background: linear-gradient(rgb(106, 106, 106), rgb(141, 141, 141));
+    // background: linear-gradient(rgb(106, 106, 106), rgb(141, 141, 141));
+    background: $muted;
   }
 
   &.High {
-    background: linear-gradient(rgb(0, 0, 0), rgb(72, 72, 72));
+    // background: linear-gradient(rgb(0, 0, 0), rgb(72, 72, 72));
+    background: $dark;
   }
 }
 
 .tag-badge {
-  background-color: $secondary;
+  background: linear-gradient(rgb(106, 106, 106), rgb(141, 141, 141));
   font-size: 0.7rem;
   margin-right: 5px;
   padding: 3px 6px;
@@ -183,7 +187,7 @@ button {
   border-radius: 0.5rem;
 
   &:hover {
-    background-color: darken($danger, 5%);
+    background-color: darken($secondary, 5%);
   }
 }
 
@@ -293,14 +297,36 @@ button {
 }
 
 .priority-High {
-  border-left: 8px solid black;
+  border-left: 10px solid $dark;
+  position: relative;
 }
+
 .priority-Medium {
-  border-left: 8px solid grey;
+  border-left: 10px solid $muted;
+  position: relative;
 }
+
 .priority-Low {
-  border-left: 8px solid lightgrey;
+  border-left: 10px solid $low;
+  position: relative;
 }
+
 .bg-true {
-  border-left: 8px solid transparent;
+  border-left: 10px solid transparent;
+  position: relative;
+}
+
+.priority-High::before,
+.priority-Medium::before,
+.priority-Low::before,
+.bg-true::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
 }

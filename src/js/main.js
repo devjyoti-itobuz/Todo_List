@@ -3,8 +3,14 @@ import "../scss/styles.scss";
 
 // Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
-import Alert from "bootstrap/js/dist/alert";
-import { Tooltip, Toast, Popover } from "bootstrap";
+import {
+  fetchTasks,
+  createTaskAPI,
+  updateTaskAPI,
+  clearAllTasksAPI,
+  deleteTaskAPI,
+} from "./api/api";
+import { getISTLocalizedTime, showModal } from "./utils/utils";
 
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("taskList");
@@ -14,8 +20,6 @@ const searchInput = document.getElementById("searchInput");
 let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
-
-const API_BASE_URL = "http://localhost:3000/api/tasks";
 
 const priorityFilterButtons = document.querySelectorAll(
   "#priorityFilterButtons button"
@@ -29,152 +33,6 @@ priorityFilterButtons.forEach((button) => {
     await loadTasks();
   });
 });
-
-async function fetchTasks(
-  searchTerm = "",
-  statusFilter = "all",
-  priorityFilter = "all"
-) {
-  const url = new URL(API_BASE_URL);
-  if (searchTerm) url.searchParams.append("search", searchTerm);
-  if (statusFilter !== "all") url.searchParams.append("status", statusFilter);
-  if (priorityFilter !== "all")
-    url.searchParams.append("priority", priorityFilter);
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Failed to fetch tasks");
-
-    const data = await res.json();
-
-    return (data || []).map((task) => ({
-      id: task.id,
-      text: task.title,
-      priority: task.isImportant || "",
-      tags: Array.isArray(task.tags) ? task.tags : [],
-      isCompleted: !!task.isCompleted,
-      createdAt: task.createdAt,
-      updatedAt: task.updatedAt,
-    }));
-  } catch (error) {
-    console.error("Error loading tasks:", error);
-    showModal("Could not load tasks from server");
-    return [];
-  }
-}
-
-async function createTaskAPI(taskData) {
-  try {
-    const response = await fetch(API_BASE_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: taskData.text,
-        tags: taskData.tags,
-        isImportant: taskData.priority || "Low",
-      }),
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    shownModal("task added successfully");
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating task:", error);
-    showModal("Failed to create task.");
-    return null;
-  }
-}
-
-async function updateTaskAPI(taskId, updates) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: updates.text,
-        tags: updates.tags,
-        isImportant: updates.priority,
-        isCompleted: updates.isCompleted,
-      }),
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating task:", error);
-    showModal("Failed to update task");
-    return null;
-  }
-}
-
-async function deleteTaskAPI(taskId) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return true;
-  } catch (error) {
-    console.error("Error deleting task:", error);
-    showModal("Failed to delete task");
-    return false;
-  }
-}
-
-async function clearAllTasksAPI() {
-  try {
-    const response = await fetch(API_BASE_URL, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return true;
-  } catch (error) {
-    console.error("Error clearing tasks:", error);
-    showModal("Failed to clear all tasks");
-    return false;
-  }
-}
-
-function getISTLocalizedTime() {
-  const now = new Date();
-  const options = {
-    timeZone: "Asia/Kolkata",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour12: true,
-  };
-  return now.toLocaleString("en-IN", options);
-}
-
-function showModal(message) {
-  const queryModal = document.getElementById("queryModal");
-  queryModal.textContent = message;
-  queryModal.classList.add("show");
-
-  setTimeout(() => {
-    queryModal.classList.remove("show");
-  }, 2000);
-}
-
-function shownModal(message) {
-  const qModal = document.getElementById("qModal");
-  qModal.textContent = message;
-  qModal.classList.add("show");
-
-  setTimeout(() => {
-    qModal.classList.remove("show");
-  }, 2000);
-}
 
 async function loadTasks() {
   const searchTerm = searchInput.value.trim();
@@ -271,9 +129,11 @@ function renderTasks(filter = "") {
     btnGroup.className = "btn-group";
 
     const completeBtn = document.createElement("button");
-    completeBtn.className = "btn btn-dark";
-    if (task.isCompleted === true) completeBtn.innerText = "↺";
-    else completeBtn.innerText = "✓";
+    completeBtn.className = "btn btn-outline-dark";
+    if (task.isCompleted === true) {
+      completeBtn.innerText = "↺";
+      completeBtn.className = "btn btn-dark";
+    } else completeBtn.innerText = "✓";
     completeBtn.title = "Complete / Undo";
     completeBtn.onclick = async () => {
       const updatedTask = await updateTaskAPI(task.id, {
@@ -291,7 +151,7 @@ function renderTasks(filter = "") {
     };
 
     const editBtn = document.createElement("button");
-    editBtn.className = "btn btn-light";
+    editBtn.className = "btn btn-outline-dark";
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
     editBtn.onclick = () => {
@@ -346,7 +206,7 @@ function renderTasks(filter = "") {
     };
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.className = "btn btn-secondary";
+    deleteBtn.className = "btn btn-dark";
     deleteBtn.innerText = "✘";
     deleteBtn.title = "Delete Task";
     deleteBtn.onclick = () => {

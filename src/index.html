@@ -18,21 +18,7 @@
           <h2 class="card-title text-center fw-semibold pt-lg-3 mb-4">
             <i class="fa-regular fa-pen-to-square"></i> To Do List
           </h2>
-          <div class="row align-items-center mb-2 mb-lg-3 g-2">
-            <div class="col-12 col-lg-5 col-xl-6">
-              <div class="input-group">
-                <input
-                  type="text"
-                  id="searchInput"
-                  class="form-control"
-                  placeholder="Search tasks, tags..."
-                />
-                <span class="input-group-text bg-dark text-white">
-                  <i class="fas fa-magnifying-glass"></i>
-                </span>
-              </div>
-            </div>
-
+          <div class="row align-items-center justify-content-around mb-2 mb-lg-3 g-2">
             <div class="col-lg-3">
               <div class="btn-group w-100" id="filterButtons">
                 <button
@@ -56,6 +42,20 @@
                 >
                   Pending
                 </button>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-5 col-xl-6">
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="form-control"
+                  placeholder="Search tasks, tags..."
+                />
+                <span class="input-group-text bg-dark text-white">
+                  <i class="fas fa-magnifying-glass"></i>
+                </span>
               </div>
             </div>
 
@@ -102,7 +102,7 @@
                   type="text"
                   id="taskInput"
                   class="form-control"
-                  placeholder="Enter task"
+                  placeholder="Enter task to be added..."
                 />
               </div>
 
@@ -127,14 +127,14 @@
               </div>
 
               <div class="col-12 col-md-2 col-lg-1 d-grid">
-                <button type="submit" class="btn btn-dark">
+                <button type="submit" class="btn btn-outline-dark">
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
             </form>
 
             <div class="col-12 col-md-2 col-lg-2 d-grid">
-              <button class="btn btn-secondary" id="clearAllBtn">
+              <button class="btn btn-dark" id="clearAllBtn">
                 Clear All
               </button>
             </div>
