@@ -51,6 +51,7 @@ taskForm.addEventListener("submit", async function (e) {
     showModal("Please enter a valid task (min 3 characters).");
     return;
   }
+
   if (!priority) {
     showModal("Please enter priority.");
     return;
@@ -83,6 +84,7 @@ taskForm.addEventListener("submit", async function (e) {
       createdAt: newTask.createdAt,
       updatedAt: newTask.updatedAt,
     };
+
     tasks.push(formattedTask);
   }
 
@@ -130,11 +132,15 @@ function renderTasks(filter = "") {
 
     const completeBtn = document.createElement("button");
     completeBtn.className = "btn btn-outline-dark";
+
     if (task.isCompleted === true) {
       completeBtn.innerText = "↺";
       completeBtn.className = "btn btn-dark";
-    } else completeBtn.innerText = "✓";
+    } else {
+      completeBtn.innerText = "✓";
+    }
     completeBtn.title = "Complete / Undo";
+
     completeBtn.onclick = async () => {
       const updatedTask = await updateTaskAPI(task.id, {
         text: task.text || task.title,
@@ -154,6 +160,7 @@ function renderTasks(filter = "") {
     editBtn.className = "btn btn-outline-dark";
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
+
     editBtn.onclick = () => {
       const editTaskInput = document.getElementById("editTaskInput");
       const editPrioritySelect = document.getElementById("editPrioritySelect");
@@ -167,6 +174,7 @@ function renderTasks(filter = "") {
       const editModal = new bootstrap.Modal(
         document.getElementById("editModal")
       );
+
       editModal.show();
 
       const newSaveBtn = saveEditBtn.cloneNode(true);
@@ -209,6 +217,7 @@ function renderTasks(filter = "") {
     deleteBtn.className = "btn btn-dark";
     deleteBtn.innerText = "✘";
     deleteBtn.title = "Delete Task";
+
     deleteBtn.onclick = () => {
       const deleteModal = document.getElementById("deleteModal");
       deleteModal.classList.add("show");
@@ -220,6 +229,7 @@ function renderTasks(filter = "") {
 
       confirmBtn.onclick = async () => {
         const success = await deleteTaskAPI(task.id);
+
         if (success) {
           tasks = tasks.filter((t) => t.id !== task.id);
           renderTasks(searchInput.value);
@@ -239,6 +249,7 @@ function renderTasks(filter = "") {
 const filterButtons = document.querySelectorAll("#filterButtons button");
 
 filterButtons.forEach((button) => {
+
   button.addEventListener("click", async () => {
     currentFilter = button.dataset.filter;
     filterButtons.forEach((btn) => btn.classList.remove("active"));
@@ -258,6 +269,7 @@ clearAllBtn.addEventListener("click", () => {
 
   confirmBtn.onclick = async () => {
     const success = await clearAllTasksAPI();
+
     if (success) {
       tasks = [];
       renderTasks(searchInput.value);
@@ -272,5 +284,4 @@ searchInput.addEventListener("input", async (e) => {
   await loadTasks();
 });
 
-// Initialize the app
 loadTasks();

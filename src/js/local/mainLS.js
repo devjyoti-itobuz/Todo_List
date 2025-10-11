@@ -59,6 +59,7 @@ taskForm.addEventListener("submit", function (e) {
     showModal("Please enter a valid task (letters only, min 3 characters).");
     return;
   }
+
   if (!priority) {
     showModal("Please enter priority.");
     return;
@@ -79,6 +80,7 @@ taskForm.addEventListener("submit", function (e) {
     createdAt: getISTLocalizedTime(),
     updatedAt: getISTLocalizedTime(),
   };
+
   console.log(task);
 
   tasks.push(task);
@@ -107,6 +109,7 @@ function renderTasks(filter = "") {
 
       return matchesSearch && matchesStatus;
     })
+
     .sort((a, b) => {
       const priorityOrder = { high: 1, medium: 2, low: 3 };
       return (
@@ -150,9 +153,15 @@ function renderTasks(filter = "") {
 
     const completeBtn = document.createElement("button");
     completeBtn.className = "btn btn-dark";
-    if (task.isCompleted === true) completeBtn.innerText = "↺";
-    else completeBtn.innerText = "✓";
+    if (task.isCompleted === true) {
+      completeBtn.innerText = "↺";
+    }
+    else {
+      completeBtn.innerText = "✓";
+    }
+
     completeBtn.title = "Complete / Undo";
+
     completeBtn.onclick = () => {
       task.isCompleted = !task.isCompleted;
       saveTasks();
@@ -163,6 +172,7 @@ function renderTasks(filter = "") {
     editBtn.className = "btn btn-light";
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
+
     editBtn.onclick = () => {
       const editTaskInput = document.getElementById("editTaskInput");
       const editPrioritySelect = document.getElementById("editPrioritySelect");
@@ -176,6 +186,7 @@ function renderTasks(filter = "") {
       const editModal = new bootstrap.Modal(
         document.getElementById("editModal")
       );
+
       editModal.show();
 
       const newSaveBtn = saveEditBtn.cloneNode(true);
@@ -208,6 +219,7 @@ function renderTasks(filter = "") {
     deleteBtn.className = "btn btn-secondary";
     deleteBtn.innerText = "✘";
     deleteBtn.title = "Delete Task";
+
     deleteBtn.onclick = () => {
       const deleteModal = document.getElementById("deleteModal");
       deleteModal.classList.add("show");
@@ -236,20 +248,18 @@ function renderTasks(filter = "") {
 const filterButtons = document.querySelectorAll("#filterButtons button");
 
 filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // Update filter state
-    currentFilter = button.dataset.filter;
 
-    // Update button styles
+  button.addEventListener("click", () => {
+
+    currentFilter = button.dataset.filter;
     filterButtons.forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
-
-    // Re-render tasks based on current search and filter
     renderTasks(searchInput.value);
   });
 });
 
 clearAllBtn.addEventListener("click", () => {
+  
   const clearModal = document.getElementById("deleteModal");
   clearModal.classList.add("show");
 
