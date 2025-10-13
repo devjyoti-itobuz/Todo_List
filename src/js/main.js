@@ -10,7 +10,7 @@ import {
   clearAllTasksAPI,
   deleteTaskAPI,
 } from "./api/api";
-import { getISTLocalizedTime, showModal } from "./utils/utils";
+import { getISTLocalizedTime, showModal } from "./utils/utilFn";
 
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("taskList");
@@ -249,7 +249,6 @@ function renderTasks(filter = "") {
 const filterButtons = document.querySelectorAll("#filterButtons button");
 
 filterButtons.forEach((button) => {
-
   button.addEventListener("click", async () => {
     currentFilter = button.dataset.filter;
     filterButtons.forEach((btn) => btn.classList.remove("active"));
