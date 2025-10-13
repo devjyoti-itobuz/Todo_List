@@ -10,20 +10,15 @@ import {
   clearAllTasksAPI,
   deleteTaskAPI,
 } from "./api/api";
-import { getISTLocalizedTime, showModal } from "./utils/utilFn";
 
-const taskForm = document.getElementById("taskForm");
-const taskList = document.getElementById("taskList");
-const clearAllBtn = document.getElementById("clearAllBtn");
-const searchInput = document.getElementById("searchInput");
+import { taskForm, taskList, clearAllBtn, searchInput, filterButtons, priorityFilterButtons, taskInput, priority, editPrioritySelect, editTagInput, editTaskInput, saveEditBtn, deleteModal, cancelBtn, clearModal, confirmBtn } from "./utils/domHandler";
+
+import { getISTLocalizedTime, showModal } from "./utils/utilFn";
 
 let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
-const priorityFilterButtons = document.querySelectorAll(
-  "#priorityFilterButtons button"
-);
 
 priorityFilterButtons.forEach((button) => {
   button.addEventListener("click", async () => {
@@ -42,8 +37,6 @@ async function loadTasks() {
 
 taskForm.addEventListener("submit", async function (e) {
   e.preventDefault();
-  const taskInput = document.getElementById("taskInput");
-  const priority = document.getElementById("prioritySelect").value;
 
   const taskRegex = /^[A-Za-z0-9\s]{3,}$/;
 
@@ -93,7 +86,20 @@ taskForm.addEventListener("submit", async function (e) {
   renderTasks(searchInput.value);
 });
 
-function renderTasks(filter = "") {
+searchInput.addEventListener("input", async (e) => {
+  await loadTasks();
+});
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    currentFilter = button.dataset.filter;
+    filterButtons.forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+    await loadTasks(); // fetch + render
+  });
+});
+
+function renderTasks() {
   tasks.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
   taskList.innerHTML = "";
 
@@ -162,10 +168,6 @@ function renderTasks(filter = "") {
     editBtn.title = "Edit Task";
 
     editBtn.onclick = () => {
-      const editTaskInput = document.getElementById("editTaskInput");
-      const editPrioritySelect = document.getElementById("editPrioritySelect");
-      const editTagInput = document.getElementById("editTagInput");
-      const saveEditBtn = document.getElementById("saveEditBtn");
 
       editTaskInput.value = task.text || task.title;
       editPrioritySelect.value = task.priority || task.isImportant;
@@ -219,11 +221,7 @@ function renderTasks(filter = "") {
     deleteBtn.title = "Delete Task";
 
     deleteBtn.onclick = () => {
-      const deleteModal = document.getElementById("deleteModal");
       deleteModal.classList.add("show");
-
-      const confirmBtn = document.getElementById("confirmBtn");
-      const cancelBtn = document.getElementById("cancelBtn");
 
       const closeModal = () => deleteModal.classList.remove("show");
 
@@ -246,23 +244,8 @@ function renderTasks(filter = "") {
   });
 }
 
-const filterButtons = document.querySelectorAll("#filterButtons button");
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", async () => {
-    currentFilter = button.dataset.filter;
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
-    button.classList.add("active");
-    await loadTasks(); // fetch + render
-  });
-});
-
 clearAllBtn.addEventListener("click", () => {
-  const clearModal = document.getElementById("deleteModal");
   clearModal.classList.add("show");
-
-  const confirmBtn = document.getElementById("confirmBtn");
-  const cancelBtn = document.getElementById("cancelBtn");
 
   const closeModal = () => clearModal.classList.remove("show");
 
@@ -277,10 +260,6 @@ clearAllBtn.addEventListener("click", () => {
   };
 
   cancelBtn.onclick = closeModal;
-});
-
-searchInput.addEventListener("input", async (e) => {
-  await loadTasks();
 });
 
 loadTasks();
