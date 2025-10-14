@@ -108,10 +108,10 @@ taskForm.addEventListener("submit", async function (e) {
     return;
   }
 
-  if (!priority) {
-    showModal("Please enter priority.");
-    return;
-  }
+  // if (!priority) {
+  //   showModal("Please enter priority.");
+  //   return;
+  // }
 
   const tags = document
     .getElementById("tagInput")
