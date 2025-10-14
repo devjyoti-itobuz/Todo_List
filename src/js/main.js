@@ -19,7 +19,7 @@ let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
-// ✅ Redirect to login page if not authenticated
+//Redirect to login page if not authenticated
 const accessToken = localStorage.getItem('accessToken');
 if (!accessToken) {
   window.location.href = 'pages/login.html';

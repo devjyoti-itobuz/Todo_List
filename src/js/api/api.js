@@ -8,7 +8,7 @@ export async function fetchTasks(
   priorityFilter = "all"
 ) {
   const url = new URL(API_BASE_URL);
-  
+
   if (searchTerm) {
     url.searchParams.append("search", searchTerm);
   }
@@ -30,16 +30,32 @@ export async function fetchTasks(
 
     const data = await res.json();
 
-    return (data || []).map((task) => ({
-      id: task._id,
-      text: task.title,
-      priority: task.isImportant || "",
-      tags: Array.isArray(task.tags) ? task.tags : [],
-      isCompleted: !!task.isCompleted,
-      createdAt: task.createdAt,
-      updatedAt: task.updatedAt,
-    }));
+    return (data || []).map((task) => {
+      const toIST = (utcDate) => {
+        if (!utcDate) return null;
+        const date = new Date(utcDate);
+        return new Intl.DateTimeFormat("en-IN", {
+          timeZone: "Asia/Kolkata",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }).format(date);
+      };
 
+      return {
+        id: task._id,
+        text: task.title,
+        priority: task.isImportant || "",
+        tags: Array.isArray(task.tags) ? task.tags : [],
+        isCompleted: !!task.isCompleted,
+        createdAt: toIST(task.createdAt),
+        updatedAt: toIST(task.updatedAt),
+      };
+    });
+    
   } catch (error) {
     console.error("Error loading tasks:", error);
     showModal("Could not load tasks from server");
@@ -67,7 +83,6 @@ export async function createTaskAPI(taskData) {
 
     shownModal("task added successfully");
     return await response.json();
-
   } catch (error) {
     console.error("Error creating task:", error);
     showModal("Failed to create task.");
@@ -95,7 +110,6 @@ export async function updateTaskAPI(taskId, updates) {
     }
 
     return await response.json();
-
   } catch (error) {
     console.error("Error updating task:", error);
     showModal("Failed to update task");
@@ -114,7 +128,6 @@ export async function deleteTaskAPI(taskId) {
     }
 
     return true;
-
   } catch (error) {
     console.error("Error deleting task:", error);
     showModal("Failed to delete task");
@@ -133,7 +146,6 @@ export async function clearAllTasksAPI() {
     }
 
     return true;
-
   } catch (error) {
     console.error("Error clearing tasks:", error);
     showModal("Failed to clear all tasks");
