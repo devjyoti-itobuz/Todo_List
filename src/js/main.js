@@ -19,6 +19,69 @@ let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
+// ✅ Redirect to login page if not authenticated
+const accessToken = localStorage.getItem('accessToken');
+if (!accessToken) {
+  window.location.href = 'pages/login.html';
+}
+
+// Logout
+document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+  window.location.href = "login.html";
+});
+
+  // Profile dropdown hover functionality
+  const profileBtn = document.getElementById('profileDropdown');
+  const profileMenu = document.getElementById('profileMenu');
+  let hideTimeout;
+
+  profileBtn.addEventListener('mouseenter', function() {
+    clearTimeout(hideTimeout);
+    profileMenu.style.display = 'block';
+  });
+
+  profileBtn.parentElement.addEventListener('mouseleave', function() {
+    hideTimeout = setTimeout(() => {
+      profileMenu.style.display = 'none';
+    }, 300);
+  });
+
+  profileMenu.addEventListener('mouseenter', function() {
+    clearTimeout(hideTimeout);
+  });
+
+  profileMenu.addEventListener('mouseleave', function() {
+    hideTimeout = setTimeout(() => {
+      profileMenu.style.display = 'none';
+    }, 300);
+  });
+
+  // Quick add button functionality
+  // document.getElementById('addTaskBtn').addEventListener('click', function() {
+  //   document.getElementById('taskInput').focus();
+  // });
+
+  // Check if user is authenticated
+
+// function checkAuth() {
+//   const token = localStorage.getItem('authToken');
+//   const isLoggedIn = localStorage.getItem('isLoggedIn');
+  
+//   if (!token || isLoggedIn !== 'true') {
+//     // Redirect to login page if not authenticated
+//     window.location.href = 'login.html';
+//     return false;
+//   }
+//   return true;
+// }
+
+// // Run auth check when page loads
+// checkAuth();
+
 
 priorityFilterButtons.forEach((button) => {
   button.addEventListener("click", async () => {
