@@ -11,7 +11,23 @@ import {
   deleteTaskAPI,
 } from "./api/api";
 
-import { taskForm, taskList, clearAllBtn, searchInput, filterButtons, priorityFilterButtons, taskInput, priority, editPrioritySelect, editTagInput, editTaskInput, saveEditBtn, deleteModal, cancelBtn, clearModal, confirmBtn } from "./utils/domHandler";
+import {
+  taskForm,
+  taskList,
+  clearAllBtn,
+  searchInput,
+  filterButtons,
+  priorityFilterButtons,
+  taskInput,
+  editPrioritySelect,
+  editTagInput,
+  editTaskInput,
+  saveEditBtn,
+  deleteModal,
+  cancelBtn,
+  clearModal,
+  confirmBtn,
+} from "./utils/domHandler";
 
 import { getISTLocalizedTime, showModal } from "./utils/utilFn";
 
@@ -19,69 +35,94 @@ let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
-//Redirect to login page if not authenticated
-const accessToken = localStorage.getItem('accessToken');
-if (!accessToken) {
-  window.location.href = 'pages/login.html';
+const accessToken = localStorage.getItem("access-token");
+const refreshToken = localStorage.getItem("refresh-token");
+if (!accessToken && !refreshToken) {
+  window.location.href = "/pages/login.html";
 }
 
+document
+  .getElementById("submitResetPassword")
+  .addEventListener("click", async () => {
+    const email = localStorage.getItem("userEmail");
+    const currentPassword = document
+      .getElementById("resetCurrentPassword")
+      .value.trim();
+    const newPassword = document
+      .getElementById("resetNewPassword")
+      .value.trim();
+
+    if (!email) {
+      alert("User email not found. Please log in again.");
+      return;
+    }
+
+    if (!currentPassword || !newPassword) {
+      alert("Please fill out both current and new password fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, currentPassword, newPassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert(data.message); 
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("resetPasswordModal")
+        );
+        modal.hide();
+        document.getElementById("resetPasswordForm").reset();
+      } else {
+        alert(data.message || "Failed to reset password.");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  });
+
 // Logout
-document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
   e.preventDefault();
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('user');
-  window.location.href = "login.html";
+  localStorage.removeItem("access-token");
+  localStorage.removeItem("refresh-token");
+  localStorage.removeItem("user");
+  window.location.href = "/pages/login.html";
 });
 
-  // Profile dropdown hover functionality
-  const profileBtn = document.getElementById('profileDropdown');
-  const profileMenu = document.getElementById('profileMenu');
-  let hideTimeout;
+// Profile dropdown hover functionality
+const profileBtn = document.getElementById("profileDropdown");
+const profileMenu = document.getElementById("profileMenu");
+let hideTimeout;
 
-  profileBtn.addEventListener('mouseenter', function() {
-    clearTimeout(hideTimeout);
-    profileMenu.style.display = 'block';
-  });
+profileBtn.addEventListener("mouseenter", function () {
+  clearTimeout(hideTimeout);
+  profileMenu.style.display = "block";
+});
 
-  profileBtn.parentElement.addEventListener('mouseleave', function() {
-    hideTimeout = setTimeout(() => {
-      profileMenu.style.display = 'none';
-    }, 300);
-  });
+profileBtn.parentElement.addEventListener("mouseleave", function () {
+  hideTimeout = setTimeout(() => {
+    profileMenu.style.display = "none";
+  }, 300);
+});
 
-  profileMenu.addEventListener('mouseenter', function() {
-    clearTimeout(hideTimeout);
-  });
+profileMenu.addEventListener("mouseenter", function () {
+  clearTimeout(hideTimeout);
+});
 
-  profileMenu.addEventListener('mouseleave', function() {
-    hideTimeout = setTimeout(() => {
-      profileMenu.style.display = 'none';
-    }, 300);
-  });
-
-  // Quick add button functionality
-  // document.getElementById('addTaskBtn').addEventListener('click', function() {
-  //   document.getElementById('taskInput').focus();
-  // });
-
-  // Check if user is authenticated
-
-// function checkAuth() {
-//   const token = localStorage.getItem('authToken');
-//   const isLoggedIn = localStorage.getItem('isLoggedIn');
-  
-//   if (!token || isLoggedIn !== 'true') {
-//     // Redirect to login page if not authenticated
-//     window.location.href = 'login.html';
-//     return false;
-//   }
-//   return true;
-// }
-
-// // Run auth check when page loads
-// checkAuth();
-
+profileMenu.addEventListener("mouseleave", function () {
+  hideTimeout = setTimeout(() => {
+    profileMenu.style.display = "none";
+  }, 300);
+});
 
 priorityFilterButtons.forEach((button) => {
   button.addEventListener("click", async () => {
@@ -107,11 +148,11 @@ taskForm.addEventListener("submit", async function (e) {
     showModal("Please enter a valid task (min 3 characters).");
     return;
   }
-
-  // if (!priority) {
-  //   showModal("Please enter priority.");
-  //   return;
-  // }
+  const priority = document.getElementById("prioritySelect").value;
+  if (!priority) {
+    showModal("Please enter priority.");
+    return;
+  }
 
   const tags = document
     .getElementById("tagInput")
@@ -142,6 +183,7 @@ taskForm.addEventListener("submit", async function (e) {
     };
 
     tasks.push(formattedTask);
+    await loadTasks();
   }
 
   taskInput.value = "";
@@ -231,7 +273,6 @@ function renderTasks() {
     editBtn.title = "Edit Task";
 
     editBtn.onclick = () => {
-
       editTaskInput.value = task.text || task.title;
       editPrioritySelect.value = task.priority || task.isImportant;
       editTagInput.value = (task.tags || []).join(", ");

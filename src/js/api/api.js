@@ -1,4 +1,5 @@
 import { shownModal, showModal } from "../utils/utilFn";
+import fetchWithAuth from "./fetchWithAuth";
 
 const API_BASE_URL = "http://localhost:3000/api/tasks";
 
@@ -22,9 +23,11 @@ export async function fetchTasks(
   }
 
   try {
-    const res = await fetch(url);
+    const res = await fetchWithAuth(url.toString());
 
     if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Backend error response:", res.status, errorText);
       throw new Error("Failed to fetch tasks");
     }
 
@@ -65,7 +68,7 @@ export async function fetchTasks(
 
 export async function createTaskAPI(taskData) {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetchWithAuth(API_BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +95,7 @@ export async function createTaskAPI(taskData) {
 
 export async function updateTaskAPI(taskId, updates) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
+    const response = await fetchWithAuth(`${API_BASE_URL}/${taskId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +122,7 @@ export async function updateTaskAPI(taskId, updates) {
 
 export async function deleteTaskAPI(taskId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${taskId}`, {
+    const response = await fetchWithAuth(`${API_BASE_URL}/${taskId}`, {
       method: "DELETE",
     });
 
@@ -137,7 +140,7 @@ export async function deleteTaskAPI(taskId) {
 
 export async function clearAllTasksAPI() {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetchWithAuth(API_BASE_URL, {
       method: "DELETE",
     });
 

@@ -330,3 +330,9 @@ button {
   background-color: white;
   border-radius: 50%;
 }
+
+.password-strength {
+  height: 5px;
+  border-radius: 3px;
+  transition: all 0.3s;
+}

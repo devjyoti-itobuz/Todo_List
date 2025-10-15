@@ -32,7 +32,7 @@
                 id="profileMenu"
                 style="display: none"
               >
-                <li>
+                <!-- <li>
                   <a
                     class="dropdown-item"
                     href="#"
@@ -41,7 +41,7 @@
                   >
                     <i class="fas fa-envelope-circle-check"></i> Verify Email
                   </a>
-                </li>
+                </li> -->
                 <li>
                   <a
                     class="dropdown-item"
@@ -271,50 +271,6 @@
         </div>
       </div>
     </div>
-    
-    <div
-      class="modal fade"
-      id="verifyEmailModal"
-      tabindex="-1"
-      aria-labelledby="verifyEmailLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title fw-semibold" id="verifyEmailLabel">
-              <i class="fas fa-envelope-circle-check"></i> Verify Email
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body bg-ligt text-center">
-            <div class="mb-4">
-              <i class="fas fa-envelope fa-4x text-dark mb-3"></i>
-              <p class="mb-2">We'll send a verification code to your email</p>
-            </div>
-            <form id="requestVerifyForm">
-              <div class="mb-3">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="verifyEmailInput"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              <button type="submit" class="btn btn-dark w-100">
-                Send Verification Code
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div
       class="modal fade"
@@ -360,17 +316,6 @@
                   required
                 />
               </div>
-              <!-- <div class="mb-3">
-                <label for="resetConfirmPassword" class="form-label"
-                  >Confirm New Password</label
-                >
-                <input
-                  type="password"
-                  class="form-control"
-                  id="resetConfirmPassword"
-                  required
-                />
-              </div> -->
             </form>
           </div>
           <div class="modal-footer">

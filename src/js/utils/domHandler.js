@@ -13,7 +13,7 @@ export const priorityFilterButtons = document.querySelectorAll(
 export const filterButtons = document.querySelectorAll("#filterButtons button");
 
 export const taskInput = document.getElementById("taskInput");
-export const priority = document.getElementById("prioritySelect").value;
+export const priority = document.getElementById("prioritySelect");
 
 export const editTaskInput = document.getElementById("editTaskInput");
 export const editPrioritySelect = document.getElementById("editPrioritySelect");
