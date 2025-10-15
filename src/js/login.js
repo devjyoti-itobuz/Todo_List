@@ -4,6 +4,9 @@ import {
   showOTPModal,
   getOTPFromInputs,
 } from "./utils/otpUtils.js";
+import displayTemplates from "./utils/utilFn.js";
+
+const taskTemplates = new displayTemplates();
 
 const accessToken = localStorage.getItem("access-token");
 if (accessToken) {
@@ -84,12 +87,18 @@ document
             window.emailForVerification = email;
           } catch (otpError) {
             console.error(otpError);
+
             alert(otpError.message || "Failed to send OTP");
           }
           return;
         }
 
         alert(data.message || "Login failed");
+
+        toastSection.innerHTML = taskTemplates.errorToast(data.message || "Login Failed");
+        setTimeout(() => {
+          toastSection.innerHTML = "";
+        }, 3000);
         return;
       }
 
@@ -97,6 +106,8 @@ document
       localStorage.setItem("refresh-token", data.refreshToken);
       localStorage.setItem("userEmail", email);
       localStorage.setItem("isLoggedIn", "true");
+
+      toastSection.innerHTML = taskTemplates.successToast(userinfo.message);
 
       // if (accessToken) {
       window.location.href = "/index.html";
@@ -274,21 +285,21 @@ document
     }
   });
 
-  document
-    .getElementById("resendOTP")
-    .addEventListener("click", async function (e) {
-      e.preventDefault();
+document
+  .getElementById("resendOTP")
+  .addEventListener("click", async function (e) {
+    e.preventDefault();
 
-      const email =
-        sessionStorage.getItem("signupEmail") || window.emailForVerification;
+    const email =
+      sessionStorage.getItem("signupEmail") || window.emailForVerification;
 
-      if (!email) return alert("Email not found");
+    if (!email) return alert("Email not found");
 
-      try {
-        await sendOTP(email);
-        alert("OTP resent successfully!");
-      } catch (err) {
-        console.error(err);
-        alert(err.message || "Failed to resend OTP");
-      }
-    });
+    try {
+      await sendOTP(email);
+      alert("OTP resent successfully!");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Failed to resend OTP");
+    }
+  });
