@@ -13,14 +13,16 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-    <script type="module" src="../js/pages/signup.js"></script>
+    <script type="module" src="../js/signup/main.js"></script>
   </head>
   <body class="bg-ligt">
-    <div id="toastSection" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
-  
+    <div
+      id="toastSection"
+      style="position: fixed; top: 20px; right: 20px; z-index: 9999"
+    ></div>
+
     <div class="vh-100 d-flex align-items-center justify-content-center p-3">
       <div class="card shadow" style="max-width: 500px; width: 100%">
-        
         <div class="card-body p-3 p-lg-5">
           <h2 class="card-title text-center fw-semibold mb-4">
             <i class="fa-regular fa-pen-to-square"></i> Create Account
@@ -56,7 +58,7 @@
                   <i class="fas fa-eye"></i>
                 </span>
               </div>
-              
+
               <small class="text-muted">
                 <i class="fas fa-info-circle"></i> At least 6 characters with
                 uppercase, lowercase, and numbers
@@ -159,12 +161,12 @@
                   >Resend OTP</a
                 >
               </p>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="verifyOTPBtn">
+                  Verify
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-dark" id="verifyOTPBtn">
-              Verify
-            </button>
           </div>
         </div>
       </div>

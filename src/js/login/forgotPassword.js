@@ -49,10 +49,13 @@ export function initResetPassword({
           const resetModal = new bootstrap.Modal(
             document.getElementById(resetPasswordModalId)
           );
+
           resetModal.show();
+
         } else {
           showError("Failed to send OTP.");
         }
+
       } catch (error) {
         console.error(error);
         showError("Something went wrong while sending OTP.");
@@ -106,10 +109,12 @@ export function initResetPassword({
 
         if (resetRes.ok) {
           showSuccess("Password reset successful. Please log in.");
+          
           const resetModal = bootstrap.Modal.getInstance(
             document.getElementById(resetPasswordModalId)
           );
           resetModal.hide();
+
           setTimeout(() => {
             document.body.classList.remove("modal-open");
             const modalBackdrop = document.querySelector(".modal-backdrop");
@@ -117,9 +122,11 @@ export function initResetPassword({
               modalBackdrop.parentNode.removeChild(modalBackdrop);
             }
           }, 300);
+
         } else {
           showError("Failed to reset password.");
         }
+
       } catch (error) {
         console.error(error);
         showError("An error occurred while resetting your password.");

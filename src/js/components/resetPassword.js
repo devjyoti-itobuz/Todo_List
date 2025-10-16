@@ -36,12 +36,14 @@ export function initResetPassword() {
         const data = await response.json();
 
         if (response.ok && data.success) {
+
           showSuccess(data.message);
           
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("resetPasswordModal")
           );
           modal.hide();
+
           document.getElementById("resetPasswordForm").reset();
         } 
         else {
@@ -50,6 +52,7 @@ export function initResetPassword() {
 
       } catch (error) {
         console.error("Error resetting password:", error);
+        
         showError("An error occurred. Please try again later.");
       }
     });

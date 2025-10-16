@@ -35,7 +35,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
         task.isCompleted ? "completed" : ""
       } justify-content-center">
         <span class="priority-badge ${task.priority}">${task.priority}</span>
-        <strong>${task.text || task.title}</strong><br>
+        <strong>${task.title}</strong><br>
         ${(task.tags || [])
           .map(
             (tag) =>
@@ -58,7 +58,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
     completeBtn.onclick = async () => {
       const updatedTask = await updateTaskAPI(task.id, {
-        text: task.text || task.title,
+        title: task.title,
         priority: task.priority || task.isImportant,
         tags: task.tags || [],
         isCompleted: !task.isCompleted,
@@ -80,7 +80,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
     editBtn.onclick = () => {
-      editTaskInput.value = task.text || task.title;
+      editTaskInput.value = task.title;
       editPrioritySelect.value = task.priority || task.isImportant;
       editTagInput.value = (task.tags || []).join(", ");
 
@@ -94,28 +94,27 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
       saveEditBtn.parentNode.replaceChild(newSaveBtn, saveEditBtn);
 
       newSaveBtn.addEventListener("click", async () => {
-        const newText = editTaskInput.value.trim();
+        const newTitle = editTaskInput.value.trim();
         const newPriority = editPrioritySelect.value;
         const newTags = editTagInput.value
           .split(",")
           .map((tag) => tag.trim())
           .filter((tag) => tag);
 
-        if (!newText || newText.length < 2) {
+        if (!newTitle || newTitle.length < 2) {
           showModal("Please enter a valid task (min 2 letters).");
           return;
         }
 
         const updatedTask = await updateTaskAPI(task.id, {
-          text: newText,
+          title: newTitle,
           priority: newPriority,
           tags: newTags,
           isCompleted: task.isCompleted,
         });
 
         if (updatedTask) {
-          task.text = newText;
-          task.title = newText;
+          task.title = newTitle;
           task.priority = newPriority;
           task.isImportant = newPriority;
           task.tags = newTags;
@@ -124,6 +123,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
           renderTasksCallback();
 
           await loadTasks();
+          
           editModal.hide();
         }
       });

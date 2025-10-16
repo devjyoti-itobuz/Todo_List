@@ -18,6 +18,7 @@ export function initLoginForm(formId) {
       const data = await res.json();
 
       if (!res.ok) {
+        
         if (res.status === 403) {
 
           showError("User not verified. Please verify your email.");

@@ -13,11 +13,14 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-    <script type="module" src="../js/pages/login.js"></script>
+    <script type="module" src="../js/login/main.js"></script>
   </head>
   <body class="bg-ligt">
-    <div id="toastSection" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
-  
+    <div
+      id="toastSection"
+      style="position: fixed; top: 20px; right: 20px; z-index: 9999"
+    ></div>
+
     <div class="vh-100 d-flex align-items-center justify-content-center p-3">
       <div class="card shadow" style="max-width: 450px; width: 100%">
         <div class="card-body p-4 p-lg-5">
@@ -137,19 +140,19 @@
                 <i class="fas fa-info-circle"></i> We'll send you an OTP to
                 reset your password.
               </p>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button type="button" class="btn btn-dark" id="sendResetOTP">
+                  Send OTP
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-dark" id="sendResetOTP">
-              Send OTP
-            </button>
           </div>
         </div>
       </div>
@@ -200,25 +203,29 @@
                   <span
                     class="input-group-text bg-dark text-white"
                     style="cursor: pointer"
-                    id="togglePassword"
+                    id="togglePasswords"
                   >
                     <i class="fas fa-eye"></i>
                   </span>
                 </div>
               </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-dark"
+                  id="resetPasswordBtn"
+                >
+                  Reset Password
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-dark" id="resetPasswordBtn">
-              Reset Password
-            </button>
           </div>
         </div>
       </div>
@@ -301,12 +308,12 @@
                   >Resend OTP</a
                 >
               </p>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="verifyOTPBtn">
+                  Verify
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-dark" id="verifyOTPBtn">
-              Verify
-            </button>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@ export function initTaskForm(loadTasks, renderTasks) {
       .filter(Boolean);
 
     const taskData = {
-      text: taskInput.value.trim(),
+      title: taskInput.value.trim(),
       priority,
       tags,
       isCompleted: false,
@@ -37,12 +37,14 @@ export function initTaskForm(loadTasks, renderTasks) {
     };
 
     const newTask = await createTaskAPI(taskData);
+    
     if (newTask) {
       await loadTasks();
     }
 
     taskInput.value = "";
     document.getElementById("tagInput").value = "";
+
     renderTasks();
   });
 }

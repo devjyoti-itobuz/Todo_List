@@ -35,7 +35,7 @@ export async function fetchTasks(
 
     return (data || []).map((task) => ({
       id: task._id,
-      text: task.title,
+      title: task.title,
       priority: task.isImportant || "",
       tags: Array.isArray(task.tags) ? task.tags : [],
       isCompleted: !!task.isCompleted,
@@ -59,7 +59,7 @@ export async function createTaskAPI(taskData) {
       },
 
       body: JSON.stringify({
-        title: taskData.text,
+        title: taskData.title,
         tags: taskData.tags,
         isImportant: taskData.priority || "Low",
       }),
@@ -91,7 +91,7 @@ export async function updateTaskAPI(taskId, updates) {
       },
 
       body: JSON.stringify({
-        title: updates.text,
+        title: updates.title,
         tags: updates.tags,
         isImportant: updates.priority,
         isCompleted: updates.isCompleted,
@@ -148,7 +148,9 @@ export async function clearAllTasksAPI() {
     
   } catch (error) {
     console.error("Error clearing tasks:", error);
+
     showModal("Failed to clear all tasks");
+    
     return false;
   }
 }

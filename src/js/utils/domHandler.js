@@ -1,9 +1,6 @@
 export const taskForm = document.getElementById("taskForm");
-
 export const taskList = document.getElementById("taskList");
-
 export const clearAllBtn = document.getElementById("clearAllBtn");
-
 export const searchInput = document.getElementById("searchInput");
 
 export const priorityFilterButtons = document.querySelectorAll(
