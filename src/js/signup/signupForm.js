@@ -18,7 +18,7 @@ export function initSignupForm(formId) {
       const data = await res.json();
 
       if (!res.ok) {
-        showError(data.message || "Registration failed");
+        showError(data.error || "Registration failed");
         return;
       }
 

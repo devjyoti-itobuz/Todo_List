@@ -24,6 +24,7 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
       modalEl.style.display = "none";
       document.body.classList.remove("modal-open");
       const backdrop = document.querySelector(".modal-backdrop");
+      
       if (backdrop) {
         backdrop.remove();
       }
