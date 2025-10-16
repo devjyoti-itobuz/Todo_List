@@ -1,118 +1,48 @@
-import {
-  sendOTP,
-  verifyOTP,
-  showOTPModal,
-  getOTPFromInputs,
-} from "./utils/otpUtils.js";
-import { showModal } from "./utils/utilFn.js";
+import * as bootstrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm"; // Only for modules
 
+import { initPasswordToggle } from "./components/passwordToggle.js";
+import { initOTPInputs } from "./components/otpInputs.js";
+import { initSignupForm } from "./components/signupForm.js";
+import { initOTPVerification } from "./components/otpVerification.js";
+import { initResendOTP } from "./components/resendOTP.js";
 
-document
-  .getElementById("toggleSignupPassword")
-  .addEventListener("click", function () {
-    togglePasswordVisibility("signupPassword", this);
-  });
+initPasswordToggle("toggleSignupPassword", ["signupPassword"]);
+initOTPInputs();
 
-function togglePasswordVisibility(inputId, button) {
-  const passwordInput = document.getElementById(inputId);
-  const icon = button.querySelector("i");
+initSignupForm("signupForm");
 
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-    icon.classList.remove("fa-eye");
-    icon.classList.add("fa-eye-slash");
-  } else {
-    passwordInput.type = "password";
-    icon.classList.remove("fa-eye-slash");
-    icon.classList.add("fa-eye");
-  }
-}
+initOTPVerification("verifyOTPBtn", "verifyEmailModal", () =>
+  sessionStorage.getItem("signupEmail")
+);
 
-const otpInputs = document.querySelectorAll('[id^="otp"]');
-otpInputs.forEach((input, index) => {
-  input.addEventListener("input", function () {
-    if (this.value.length === 1 && index < otpInputs.length - 1) {
-      otpInputs[index + 1].focus();
-    }
-  });
+initResendOTP("resendOTP", () => sessionStorage.getItem("signupEmail"));
 
-  input.addEventListener("keydown", function (e) {
-    if (e.key === "Backspace" && this.value === "" && index > 0) {
-      otpInputs[index - 1].focus();
-    }
-  });
-});
+// import { verifyOTP, getOTPFromInputs } from "../utils/otpUtils.js";
+// import { showSuccess, showError } from "../utils/toastHelper.js";
+// import * as bootstrap from "bootstrap";
 
-document
-  .getElementById("signupForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+// export function initOTPVerification(verifyBtnId, modalId, getEmail) {
+//   document.getElementById(verifyBtnId).addEventListener("click", async () => {
+//     const email = getEmail();
+//     const otp = getOTPFromInputs();
 
-    const email = document.getElementById("signupEmail").value;
-    const password = document.getElementById("signupPassword").value;
+//     if (otp.length !== 6) {
+//       showError("Please enter the full OTP");
+//       return;
+//     }
 
-    try {
-      const registerRes = await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const registerData = await registerRes.json();
-
-      if (!registerRes.ok) {
-        alert(registerData.message || "Registration failed");
-        return;
-      }
-
-      await sendOTP(email);
-      sessionStorage.setItem("signupEmail", email);
-      showOTPModal(email);
-    } catch (err) {
-      console.error(err);
-      showModal("User already exists...");
-      return;
-    }
-  });
-
-document
-  .getElementById("verifyOTPBtn")
-  .addEventListener("click", async function () {
-    const email = sessionStorage.getItem("signupEmail");
-    const otp = getOTPFromInputs();
-
-    if (otp.length !== 6) {
-      alert("Please enter the full OTP");
-      return;
-    }
-
-    try {
-      await verifyOTP(email, otp);
-      alert("Email verified successfully! Please login.");
-      sessionStorage.removeItem("signupEmail");
-      window.location.href = "login.html";
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Invalid OTP");
-    }
-  });
-
-document
-  .getElementById("resendOTP")
-  .addEventListener("click", async function (e) {
-    e.preventDefault();
-
-    const email =
-      sessionStorage.getItem("signupEmail") || window.emailForVerification;
-
-    if (!email) return alert("Email not found");
-
-    try {
-      await sendOTP(email);
-      alert("OTP resent successfully!");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Failed to resend OTP");
-    }
-  });
-
+//     try {
+//       await verifyOTP(email, otp);
+//       showSuccess("Email verified successfully! You can now log in.");
+//       bootstrap.Modal.getInstance(document.getElementById(modalId)).hide();
+//       sessionStorage.removeItem("signupEmail");
+//     } catch (error) {
+//       if (error.message === "User is already registered and verified") {
+//         showError("User is already registered and verified.");
+//       } else {
+//         console.error(error);
+//         showError(error.message || "OTP verification failed.");
+//       }
+//     }
+//   });
+// }
