@@ -11,6 +11,7 @@ import { initResetPassword } from "./components/resetPassword.js";
 import { initProfileDropdown } from "./components/profileDropdown.js";
 import { initLogout } from "./components/logout.js";
 import { fetchTasks } from "./api/api.js";
+import { initPasswordToggle } from "./components/passwordToggle.js";
 
 let tasks = [];
 let currentFilter = "all";
@@ -26,14 +27,23 @@ function renderTasksWrapper() {
   renderTasks(tasks, renderTasksWrapper, loadTasks);
 }
 
+initPasswordToggle("togglePassword", [
+  "resetCurrentPassword",
+  "resetNewPassword",
+]);
+
 initTaskForm(loadTasks, renderTasksWrapper);
+
 initFilters(
   (f) => (currentFilter = f),
   (p) => (currentPriority = p),
   loadTasks
 );
+
 initResetPassword();
+
 initProfileDropdown();
+
 initLogout();
 
 loadTasks();
