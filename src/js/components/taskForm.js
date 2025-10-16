@@ -15,6 +15,7 @@ export function initTaskForm(loadTasks, renderTasks) {
     }
 
     const priority = document.getElementById("prioritySelect").value;
+
     if (!priority) {
       showModal("Please enter priority.");
       return;
@@ -36,7 +37,9 @@ export function initTaskForm(loadTasks, renderTasks) {
     };
 
     const newTask = await createTaskAPI(taskData);
-    if (newTask) await loadTasks();
+    if (newTask) {
+      await loadTasks();
+    }
 
     taskInput.value = "";
     document.getElementById("tagInput").value = "";

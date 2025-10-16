@@ -7,7 +7,10 @@ export async function sendOTP(email) {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Failed to send OTP");
+
+    if (!res.ok) {
+      throw new Error("Failed to send OTP");
+    }
 
     return data;
   } catch (error) {
@@ -24,7 +27,10 @@ export async function verifyOTP(email, otp) {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "OTP verification failed");
+    
+    if (!res.ok) {
+      throw new Error("OTP verification failed");
+    }
 
     return data;
   } catch (error) {

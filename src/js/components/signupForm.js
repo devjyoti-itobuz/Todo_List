@@ -14,6 +14,7 @@ export function initSignupForm(formId) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
 
       if (!res.ok) {
@@ -22,9 +23,12 @@ export function initSignupForm(formId) {
       }
 
       showSuccess("User registered.");
+
       await sendOTP(email);
+
       sessionStorage.setItem("signupEmail", email);
       showOTPModal(email);
+      
     } catch (err) {
       console.error(err);
       showError("User already exists...");

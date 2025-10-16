@@ -6,8 +6,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
   };
-console.log("Sending token:", accessToken);
-
+  console.log("Sending token:", accessToken);
 
   try {
     const res = await fetch(url, {
@@ -20,13 +19,14 @@ console.log("Sending token:", accessToken);
 
       if (resBody.message === "jwt expired") {
         const refreshToken = localStorage.getItem("refresh-token");
+
         if (!refreshToken) {
-          // No refresh token, force login
           localStorage.removeItem("access-token");
           localStorage.removeItem("refresh-token");
           window.location.href = "/pages/login.html";
           return;
         }
+
         const refreshResponse = await fetch(
           "http://localhost:3000/auth/refresh-token",
           {
@@ -45,6 +45,7 @@ console.log("Sending token:", accessToken);
           localStorage.setItem("refresh-token", refreshData.refreshToken);
 
           return fetchWithAuth(url, options, true);
+
         } else {
           localStorage.removeItem("access-token");
           localStorage.removeItem("refresh-token");
@@ -55,6 +56,7 @@ console.log("Sending token:", accessToken);
 
     console.log(res);
     return res;
+    
   } catch (error) {
     console.error("fetchWithAuth error:", error);
     throw error;

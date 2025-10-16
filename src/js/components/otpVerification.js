@@ -14,7 +14,9 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
 
     try {
       await verifyOTP(email, otp);
+
       showSuccess("Email verified successfully! You can now log in.");
+
       const modalEl = document.getElementById(modalId);
       // const modal = new bootstrap.Modal(modalEl);
       // modal.hide();
@@ -27,7 +29,7 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
       sessionStorage.removeItem("signupEmail");
     } catch (error) {
       console.error(error);
-      showError(error.message || "OTP verification failed.");
+      showError("OTP verification failed.");
     }
   });
 }

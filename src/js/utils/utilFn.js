@@ -1,5 +1,5 @@
-export function getISTLocalizedTime() {
-  const now = new Date();
+export function getISTLocalizedTime(dateInput) {
+  const date = dateInput ? new Date(dateInput) : new Date();
 
   const options = {
     timeZone: "Asia/Kolkata",
@@ -12,11 +12,10 @@ export function getISTLocalizedTime() {
     hour12: true,
   };
 
-  return now.toLocaleString("en-IN", options);
+  return date.toLocaleString("en-IN", options);
 }
 
 export function showModal(message) {
-
   const queryModal = document.getElementById("queryModal");
   queryModal.textContent = message;
   queryModal.classList.add("show");
@@ -27,7 +26,6 @@ export function showModal(message) {
 }
 
 export function shownModal(message) {
-  
   const qModal = document.getElementById("qModal");
   qModal.textContent = message;
   qModal.classList.add("show");

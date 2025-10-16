@@ -52,8 +52,10 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     completeBtn.className = task.isCompleted
       ? "btn btn-dark"
       : "btn btn-outline-dark";
+    
     completeBtn.innerText = task.isCompleted ? "↺" : "✓";
     completeBtn.title = "Complete / Undo";
+
     completeBtn.onclick = async () => {
       const updatedTask = await updateTaskAPI(task.id, {
         text: task.text || task.title,
@@ -61,12 +63,16 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
         tags: task.tags || [],
         isCompleted: !task.isCompleted,
       });
+
       if (updatedTask) {
         task.isCompleted = !task.isCompleted;
         task.updatedAt = updatedTask.updatedAt;
+
         renderTasksCallback();
+
         await loadTasks();
       }
+
     };
 
     const editBtn = document.createElement("button");
@@ -74,18 +80,66 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
     editBtn.onclick = () => {
-      // open edit modal and event binding (similar to your existing code)
+      editTaskInput.value = task.text || task.title;
+      editPrioritySelect.value = task.priority || task.isImportant;
+      editTagInput.value = (task.tags || []).join(", ");
+
+      const editModal = new bootstrap.Modal(
+        document.getElementById("editModal")
+      );
+
+      editModal.show();
+
+      const newSaveBtn = saveEditBtn.cloneNode(true);
+      saveEditBtn.parentNode.replaceChild(newSaveBtn, saveEditBtn);
+
+      newSaveBtn.addEventListener("click", async () => {
+        const newText = editTaskInput.value.trim();
+        const newPriority = editPrioritySelect.value;
+        const newTags = editTagInput.value
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag);
+
+        if (!newText || newText.length < 2) {
+          showModal("Please enter a valid task (min 2 letters).");
+          return;
+        }
+
+        const updatedTask = await updateTaskAPI(task.id, {
+          text: newText,
+          priority: newPriority,
+          tags: newTags,
+          isCompleted: task.isCompleted,
+        });
+
+        if (updatedTask) {
+          task.text = newText;
+          task.title = newText;
+          task.priority = newPriority;
+          task.isImportant = newPriority;
+          task.tags = newTags;
+          task.updatedAt = updatedTask.updatedAt;
+          
+          renderTasksCallback();
+
+          await loadTasks();
+          editModal.hide();
+        }
+      });
     };
 
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "btn btn-dark";
     deleteBtn.innerText = "✘";
     deleteBtn.title = "Delete Task";
+
     deleteBtn.onclick = () => {
       deleteModal.classList.add("show");
       const closeModal = () => deleteModal.classList.remove("show");
       confirmBtn.onclick = async () => {
         const success = await deleteTaskAPI(task.id);
+        
         if (success) {
           tasks = tasks.filter((t) => t.id !== task.id);
           renderTasksCallback();

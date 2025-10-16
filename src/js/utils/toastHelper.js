@@ -1,3 +1,4 @@
+import * as bootstrap from "bootstrap";
 import displayTemplates from "./utilFn.js";
 
 const templates = new displayTemplates();

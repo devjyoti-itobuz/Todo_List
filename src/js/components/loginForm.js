@@ -14,32 +14,48 @@ export function initLoginForm(formId) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
 
       if (!res.ok) {
-        if (data.message === "Email not verified") {
-          showError("User not verified. Do Verification.");
+        if (res.status === 403) {
+
+          showError("User not verified. Please verify your email.");
+
           await sendOTP(email);
+
           showOTPModal(email);
           window.emailForVerification = email;
           return;
         }
-        showError("Login failed, Wrong Credentials");
+
+        if (res.status === 401) {
+          showError("Login failed, wrong credentials.");
+          return;
+        }
+
+        if (res.status === 404) {
+          showError("User not found.");
+          return;
+        }
+
+        showError("Login failed.");
         return;
       }
 
       localStorage.setItem("access-token", data.accessToken);
       localStorage.setItem("refresh-token", data.refreshToken);
       localStorage.setItem("userEmail", email);
-      localStorage.setItem("isLoggedIn", "true");
 
       showSuccess("Login successful!");
 
       setTimeout(() => {
         window.location.href = "/index.html";
       }, 1000);
+
     } catch (err) {
       console.error(err);
+
       showError("Login failed");
     }
   });

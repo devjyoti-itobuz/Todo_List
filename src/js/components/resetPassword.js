@@ -5,6 +5,7 @@ export function initResetPassword() {
   document
     .getElementById("submitResetPassword")
     .addEventListener("click", async () => {
+
       const email = localStorage.getItem("userEmail");
       const currentPassword = document
         .getElementById("resetCurrentPassword")
@@ -36,14 +37,17 @@ export function initResetPassword() {
 
         if (response.ok && data.success) {
           showSuccess(data.message);
+          
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("resetPasswordModal")
           );
           modal.hide();
           document.getElementById("resetPasswordForm").reset();
-        } else {
+        } 
+        else {
           showError("Failed to reset password.");
         }
+
       } catch (error) {
         console.error("Error resetting password:", error);
         showError("An error occurred. Please try again later.");

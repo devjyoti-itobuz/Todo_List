@@ -14,10 +14,12 @@ export function initResendOTP(resendBtnId, getEmail) {
 
     try {
       await sendOTP(email);
+
       showSuccess("OTP resent successfully!");
+
     } catch (err) {
       console.error(err);
-      showError(err.message || "Failed to resend OTP");
+      showError("Failed to resend OTP");
     }
   });
 }

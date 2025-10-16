@@ -1,4 +1,4 @@
-import { shownModal, showModal } from "../utils/utilFn";
+import { shownModal, showModal, getISTLocalizedTime } from "../utils/utilFn";
 import fetchWithAuth from "./fetchWithAuth";
 
 const API_BASE_URL = "http://localhost:3000/api/tasks";
@@ -33,31 +33,15 @@ export async function fetchTasks(
 
     const data = await res.json();
 
-    return (data || []).map((task) => {
-      const toIST = (utcDate) => {
-        if (!utcDate) return null;
-        const date = new Date(utcDate);
-        return new Intl.DateTimeFormat("en-IN", {
-          timeZone: "Asia/Kolkata",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }).format(date);
-      };
-
-      return {
-        id: task._id,
-        text: task.title,
-        priority: task.isImportant || "",
-        tags: Array.isArray(task.tags) ? task.tags : [],
-        isCompleted: !!task.isCompleted,
-        createdAt: toIST(task.createdAt),
-        updatedAt: toIST(task.updatedAt),
-      };
-    });
+    return (data || []).map((task) => ({
+      id: task._id,
+      text: task.title,
+      priority: task.isImportant || "",
+      tags: Array.isArray(task.tags) ? task.tags : [],
+      isCompleted: !!task.isCompleted,
+      createdAt: getISTLocalizedTime(task.createdAt),
+      updatedAt: getISTLocalizedTime(task.updatedAt),
+    }));
     
   } catch (error) {
     console.error("Error loading tasks:", error);
@@ -73,6 +57,7 @@ export async function createTaskAPI(taskData) {
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         title: taskData.text,
         tags: taskData.tags,
@@ -85,10 +70,14 @@ export async function createTaskAPI(taskData) {
     }
 
     shownModal("task added successfully");
+
     return await response.json();
+
   } catch (error) {
     console.error("Error creating task:", error);
+
     showModal("Failed to create task.");
+
     return null;
   }
 }
@@ -100,6 +89,7 @@ export async function updateTaskAPI(taskId, updates) {
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         title: updates.text,
         tags: updates.tags,
@@ -113,9 +103,12 @@ export async function updateTaskAPI(taskId, updates) {
     }
 
     return await response.json();
+
   } catch (error) {
     console.error("Error updating task:", error);
+
     showModal("Failed to update task");
+
     return null;
   }
 }
@@ -131,9 +124,12 @@ export async function deleteTaskAPI(taskId) {
     }
 
     return true;
+
   } catch (error) {
     console.error("Error deleting task:", error);
+
     showModal("Failed to delete task");
+
     return false;
   }
 }
@@ -149,6 +145,7 @@ export async function clearAllTasksAPI() {
     }
 
     return true;
+    
   } catch (error) {
     console.error("Error clearing tasks:", error);
     showModal("Failed to clear all tasks");
