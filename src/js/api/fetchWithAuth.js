@@ -31,10 +31,10 @@ async function fetchWithAuth(url, options = {}, retry = false) {
           "http://localhost:3000/auth/refresh-token",
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              refreshToken: localStorage.getItem("refresh-token"),
-            }),
+            headers: {
+              "Content-Type": "application/json",
+              "refresh-token": refreshToken,
+            },
           }
         );
 
