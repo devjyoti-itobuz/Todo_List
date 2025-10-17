@@ -1,0 +1,23 @@
+@import "bootstrap/scss/bootstrap";
+
+@media (max-width: 576px) {
+  .toast {
+    font-size: 0.8rem;       /* Smaller font */
+    padding: 0.4rem 0.6rem;  /* Less padding */
+    max-width: 280px;        /* Limit width */
+    border-radius: 0.3rem;   /* Optional: smaller rounded corners */
+  }
+
+  .toast .toast-body {
+    gap: 0.3rem;             /* Smaller gaps */
+  }
+
+  .toast i.fa {
+    font-size: 1rem;         /* Smaller icon */
+  }
+
+  .btn-close {
+    width: 1rem;
+    height: 1rem;
+  }
+}

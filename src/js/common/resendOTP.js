@@ -18,7 +18,8 @@ export function initResendOTP(resendBtnId, getEmail) {
 
       if (response.ok && data.success) {
         showSuccess(data.message || "OTP resent successfully!");
-      } else {
+      } 
+      else {
         showError(data.message || "Failed to resend OTP");
       }
 

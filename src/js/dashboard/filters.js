@@ -33,6 +33,5 @@ export function initFilters(setCurrentFilter, setCurrentPriority, loadTasks) {
   searchInput.addEventListener("input", async () => {
 
     await loadTasks();
-    
   });
 }

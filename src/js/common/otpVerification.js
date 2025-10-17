@@ -5,6 +5,7 @@ import * as bootstrap from "bootstrap";
 export function initOTPVerification(verifyBtnId, modalId, getEmail) {
   document.getElementById(verifyBtnId).addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const email = getEmail();
     const otp = getOTPFromInputs();
 
@@ -18,6 +19,7 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
       const data = await response.json();
 
       if (response.ok && data.success) {
+
         showSuccess(
           data.message || "Email verified successfully! You can now log in."
         );
@@ -27,7 +29,8 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
 
         if (modal) {
           modal.hide();
-        } else {
+        } 
+        else {
           modalEl.classList.remove("show");
           modalEl.style.display = "none";
           document.body.classList.remove("modal-open");

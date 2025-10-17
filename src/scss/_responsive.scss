@@ -1,0 +1,32 @@
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  form {
+    .d-grid {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .priority-badge,
+  .tag-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .btn-group .btn {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+  }
+
+  #clearAllBtn {
+    font-size: 0.875rem;
+  }
+}

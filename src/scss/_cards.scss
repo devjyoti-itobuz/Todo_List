@@ -1,0 +1,64 @@
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  overflow: hidden;
+  // background: radial-gradient(white, lightgrey);
+  background: #f2f3f5;
+}
+
+.card-title {
+  font-weight: 500;
+  font-size: 3rem;
+  color: $primary;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#taskList {
+  flex-grow: 1;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: $primary transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border-radius: 5px;
+  }
+
+  .list-group-item {
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: white;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba($primary, 0.05);
+    }
+
+    .btn-group {
+      gap: 4px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: $primary;
+      opacity: 0.25;
+    }
+  }
+}

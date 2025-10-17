@@ -138,6 +138,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
     deleteBtn.onclick = () => {
       deleteModal.classList.add("show");
+      
       const closeModal = () => deleteModal.classList.remove("show");
 
       confirmBtn.onclick = async () => {

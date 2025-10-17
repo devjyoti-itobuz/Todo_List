@@ -67,6 +67,7 @@ export function initResetPassword({
     .getElementById(resetPasswordBtnId)
     .addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const otp = document.getElementById(otpInputId).value.trim();
       const newPassword = document
         .getElementById(newPasswordInputId)

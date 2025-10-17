@@ -4,11 +4,13 @@ export function initProfileDropdown() {
   let hideTimeout;
 
   profileBtn.addEventListener("mouseenter", () => {
+
     clearTimeout(hideTimeout);
     profileMenu.style.display = "block";
   });
 
   profileBtn.parentElement.addEventListener("mouseleave", () => {
+
     hideTimeout = setTimeout(() => {
       profileMenu.style.display = "none";
     }, 300);
@@ -19,6 +21,7 @@ export function initProfileDropdown() {
   });
 
   profileMenu.addEventListener("mouseleave", () => {
+    
     hideTimeout = setTimeout(() => {
       profileMenu.style.display = "none";
     }, 300);

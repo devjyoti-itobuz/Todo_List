@@ -1,0 +1,29 @@
+form {
+  input,
+  select,
+  button {
+    border-radius: 0.5rem;
+  }
+
+  input:focus,
+  select:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    border-color: $primary;
+  }
+}
+
+#searchInput {
+  border-radius: 0.5rem 0 0 0.5rem;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    border-color: $primary;
+  }
+}
+
+.input-group-text {
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: $primary;
+  color: white;
+  font-size: 1.2rem;
+}

@@ -1,3 +1,5 @@
+import "../../scss/toast.scss";
+
 export function getISTLocalizedTime(dateInput) {
   const date = dateInput ? new Date(dateInput) : new Date();
 
