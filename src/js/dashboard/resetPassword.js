@@ -4,14 +4,16 @@ import * as bootstrap from "bootstrap";
 
 export function initResetPassword() {
   document
-    .getElementById("submitResetPassword")
-    .addEventListener("click", async () => {
-
+    .getElementById("resetPasswordForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
       const email = localStorage.getItem("userEmail");
-      const accessToken = localStorage.getItem("access-token")
+      const accessToken = localStorage.getItem("access-token");
       const currentPassword = document
         .getElementById("resetCurrentPassword")
         .value.trim();
+
       const newPassword = document
         .getElementById("resetNewPassword")
         .value.trim();
@@ -32,30 +34,28 @@ export function initResetPassword() {
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"},
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({ currentPassword, newPassword }),
           }
         );
         const data = await response.json();
 
         if (response.ok && data.success) {
-
           showSuccess(data.message);
-          
+
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("resetPasswordModal")
           );
           modal.hide();
-          
+
           document.getElementById("resetPasswordForm").reset();
-        } 
-        else {
+        } else {
           showError("Failed to reset password.");
         }
-
       } catch (error) {
         console.error("Error resetting password:", error);
-        
+
         showError("An error occurred. Please try again later.");
       }
     });
