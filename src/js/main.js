@@ -17,6 +17,10 @@ let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
+if (!localStorage.getItem("access-token")) {
+  window.location.href = "../pages/login.html";
+}
+
 async function loadTasks() {
   const searchTerm = document.getElementById("searchInput").value.trim();
   tasks = await fetchTasks(searchTerm, currentFilter, currentPriority);

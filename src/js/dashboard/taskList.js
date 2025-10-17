@@ -57,6 +57,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     completeBtn.title = "Complete / Undo";
 
     completeBtn.onclick = async () => {
+
       const updatedTask = await updateTaskAPI(task.id, {
         title: task.title,
         priority: task.priority || task.isImportant,
@@ -79,6 +80,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     editBtn.className = "btn btn-outline-dark";
     editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
     editBtn.title = "Edit Task";
+
     editBtn.onclick = () => {
       editTaskInput.value = task.title;
       editPrioritySelect.value = task.priority || task.isImportant;
@@ -101,8 +103,8 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
           .map((tag) => tag.trim())
           .filter((tag) => tag);
 
-        if (!newTitle || newTitle.length < 2) {
-          showModal("Please enter a valid task (min 2 letters).");
+        if (!newTitle || newTitle.length < 3) {
+          showModal("Please enter a valid task (min 3 letters).");
           return;
         }
 
@@ -137,6 +139,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     deleteBtn.onclick = () => {
       deleteModal.classList.add("show");
       const closeModal = () => deleteModal.classList.remove("show");
+
       confirmBtn.onclick = async () => {
         const success = await deleteTaskAPI(task.id);
         
@@ -144,12 +147,17 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
           tasks = tasks.filter((t) => t.id !== task.id);
           renderTasksCallback();
         }
+
+        await loadTasks();
+
         closeModal();
       };
       cancelBtn.onclick = closeModal;
     };
+
     const clearAllBtn = document.getElementById("clearAllBtn");
     const clearModal = document.getElementById("deleteModal");
+
     clearAllBtn.addEventListener("click", () => {
       clearModal.classList.add("show");
 
@@ -160,8 +168,11 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
         if (success) {
           tasks = [];
-          renderTasks(searchInput.value);
+          renderTasksCallback();
         }
+
+        await loadTasks();
+
         closeModal();
       };
 

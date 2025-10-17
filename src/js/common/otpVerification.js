@@ -14,26 +14,38 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
     }
 
     try {
-      await verifyOTP(email, otp);
+      const response = await verifyOTP(email, otp);
+      const data = await response.json();
 
-      showSuccess("Email verified successfully! You can now log in.");
+      if (response.ok && data.success) {
+        showSuccess(
+          data.message || "Email verified successfully! You can now log in."
+        );
 
-      const modalEl = document.getElementById(modalId);
-      // const modal = new bootstrap.Modal(modalEl);
-      // modal.hide();
-      modalEl.classList.remove("show");
-      modalEl.style.display = "none";
-      document.body.classList.remove("modal-open");
-      const backdrop = document.querySelector(".modal-backdrop");
-      
-      if (backdrop) {
-        backdrop.remove();
+        const modalEl = document.getElementById(modalId);
+        const modal = bootstrap.Modal.getInstance(modalEl);
+
+        if (modal) {
+          modal.hide();
+        } else {
+          modalEl.classList.remove("show");
+          modalEl.style.display = "none";
+          document.body.classList.remove("modal-open");
+          const backdrop = document.querySelector(".modal-backdrop");
+
+          if (backdrop) {
+            backdrop.remove();
+          }
+        }
+        sessionStorage.removeItem("signupEmail");
+
+      } else {
+        showError(data.message || "OTP verification failed.");
       }
-
-      sessionStorage.removeItem("signupEmail");
+      
     } catch (error) {
       console.error(error);
-      showError("OTP verification failed.");
+      showError("An error occurred during OTP verification.");
     }
   });
 }

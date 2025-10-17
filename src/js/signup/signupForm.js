@@ -31,7 +31,7 @@ export function initSignupForm(formId) {
       
     } catch (err) {
       console.error(err);
-      showError("User already exists...");
+      showError("Something went wrong. Please try again.");
     }
   });
 }

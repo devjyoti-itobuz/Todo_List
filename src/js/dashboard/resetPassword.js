@@ -7,7 +7,7 @@ export function initResetPassword() {
     .getElementById("resetPasswordForm")
     .addEventListener("submit", async (e) => {
       e.preventDefault();
-      
+
       const email = localStorage.getItem("userEmail");
       const accessToken = localStorage.getItem("access-token");
       const currentPassword = document
@@ -18,8 +18,8 @@ export function initResetPassword() {
         .getElementById("resetNewPassword")
         .value.trim();
 
-      if (!email) {
-        showError("User email not found. Please log in again.");
+      if (!email || !accessToken) {
+        showError("Authentication expired. Please log in again.");
         return;
       }
 
@@ -42,7 +42,7 @@ export function initResetPassword() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-          showSuccess(data.message);
+          showSuccess(data.message || "Password reset successfully.");
 
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("resetPasswordModal")
@@ -51,7 +51,7 @@ export function initResetPassword() {
 
           document.getElementById("resetPasswordForm").reset();
         } else {
-          showError("Failed to reset password.");
+          showError(data.message || "Failed to reset password.");
         }
       } catch (error) {
         console.error("Error resetting password:", error);

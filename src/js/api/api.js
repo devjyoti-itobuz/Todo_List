@@ -28,7 +28,7 @@ export async function fetchTasks(
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Backend error response:", res.status, errorText);
-      throw new Error("Failed to fetch tasks");
+      showModal("Failed to fetch tasks");
     }
 
     const data = await res.json();
@@ -66,7 +66,7 @@ export async function createTaskAPI(taskData) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      showModal("Failed to create tasks");
     }
 
     shownModal("task added successfully");
@@ -99,8 +99,10 @@ export async function updateTaskAPI(taskId, updates) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      showModal("Failed to update tasks");
     }
+
+    shownModal("task updated successfully");
 
     return await response.json();
 
@@ -120,8 +122,10 @@ export async function deleteTaskAPI(taskId) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      showModal("Failed to delete tasks");
     }
+
+    shownModal("task deleted successfully");
 
     return true;
 
@@ -141,8 +145,10 @@ export async function clearAllTasksAPI() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      showModal("Failed to delete tasks");
     }
+
+    shownModal("Tasks deleted successfully");
 
     return true;
     

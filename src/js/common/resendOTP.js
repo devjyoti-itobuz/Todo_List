@@ -13,13 +13,18 @@ export function initResendOTP(resendBtnId, getEmail) {
     }
 
     try {
-      await sendOTP(email);
+      const response = await sendOTP(email);
+      const data = await response.json();
 
-      showSuccess("OTP resent successfully!");
+      if (response.ok && data.success) {
+        showSuccess(data.message || "OTP resent successfully!");
+      } else {
+        showError(data.message || "Failed to resend OTP");
+      }
 
     } catch (err) {
       console.error(err);
-      showError("Failed to resend OTP");
+      showError("An error occurred while resending OTP");
     }
   });
 }

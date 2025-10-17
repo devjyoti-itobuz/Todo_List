@@ -18,30 +18,33 @@ export function initLoginForm(formId) {
       const data = await res.json();
 
       if (!res.ok) {
-        
-        if (res.status === 403) {
+        const errorMessage = data?.message || data?.error;
 
-          showError("User not verified. Please verify your email.");
+        switch (res.status) {
+          case 403:
+            showError(
+              errorMessage || "User not verified. Please verify your email."
+            );
 
-          await sendOTP(email);
+            await sendOTP(email);
 
-          showOTPModal(email);
-          window.emailForVerification = email;
-          return;
+            showOTPModal(email);
+
+            window.emailForVerification = email;
+            return;
+
+          case 401:
+            showError(errorMessage || "Login failed, wrong credentials.");
+            return;
+
+          case 404:
+            showError(errorMessage || "User not found.");
+            return;
+
+          default:
+            showError(errorMessage || "Login failed. Please try again.");
+            return;
         }
-
-        if (res.status === 401) {
-          showError("Login failed, wrong credentials.");
-          return;
-        }
-
-        if (res.status === 404) {
-          showError("User not found.");
-          return;
-        }
-
-        showError("Login failed.");
-        return;
       }
 
       localStorage.setItem("access-token", data.accessToken);
@@ -53,11 +56,10 @@ export function initLoginForm(formId) {
       setTimeout(() => {
         window.location.href = "/index.html";
       }, 1000);
-
+      
     } catch (err) {
-      console.error(err);
-
-      showError("Login failed");
+      console.error("Unexpected login error:", err);
+      showError("An unexpected error occurred during login.");
     }
   });
 }
