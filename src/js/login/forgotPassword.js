@@ -17,7 +17,8 @@ export function initResetPassword({
 
   document
     .getElementById(sendResetOTPId)
-    .addEventListener("click", async () => {
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
       const email = document.getElementById(resetEmailInputId).value.trim();
 
       if (!email) {
@@ -64,7 +65,8 @@ export function initResetPassword({
 
   document
     .getElementById(resetPasswordBtnId)
-    .addEventListener("click", async () => {
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
       const otp = document.getElementById(otpInputId).value.trim();
       const newPassword = document
         .getElementById(newPasswordInputId)

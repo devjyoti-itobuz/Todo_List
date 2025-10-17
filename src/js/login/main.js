@@ -17,19 +17,19 @@ initOTPInputs();
 initLoginForm("loginForm");
 
 initOTPVerification(
-  "verifyOTPBtn",
+  "verifyOTPForm",
   "verifyEmailModal",
   () => window.emailForVerification
 );
 
 initResendOTP(
   "resendOTP",
-  () => sessionStorage.getItem("signupEmail") || window.emailForVerification
+  () => window.emailForVerification
 );
 
 initResetPassword({
-  sendResetOTPId: "sendResetOTP",
-  resetPasswordBtnId: "resetPasswordBtn",
+  sendResetOTPId: "forgotPasswordForm",
+  resetPasswordBtnId: "resetPasswordForm",
   resetEmailInputId: "resetEmail",
   otpInputId: "otpInput",
   newPasswordInputId: "newPassword",

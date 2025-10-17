@@ -12,7 +12,7 @@ initOTPInputs();
 
 initSignupForm("signupForm");
 
-initOTPVerification("verifyOTPBtn", "verifyEmailModal", () =>
+initOTPVerification("verifyOTPForm", "verifyEmailModal", () =>
   sessionStorage.getItem("signupEmail")
 );
 
