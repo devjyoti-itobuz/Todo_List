@@ -4,6 +4,7 @@ import * as bootstrap from "bootstrap";
 
 export function initOTPVerification(verifyBtnId, modalId, getEmail) {
   document.getElementById(verifyBtnId).addEventListener("click", async () => {
+    // e.preventDefault();
     const email = getEmail();
     const otp = getOTPFromInputs();
 

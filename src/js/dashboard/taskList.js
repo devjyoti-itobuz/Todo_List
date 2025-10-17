@@ -1,4 +1,4 @@
-import { updateTaskAPI, deleteTaskAPI } from "../api/api.js";
+import { updateTaskAPI, deleteTaskAPI, clearAllTasksAPI } from "../api/api.js";
 import { showModal } from "../utils/utilFn.js";
 import {
   saveEditBtn,
@@ -148,6 +148,25 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
       };
       cancelBtn.onclick = closeModal;
     };
+    const clearAllBtn = document.getElementById("clearAllBtn");
+    const clearModal = document.getElementById("deleteModal");
+    clearAllBtn.addEventListener("click", () => {
+      clearModal.classList.add("show");
+
+      const closeModal = () => clearModal.classList.remove("show");
+
+      confirmBtn.onclick = async () => {
+        const success = await clearAllTasksAPI();
+
+        if (success) {
+          tasks = [];
+          renderTasks(searchInput.value);
+        }
+        closeModal();
+      };
+
+      cancelBtn.onclick = closeModal;
+    });
 
     btnGroup.append(completeBtn, editBtn, deleteBtn);
     li.append(contentDiv, btnGroup);

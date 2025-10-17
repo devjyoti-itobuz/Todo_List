@@ -1,3 +1,4 @@
+import fetchWithAuth from "../api/fetchWithAuth.js";
 import { showError, showSuccess } from "../utils/toastHelper.js";
 import * as bootstrap from "bootstrap";
 
@@ -7,6 +8,7 @@ export function initResetPassword() {
     .addEventListener("click", async () => {
 
       const email = localStorage.getItem("userEmail");
+      const accessToken = localStorage.getItem("access-token")
       const currentPassword = document
         .getElementById("resetCurrentPassword")
         .value.trim();
@@ -25,12 +27,13 @@ export function initResetPassword() {
       }
 
       try {
-        const response = await fetch(
+        const response = await fetchWithAuth(
           "http://localhost:3000/auth/reset-password",
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, currentPassword, newPassword }),
+            headers: {
+              "Content-Type": "application/json"},
+            body: JSON.stringify({ currentPassword, newPassword }),
           }
         );
         const data = await response.json();
@@ -43,7 +46,7 @@ export function initResetPassword() {
             document.getElementById("resetPasswordModal")
           );
           modal.hide();
-
+          
           document.getElementById("resetPasswordForm").reset();
         } 
         else {

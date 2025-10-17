@@ -4,12 +4,12 @@ import "../scss/styles.scss";
 // Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
 
-import { initTaskForm } from "./components/taskForm.js";
-import { renderTasks } from "./components/taskList.js";
-import { initFilters } from "./components/filters.js";
-import { initResetPassword } from "./components/resetPassword.js";
-import { initProfileDropdown } from "./components/profileDropdown.js";
-import { initLogout } from "./components/logout.js";
+import { initTaskForm } from "./dashboard/taskForm.js";
+import { renderTasks } from "./dashboard/taskList.js";
+import { initFilters } from "./dashboard/filters.js";
+import { initResetPassword } from "./dashboard/resetPassword.js";
+import { initProfileDropdown } from "./dashboard/profileDropdown.js";
+import { initLogout } from "./dashboard/logout.js";
 import { fetchTasks } from "./api/api.js";
 import { initPasswordToggle } from "./common/passwordToggle.js";
 

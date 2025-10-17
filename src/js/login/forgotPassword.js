@@ -46,7 +46,7 @@ export function initResetPassword({
           );
           forgotModal.hide();
 
-          const resetModal = new bootstrap.Modal(
+          const resetModal = bootstrap.Modal.getOrCreateInstance(
             document.getElementById(resetPasswordModalId)
           );
 
@@ -110,23 +110,14 @@ export function initResetPassword({
         if (resetRes.ok) {
           showSuccess("Password reset successful. Please log in.");
 
-          const resetModal = bootstrap.Modal.getInstance(
-            document.getElementById(resetPasswordModalId)
-          );
+          const resetModalElement =
+            document.getElementById(resetPasswordModalId);
+          const resetModal =
+            bootstrap.Modal.getOrCreateInstance(resetModalElement);
           resetModal.hide();
-          const backdrop = document.querySelector(".modal-backdrop");
-          
-          if (backdrop) {
-            backdrop.remove();
-          }
-
-          setTimeout(() => {
-            document.body.classList.remove("modal-open");
-            const modalBackdrop = document.querySelector(".modal-backdrop");
-            if (modalBackdrop) {
-              modalBackdrop.parentNode.removeChild(modalBackdrop);
-            }
-          }, 300);
+          document
+            .querySelectorAll(".modal-backdrop")
+            .forEach((el) => el.remove());
 
         } else {
           showError("Failed to reset password.");
