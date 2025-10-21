@@ -4,7 +4,7 @@ import * as bootstrap from "bootstrap";
 
 const templates = new displayTemplates();
 
-export function initResetPassword({
+export function initForgotPassword({
   sendResetOTPId,
   resetPasswordBtnId,
   resetEmailInputId,
@@ -54,7 +54,7 @@ export function initResetPassword({
           resetModal.show();
         } 
         else {
-          showError(data.message || "Failed to send OTP.");
+          showError(data.error || "Failed to send OTP.");
         }
 
       } catch (error) {
@@ -91,7 +91,7 @@ export function initResetPassword({
         const verifyData = await verifyRes.json();
 
         if (!verifyRes.ok) {
-          showError(verifyData.message || "OTP verification failed.");
+          showError(verifyData.error || "OTP verification failed.");
           return;
         }
 
@@ -125,7 +125,7 @@ export function initResetPassword({
             .forEach((el) => el.remove());
 
         } else {
-          showError(resetData.message || "Failed to reset password.");
+          showError(resetData.error || "Failed to reset password.");
         }
         
       } catch (error) {

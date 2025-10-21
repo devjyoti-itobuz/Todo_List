@@ -9,7 +9,7 @@ export async function sendOTP(email) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error("Failed to send OTP");
+      throw new Error(data.error || "Failed to send OTP");
     }
 
     return data;
@@ -29,7 +29,7 @@ export async function verifyOTP(email, otp) {
     const data = await res.json();
     
     if (!res.ok) {
-      throw new Error("OTP verification failed");
+      throw new Error(data.error || "OTP verification failed");
     }
 
     return data;

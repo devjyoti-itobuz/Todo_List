@@ -18,12 +18,12 @@ export function initLoginForm(formId) {
       const data = await res.json();
 
       if (!res.ok) {
-        const errorMessage = data?.message || data?.error;
+        // const errorMessage = data?.message || data?.error;
 
         switch (res.status) {
           case 403:
             showError(
-              errorMessage || "User not verified. Please verify your email."
+              data.error || "User not verified. Please verify your email."
             );
 
             await sendOTP(email);
@@ -34,15 +34,15 @@ export function initLoginForm(formId) {
             return;
 
           case 401:
-            showError(errorMessage || "Login failed, wrong credentials.");
+            showError(data.error || "Login failed, wrong credentials.");
             return;
 
           case 404:
-            showError(errorMessage || "User not found.");
+            showError(data.error || "User not found.");
             return;
 
           default:
-            showError(errorMessage || "Login failed. Please try again.");
+            showError(data.error || "Login failed. Please try again.");
             return;
         }
       }
@@ -51,7 +51,7 @@ export function initLoginForm(formId) {
       localStorage.setItem("refresh-token", data.refreshToken);
       localStorage.setItem("userEmail", email);
 
-      showSuccess("Login successful!");
+      showSuccess(data.message || "Login successful!");
 
       setTimeout(() => {
         window.location.href = "/index.html";

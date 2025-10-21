@@ -1,9 +1,6 @@
 // Import our custom CSS
 import "../scss/styles.scss";
 
-// Import all of Bootstrap's JS
-import * as bootstrap from "bootstrap";
-
 import { initTaskForm } from "./dashboard/taskForm.js";
 import { renderTasks } from "./dashboard/taskList.js";
 import { initFilters } from "./dashboard/filters.js";

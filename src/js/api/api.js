@@ -25,15 +25,18 @@ export async function fetchTasks(
   try {
     const res = await fetchWithAuth(url.toString());
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("Backend error response:", res.status, errorText);
-      showModal("Failed to fetch tasks");
-    }
-
     const data = await res.json();
 
-    return (data || []).map((task) => ({
+    if (!res.ok) {
+      showModal(data.error || "Failed to fetch tasks");
+      return [];
+    }
+
+    // if(data.message){
+    //   shownModal(data.message)
+    // }
+
+    return (data.tasks || []).map((task) => ({
       id: task._id,
       title: task.title,
       priority: task.isImportant || "",
@@ -61,17 +64,19 @@ export async function createTaskAPI(taskData) {
       body: JSON.stringify({
         title: taskData.title,
         tags: taskData.tags,
-        isImportant: taskData.priority || "Low",
+        isImportant: taskData.priority,
       }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      showModal("Failed to create tasks");
+      showModal(data.error || "Failed to create tasks");
     }
 
-    shownModal("task added successfully");
+    shownModal(data.message || "task added successfully");
 
-    return await response.json();
+    return data.task;
 
   } catch (error) {
     console.error("Error creating task:", error);
@@ -98,13 +103,15 @@ export async function updateTaskAPI(taskId, updates) {
       }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      showModal("Failed to update tasks");
+      showModal(data.error || "Failed to update tasks");
     }
 
-    shownModal("task updated successfully");
+    shownModal(data.message||"task updated successfully");
 
-    return await response.json();
+    return data.task;
 
   } catch (error) {
     console.error("Error updating task:", error);
@@ -120,12 +127,13 @@ export async function deleteTaskAPI(taskId) {
     const response = await fetchWithAuth(`${API_BASE_URL}/${taskId}`, {
       method: "DELETE",
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      showModal("Failed to delete tasks");
+      showModal(data.error || "Failed to delete tasks");
     }
 
-    shownModal("task deleted successfully");
+    shownModal(data.message || "task deleted successfully");
 
     return true;
 
@@ -143,12 +151,13 @@ export async function clearAllTasksAPI() {
     const response = await fetchWithAuth(API_BASE_URL, {
       method: "DELETE",
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      showModal("Failed to delete tasks");
+      showModal(data.error || "Failed to delete tasks");
     }
 
-    shownModal("Tasks deleted successfully");
+    shownModal(data.message || "Tasks deleted successfully");
 
     return true;
     

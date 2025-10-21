@@ -3,7 +3,7 @@ import { initOTPInputs } from "../common/otpInputs.js";
 import { initLoginForm } from "./loginForm.js";
 import { initOTPVerification } from "../common/otpVerification.js";
 import { initResendOTP } from "../common/resendOTP.js";
-import { initResetPassword } from "./forgotPassword.js";
+import { initForgotPassword } from "./forgotPassword.js";
 
 if (localStorage.getItem("access-token")) {
   window.location.href = "/index.html";
@@ -27,7 +27,7 @@ initResendOTP(
   () => window.emailForVerification
 );
 
-initResetPassword({
+initForgotPassword({
   sendResetOTPId: "forgotPasswordForm",
   resetPasswordBtnId: "resetPasswordForm",
   resetEmailInputId: "resetEmail",

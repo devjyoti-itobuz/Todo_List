@@ -15,10 +15,9 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
     }
 
     try {
-      const response = await verifyOTP(email, otp);
-      const data = await response.json();
+      const data = await verifyOTP(email, otp);
 
-      if (response.ok && data.success) {
+      if (data.success) {
 
         showSuccess(
           data.message || "Email verified successfully! You can now log in."
@@ -43,12 +42,11 @@ export function initOTPVerification(verifyBtnId, modalId, getEmail) {
         sessionStorage.removeItem("signupEmail");
 
       } else {
-        showError(data.message || "OTP verification failed.");
+        showError(data.error || "OTP verification failed.");
       }
       
     } catch (error) {
-      console.error(error);
-      showError("An error occurred during OTP verification.");
+      showError(error.message || "An error occurred during OTP verification.");
     }
   });
 }

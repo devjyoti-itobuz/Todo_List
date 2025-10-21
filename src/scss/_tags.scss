@@ -24,22 +24,22 @@
 }
 
 .priority-High {
-  border-left: 10px solid $dark;
+  border-left: 10px solid $dark !important;
   position: relative;
 }
 
 .priority-Medium {
-  border-left: 10px solid $muted;
+  border-left: 10px solid $muted !important;
   position: relative;
 }
 
 .priority-Low {
-  border-left: 10px solid $low;
+  border-left: 10px solid $low !important;
   position: relative;
 }
 
 .bg-true {
-  border-left: 10px solid transparent;
+  border-left: 10px solid transparent !important;
   position: relative;
 }
 
