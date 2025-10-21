@@ -28,7 +28,7 @@ export async function fetchTasks(
     const data = await res.json();
 
     if (!res.ok) {
-      showModal(data.error || "Failed to fetch tasks");
+      showModal(data.error);
       return [];
     }
 
@@ -47,7 +47,7 @@ export async function fetchTasks(
     }));
     
   } catch (error) {
-    console.error("Error loading tasks:", error);
+    // console.error("Error loading tasks:", error.message);
     showModal("Could not load tasks from server");
     return [];
   }
@@ -71,13 +71,12 @@ export async function createTaskAPI(taskData) {
     const data = await response.json();
 
     if (!response.ok) {
-      showModal(data.error || "Failed to create tasks");
+      showModal(data.error);
     }
 
-    shownModal(data.message || "task added successfully");
+    shownModal(data.message);
 
     return data.task;
-
   } catch (error) {
     console.error("Error creating task:", error);
 
@@ -106,13 +105,12 @@ export async function updateTaskAPI(taskId, updates) {
     const data = await response.json();
 
     if (!response.ok) {
-      showModal(data.error || "Failed to update tasks");
+      showModal(data.error);
     }
 
-    shownModal(data.message||"task updated successfully");
+    shownModal(data.message);
 
     return data.task;
-
   } catch (error) {
     console.error("Error updating task:", error);
 
@@ -130,10 +128,10 @@ export async function deleteTaskAPI(taskId) {
     const data = await response.json();
 
     if (!response.ok) {
-      showModal(data.error || "Failed to delete tasks");
+      showModal(data.error);
     }
 
-    shownModal(data.message || "task deleted successfully");
+    shownModal(data.message);
 
     return true;
 
@@ -154,10 +152,10 @@ export async function clearAllTasksAPI() {
     const data = await response.json();
 
     if (!response.ok) {
-      showModal(data.error || "Failed to delete tasks");
+      showModal(data.error);
     }
 
-    shownModal(data.message || "Tasks deleted successfully");
+    shownModal(data.message);
 
     return true;
     

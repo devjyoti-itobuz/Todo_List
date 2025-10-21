@@ -6,7 +6,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
   };
-  console.log("Sending token:", accessToken);
+  // console.log("Sending token:", accessToken);
 
   try {
     const res = await fetch(url, {
@@ -15,7 +15,8 @@ async function fetchWithAuth(url, options = {}, retry = false) {
     });
 
     if (res.status === 401 && !retry) {
-      const resBody = await res.json();
+      const resClone = res.clone();
+      const resBody = await resClone.json();
 
       if (resBody.message === "jwt expired") {
         const refreshToken = localStorage.getItem("refresh-token");

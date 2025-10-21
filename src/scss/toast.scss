@@ -1,5 +1,12 @@
 @import "bootstrap/scss/bootstrap";
 
+.toastSection {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
 @media (max-width: 576px) {
   .toast {
     font-size: 0.8rem;       /* Smaller font */

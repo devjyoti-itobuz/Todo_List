@@ -22,3 +22,5 @@ export const confirmBtn = document.getElementById("confirmBtn");
 export const cancelBtn = document.getElementById("cancelBtn");
 
 export const clearModal = document.getElementById("deleteModal");
+
+export const otpInputs = document.querySelectorAll('[id^="otp"]');

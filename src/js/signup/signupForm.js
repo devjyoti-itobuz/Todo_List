@@ -18,11 +18,11 @@ export function initSignupForm(formId) {
       const data = await res.json();
 
       if (!res.ok) {
-        showError(data.error || "Registration failed");
+        showError(data.error);
         return;
       }
 
-      showSuccess("User registered.");
+      showSuccess(data.message);
 
       await sendOTP(email);
 

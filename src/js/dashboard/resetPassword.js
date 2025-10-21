@@ -43,7 +43,7 @@ export function initResetPassword() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-          showSuccess(data.message || "Password reset successfully.");
+          showSuccess(data.message);
 
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("resetPasswordModal")
@@ -54,7 +54,7 @@ export function initResetPassword() {
           document.getElementById("resetPasswordForm").reset();
         } 
         else {
-          showError(data.message || "Failed to reset password.");
+          showError(data.error);
         }
         
       } catch (error) {

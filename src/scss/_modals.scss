@@ -69,3 +69,16 @@
   text-align: center;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+.toastSection {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.profileDropdown {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}

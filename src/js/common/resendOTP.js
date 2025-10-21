@@ -14,13 +14,12 @@ export function initResendOTP(resendBtnId, getEmail) {
 
     try {
       const response = await sendOTP(email);
-      const data = await response.json();
 
-      if (response.ok && data.success) {
-        showSuccess(data.message || "OTP resent successfully!");
+      if (response.success) {
+        showSuccess(response.message);
       } 
       else {
-        showError(data.message || "Failed to resend OTP");
+        showError(response.error);
       }
 
     } catch (err) {

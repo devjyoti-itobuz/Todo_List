@@ -40,7 +40,7 @@ export function initForgotPassword({
 
         if (res.ok) {
           resetEmailGlobal = email;
-          showSuccess(data.message || "OTP sent to your email.");
+          showSuccess(data.message);
 
           const forgotModal = bootstrap.Modal.getInstance(
             document.getElementById(forgotPasswordModalId)
@@ -52,12 +52,11 @@ export function initForgotPassword({
           );
 
           resetModal.show();
-        } 
-        else {
-          showError(data.error || "Failed to send OTP.");
+        } else {
+          showError(data.error);
         }
-
-      } catch (error) {
+      } 
+      catch (error) {
         console.error(error);
         showError("Something went wrong while sending OTP.");
       }
@@ -91,7 +90,7 @@ export function initForgotPassword({
         const verifyData = await verifyRes.json();
 
         if (!verifyRes.ok) {
-          showError(verifyData.error || "OTP verification failed.");
+          showError(verifyData.error);
           return;
         }
 
@@ -111,9 +110,7 @@ export function initForgotPassword({
         const resetData = await resetRes.json();
 
         if (resetRes.ok) {
-          showSuccess(
-            resetData.message || "Password reset successful. Please log in."
-          );
+          showSuccess(resetData.message);
 
           const resetModalElement =
             document.getElementById(resetPasswordModalId);
@@ -123,11 +120,10 @@ export function initForgotPassword({
           document
             .querySelectorAll(".modal-backdrop")
             .forEach((el) => el.remove());
-
         } else {
-          showError(resetData.error || "Failed to reset password.");
+          showError(resetData.error);
         }
-        
+
       } catch (error) {
         console.error(error);
         showError("An error occurred while resetting your password.");

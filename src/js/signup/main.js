@@ -7,6 +7,7 @@ import { initOTPVerification } from "../common/otpVerification.js";
 import { initResendOTP } from "../common/resendOTP.js";
 
 initPasswordToggle("toggleSignupPassword", "signupPassword");
+initPasswordToggle("toggleConfirmPassword", "confirmPassword");
 
 initOTPInputs();
 
