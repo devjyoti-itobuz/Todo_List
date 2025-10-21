@@ -24,7 +24,7 @@ export function initResendOTP(resendBtnId, getEmail) {
 
     } catch (err) {
       console.error(err);
-      showError("An error occurred while resending OTP");
+      showError(err.message || "An error occurred while resending OTP");
     }
   });
 }

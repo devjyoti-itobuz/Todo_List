@@ -43,7 +43,7 @@ export function initOTPVerification(verifyFormId, modalId, getEmail) {
           showError(data.error);
         }
       } catch (error) {
-        showError("An error occurred during OTP verification."
+        showError(error.message || "An error occurred during OTP verification."
         );
       }
     });
