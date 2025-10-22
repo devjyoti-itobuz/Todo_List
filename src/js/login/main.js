@@ -5,7 +5,7 @@ import { initOtpVerification } from "../common/otpVerification.js";
 import { initResendOtp } from "../common/resendOtp.js";
 import { initForgotPassword } from "./forgotPassword.js";
 
-if (localStorage.getItem("access-token")) {
+if (localStorage.getItem("access_token")) {
   window.location.href = "/index.html";
 }
 
@@ -22,10 +22,7 @@ initOtpVerification(
   () => window.emailForVerification
 );
 
-initResendOtp(
-  "resendOtp",
-  () => window.emailForVerification
-);
+initResendOtp("resendOtp", () => window.emailForVerification);
 
 initForgotPassword({
   sendResetOtpId: "forgotPasswordForm",

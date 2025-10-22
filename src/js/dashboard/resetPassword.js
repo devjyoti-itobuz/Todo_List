@@ -9,7 +9,7 @@ export function initResetPassword() {
       e.preventDefault();
 
       const email = localStorage.getItem("userEmail");
-      const accessToken = localStorage.getItem("access-token");
+      const accessToken = localStorage.getItem("access_token");
       const currentPassword = document
         .getElementById("resetCurrentPassword")
         .value.trim();
@@ -30,7 +30,7 @@ export function initResetPassword() {
 
       try {
         const response = await fetchWithAuth(
-          "http://localhost:3000/auth/reset-password",
+          "http://localhost:3000/user/auth/reset-password",
           {
             method: "POST",
             headers: {

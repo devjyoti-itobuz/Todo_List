@@ -9,7 +9,7 @@ export function initLoginForm(formId) {
     const password = document.getElementById("loginPassword").value;
 
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("http://localhost:3000/user/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -35,8 +35,8 @@ export function initLoginForm(formId) {
         return;
       }
 
-      localStorage.setItem("access-token", data.accessToken);
-      localStorage.setItem("refresh-token", data.refreshToken);
+      localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("userEmail", email);
 
       showSuccess(data.message);

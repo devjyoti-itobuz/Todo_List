@@ -28,7 +28,7 @@ export function initForgotPassword({
 
       try {
         const res = await fetch(
-          "http://localhost:3000/auth/forgot-password/send-otp",
+          "http://localhost:3000/user/auth/forgot-password/send-otp",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ export function initForgotPassword({
 
       try {
         // const verifyRes = await fetch(
-        //   "http://localhost:3000/auth/forgot-password/verify-otp",
+        //   "http://localhost:3000/user/auth/forgot-password/verify-otp",
         //   {
         //     method: "POST",
         //     headers: { "Content-Type": "application/json" },
@@ -95,7 +95,7 @@ export function initForgotPassword({
         // }
 
         const resetRes = await fetch(
-          "http://localhost:3000/auth/forgot-password/reset",
+          "http://localhost:3000/user/auth/forgot-password/reset",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -123,7 +123,6 @@ export function initForgotPassword({
         } else {
           showError(resetData.error);
         }
-
       } catch (error) {
         console.error(error);
         showError("An error occurred while resetting your password.");

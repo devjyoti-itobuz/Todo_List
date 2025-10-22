@@ -1,5 +1,5 @@
 async function fetchWithAuth(url, options = {}, retry = false) {
-  const accessToken = localStorage.getItem("access-token");
+  const accessToken = localStorage.getItem("access_token");
 
   const headers = {
     ...(options.headers || {}),
@@ -23,22 +23,22 @@ async function fetchWithAuth(url, options = {}, retry = false) {
       const resBody = await resClone.json();
 
       if (resBody.message === "jwt expired") {
-        const refreshToken = localStorage.getItem("refresh-token");
+        const refreshToken = localStorage.getItem("refresh_token");
 
         if (!refreshToken) {
-          localStorage.removeItem("access-token");
-          localStorage.removeItem("refresh-token");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
           window.location.href = "/pages/login.html";
           return;
         }
 
         const refreshResponse = await fetch(
-          "http://localhost:3000/auth/refresh-token",
+          "http://localhost:3000/user/auth/refresh-token",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "refresh-token": refreshToken,
+              "refresh_token": refreshToken,
             },
           }
         );
@@ -46,13 +46,13 @@ async function fetchWithAuth(url, options = {}, retry = false) {
         if (refreshResponse.ok) {
           const refreshData = await refreshResponse.json();
 
-          localStorage.setItem("access-token", refreshData.accessToken);
-          localStorage.setItem("refresh-token", refreshData.refreshToken);
+          localStorage.setItem("access_token", refreshData.accessToken);
+          localStorage.setItem("refresh_token", refreshData.refreshToken);
 
           return fetchWithAuth(url, options, true);
         } else {
-          localStorage.removeItem("access-token");
-          localStorage.removeItem("refresh-token");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
           window.location.reload();
         }
       }

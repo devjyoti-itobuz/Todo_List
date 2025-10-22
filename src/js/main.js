@@ -14,9 +14,12 @@ let tasks = [];
 let currentFilter = "all";
 let currentPriority = "all";
 
-if (!localStorage.getItem("access-token")) {
+if (!localStorage.getItem("access_token")) {
   window.location.href = "../pages/login.html";
 }
+
+document.getElementById("userEmail").textContent =
+  localStorage.getItem("userEmail");
 
 async function loadTasks() {
   const searchTerm = document.getElementById("searchInput").value.trim();
