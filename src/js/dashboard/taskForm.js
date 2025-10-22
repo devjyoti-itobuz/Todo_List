@@ -1,4 +1,4 @@
-import { createTaskAPI, fetchTasks } from "../api/api.js";
+import { createTaskApi, fetchTasks } from "../api/api.js";
 import { taskForm, taskInput } from "../utils/domHandler.js";
 import { showModal } from "../utils/utilFn.js";
 import { getISTLocalizedTime } from "../utils/utilFn.js";
@@ -36,7 +36,7 @@ export function initTaskForm(loadTasks, renderTasks) {
       updatedAt: getISTLocalizedTime(),
     };
 
-    const newTask = await createTaskAPI(taskData);
+    const newTask = await createTaskApi(taskData);
     
     if (newTask) {
       await loadTasks();

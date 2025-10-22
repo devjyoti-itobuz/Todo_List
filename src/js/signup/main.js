@@ -1,20 +1,20 @@
 import * as bootstrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm";
 
 import { initPasswordToggle } from "../common/passwordToggle.js";
-import { initOTPInputs } from "../common/otpInputs.js";
+import { initOtpInputs } from "../common/otpInputs.js";
 import { initSignupForm } from "./signupForm.js";
-import { initOTPVerification } from "../common/otpVerification.js";
-import { initResendOTP } from "../common/resendOTP.js";
+import { initOtpVerification } from "../common/otpVerification.js";
+import { initResendOtp } from "../common/resendOtp.js";
 
 initPasswordToggle("toggleSignupPassword", "signupPassword");
 initPasswordToggle("toggleConfirmPassword", "confirmPassword");
 
-initOTPInputs();
+initOtpInputs();
 
 initSignupForm("signupForm");
 
-initOTPVerification("verifyOTPForm", "verifyEmailModal", () =>
+initOtpVerification("verifyOTPForm", "verifyEmailModal", () =>
   sessionStorage.getItem("signupEmail")
 );
 
-initResendOTP("resendOTP", () => sessionStorage.getItem("signupEmail"));
+initResendOtp("resendOtp", () => sessionStorage.getItem("signupEmail"));

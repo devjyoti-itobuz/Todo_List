@@ -60,7 +60,7 @@ export function initResetPassword() {
       } catch (error) {
         console.error("Error resetting password:", error);
 
-        showError("An error occurred. Please try again later.");
+        showError(error.message||"An error occurred. Please try again later.");
       }
     });
 }

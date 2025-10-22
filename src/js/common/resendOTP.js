@@ -1,9 +1,8 @@
-import { sendOTP } from "../utils/otpUtils.js";
+import { sendOtp } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 
-export function initResendOTP(resendBtnId, getEmail) {
+export function initResendOtp(resendBtnId, getEmail) {
   document.getElementById(resendBtnId).addEventListener("click", async (e) => {
-    e.preventDefault();
 
     const email = getEmail();
 
@@ -13,7 +12,7 @@ export function initResendOTP(resendBtnId, getEmail) {
     }
 
     try {
-      const response = await sendOTP(email);
+      const response = await sendOtp(email);
 
       if (response.success) {
         showSuccess(response.message);

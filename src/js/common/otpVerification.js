@@ -1,15 +1,15 @@
-import { verifyOTP, getOTPFromInputs } from "../utils/otpUtils.js";
+import { verifyOtp, getOtpFromInputs } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 import * as bootstrap from "bootstrap";
 
-export function initOTPVerification(verifyFormId, modalId, getEmail) {
+export function initOtpVerification(verifyFormId, modalId, getEmail) {
   document
     .getElementById(verifyFormId)
     .addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const email = getEmail();
-      const otp = getOTPFromInputs();
+      const otp = getOtpFromInputs();
 
       if (otp.length !== 6) {
         showError("Please enter the full OTP");
@@ -17,7 +17,7 @@ export function initOTPVerification(verifyFormId, modalId, getEmail) {
       }
 
       try {
-        const data = await verifyOTP(email, otp);
+        const data = await verifyOtp(email, otp);
 
         if (data.success) {
           showSuccess(data.message);
@@ -36,14 +36,14 @@ export function initOTPVerification(verifyFormId, modalId, getEmail) {
             if (backdrop) {
               backdrop.remove();
             }
-
           }
           sessionStorage.removeItem("signupEmail");
         } else {
           showError(data.error);
         }
       } catch (error) {
-        showError(error.message || "An error occurred during OTP verification."
+        showError(
+          error.message || "An error occurred during OTP verification."
         );
       }
     });

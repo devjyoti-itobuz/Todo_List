@@ -5,7 +5,7 @@ import * as bootstrap from "bootstrap";
 const templates = new displayTemplates();
 
 export function initForgotPassword({
-  sendResetOTPId,
+  sendResetOtpId,
   resetPasswordBtnId,
   resetEmailInputId,
   otpInputId,
@@ -16,7 +16,7 @@ export function initForgotPassword({
   let resetEmailGlobal = "";
 
   document
-    .getElementById(sendResetOTPId)
+    .getElementById(sendResetOtpId)
     .addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById(resetEmailInputId).value.trim();
@@ -78,21 +78,21 @@ export function initForgotPassword({
       }
 
       try {
-        const verifyRes = await fetch(
-          "http://localhost:3000/auth/forgot-password/verifyOTP",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: resetEmailGlobal, otp }),
-          }
-        );
+        // const verifyRes = await fetch(
+        //   "http://localhost:3000/auth/forgot-password/verifyOTP",
+        //   {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ email: resetEmailGlobal, otp }),
+        //   }
+        // );
 
-        const verifyData = await verifyRes.json();
+        // const verifyData = await verifyRes.json();
 
-        if (!verifyRes.ok) {
-          showError(verifyData.error);
-          return;
-        }
+        // if (!verifyRes.ok) {
+        //   showError(verifyData.error);
+        //   return;
+        // }
 
         const resetRes = await fetch(
           "http://localhost:3000/auth/forgot-password/reset",

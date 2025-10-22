@@ -1,8 +1,8 @@
 import { initPasswordToggle } from "../common/passwordToggle.js";
-import { initOTPInputs } from "../common/otpInputs.js";
+import { initOtpInputs } from "../common/otpInputs.js";
 import { initLoginForm } from "./loginForm.js";
-import { initOTPVerification } from "../common/otpVerification.js";
-import { initResendOTP } from "../common/resendOTP.js";
+import { initOtpVerification } from "../common/otpVerification.js";
+import { initResendOtp } from "../common/resendOtp.js";
 import { initForgotPassword } from "./forgotPassword.js";
 
 if (localStorage.getItem("access-token")) {
@@ -12,23 +12,23 @@ if (localStorage.getItem("access-token")) {
 initPasswordToggle("togglePassword", "loginPassword");
 initPasswordToggle("togglePasswords", "newPassword");
 
-initOTPInputs();
+initOtpInputs();
 
 initLoginForm("loginForm");
 
-initOTPVerification(
-  "verifyOTPForm",
+initOtpVerification(
+  "verifyOtpForm",
   "verifyEmailModal",
   () => window.emailForVerification
 );
 
-initResendOTP(
-  "resendOTP",
+initResendOtp(
+  "resendOtp",
   () => window.emailForVerification
 );
 
 initForgotPassword({
-  sendResetOTPId: "forgotPasswordForm",
+  sendResetOtpId: "forgotPasswordForm",
   resetPasswordBtnId: "resetPasswordForm",
   resetEmailInputId: "resetEmail",
   otpInputId: "otpInput",

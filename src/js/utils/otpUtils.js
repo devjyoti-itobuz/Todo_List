@@ -1,4 +1,4 @@
-export async function sendOTP(email) {
+export async function sendOtp(email) {
   try {
     const res = await fetch("http://localhost:3000/auth/sendOTP", {
       method: "POST",
@@ -18,7 +18,7 @@ export async function sendOTP(email) {
   }
 }
 
-export async function verifyOTP(email, otp) {
+export async function verifyOtp(email, otp) {
   try {
     const res = await fetch("http://localhost:3000/auth/verifyOTP", {
       method: "POST",
@@ -38,7 +38,7 @@ export async function verifyOTP(email, otp) {
   }
 }
 
-export function showOTPModal(email) {
+export function showOtpModal(email) {
   document.getElementById("verificationEmail").textContent = email;
   const modal = new bootstrap.Modal(
     document.getElementById("verifyEmailModal")
@@ -46,7 +46,7 @@ export function showOTPModal(email) {
   modal.show();
 }
 
-export function getOTPFromInputs() {
+export function getOtpFromInputs() {
   return Array.from(document.querySelectorAll('[id^="otp"]'))
     .map((input) => input.value.trim())
     .join("");

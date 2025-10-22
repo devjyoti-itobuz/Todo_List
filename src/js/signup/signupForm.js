@@ -1,4 +1,4 @@
-import { sendOTP, showOTPModal } from "../utils/otpUtils.js";
+import { sendOtp, showOtpModal } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 
 export function initSignupForm(formId) {
@@ -24,10 +24,10 @@ export function initSignupForm(formId) {
 
       showSuccess(data.message);
 
-      await sendOTP(email);
+      await sendOtp(email);
 
       sessionStorage.setItem("signupEmail", email);
-      showOTPModal(email);
+      showOtpModal(email);
       
     } catch (err) {
       console.error(err);

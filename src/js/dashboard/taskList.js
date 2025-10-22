@@ -1,4 +1,4 @@
-import { updateTaskAPI, deleteTaskAPI, clearAllTasksAPI } from "../api/api.js";
+import { updateTaskApi, deleteTaskApi, clearAllTasksApi } from "../api/api.js";
 import { showModal } from "../utils/utilFn.js";
 import {
   saveEditBtn,
@@ -58,7 +58,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
     completeBtn.onclick = async () => {
 
-      const updatedTask = await updateTaskAPI(task.id, {
+      const updatedTask = await updateTaskApi(task.id, {
         title: task.title,
         priority: task.priority || task.isImportant,
         tags: task.tags || [],
@@ -108,7 +108,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
           return;
         }
 
-        const updatedTask = await updateTaskAPI(task.id, {
+        const updatedTask = await updateTaskApi(task.id, {
           title: newTitle,
           priority: newPriority,
           tags: newTags,
@@ -142,7 +142,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
       const closeModal = () => deleteModal.classList.remove("show");
 
       confirmBtn.onclick = async () => {
-        const success = await deleteTaskAPI(task.id);
+        const success = await deleteTaskApi(task.id);
         
         if (success) {
           tasks = tasks.filter((t) => t.id !== task.id);
@@ -165,7 +165,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
       const closeModal = () => clearModal.classList.remove("show");
 
       confirmBtn.onclick = async () => {
-        const success = await clearAllTasksAPI();
+        const success = await clearAllTasksApi();
 
         if (success) {
           tasks = [];

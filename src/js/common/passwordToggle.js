@@ -1,12 +1,16 @@
 export function initPasswordToggle(toggleBtnId, inputId) {
   const toggleBtn = document.getElementById(toggleBtnId);
 
-  if (!toggleBtn) return;
+  if (!toggleBtn) {
+    return;
+  }
 
   toggleBtn.addEventListener("click", function () {
     const passwordInput = document.getElementById(inputId);
 
-    if (!passwordInput) return;
+    if (!passwordInput) {
+      return;
+    }
 
     const icon = this.querySelector("i");
 
@@ -18,6 +22,5 @@ export function initPasswordToggle(toggleBtnId, inputId) {
       passwordInput.type = "password";
       icon?.classList.replace("fa-eye-slash", "fa-eye");
     }
-
   });
 }

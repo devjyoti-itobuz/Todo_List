@@ -14,6 +14,10 @@ async function fetchWithAuth(url, options = {}, retry = false) {
       headers,
     });
 
+    // if (res.status !== 401) {
+    //   return res;
+    // }
+
     if (res.status === 401 && !retry) {
       const resClone = res.clone();
       const resBody = await resClone.json();
@@ -46,8 +50,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
           localStorage.setItem("refresh-token", refreshData.refreshToken);
 
           return fetchWithAuth(url, options, true);
-        } 
-        else {
+        } else {
           localStorage.removeItem("access-token");
           localStorage.removeItem("refresh-token");
           window.location.reload();
@@ -57,7 +60,6 @@ async function fetchWithAuth(url, options = {}, retry = false) {
 
     console.log(res);
     return res;
-
   } catch (error) {
     console.error("fetchWithAuth error:", error);
     throw error;

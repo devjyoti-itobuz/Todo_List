@@ -1,4 +1,4 @@
-import { sendOTP, showOTPModal } from "../utils/otpUtils.js";
+import { sendOtp, showOtpModal } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 
 export function initLoginForm(formId) {
@@ -24,9 +24,9 @@ export function initLoginForm(formId) {
             data.error || "User not verified. Please verify your email."
           );
           
-          await sendOTP(email);
+          await sendOtp(email);
           
-          showOTPModal(email);
+          showOtpModal(email);
           
           window.emailForVerification = email;
         } else {

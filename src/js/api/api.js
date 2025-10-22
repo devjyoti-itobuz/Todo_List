@@ -53,7 +53,7 @@ export async function fetchTasks(
   }
 }
 
-export async function createTaskAPI(taskData) {
+export async function createTaskApi(taskData) {
   try {
     const response = await fetchWithAuth(API_BASE_URL, {
       method: "POST",
@@ -86,7 +86,7 @@ export async function createTaskAPI(taskData) {
   }
 }
 
-export async function updateTaskAPI(taskId, updates) {
+export async function updateTaskApi(taskId, updates) {
   try {
     const response = await fetchWithAuth(`${API_BASE_URL}/${taskId}`, {
       method: "PUT",
@@ -120,7 +120,7 @@ export async function updateTaskAPI(taskId, updates) {
   }
 }
 
-export async function deleteTaskAPI(taskId) {
+export async function deleteTaskApi(taskId) {
   try {
     const response = await fetchWithAuth(`${API_BASE_URL}/${taskId}`, {
       method: "DELETE",
@@ -144,7 +144,7 @@ export async function deleteTaskAPI(taskId) {
   }
 }
 
-export async function clearAllTasksAPI() {
+export async function clearAllTasksApi() {
   try {
     const response = await fetchWithAuth(API_BASE_URL, {
       method: "DELETE",
