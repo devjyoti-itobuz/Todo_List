@@ -12,9 +12,7 @@
     />
   </head>
   <body class="bg-ligt">
-    <div class="toastSection"
-      id="toastSection"
-    ></div>
+    <div class="toastSection" id="toastSection"></div>
 
     <div class="vh-100 p-lg-5 p-md-2">
       <div class="card shadow h-100 d-flex flex-column">
@@ -36,15 +34,14 @@
                 style="display: none"
               >
                 <!-- <li>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#verifyEmailModal"
+                  <span
+                    class="dropdown-item-text fw-bold text-secondary"
+                    id="userEmail"
                   >
-                    <i class="fas fa-envelope-circle-check"></i> Verify Email
-                  </a>
-                </li> -->
+                    <%= user.email %>
+                  </span>
+                </li>
+                <li><hr class="dropdown-divider" /></li> -->
                 <li>
                   <a
                     class="dropdown-item"

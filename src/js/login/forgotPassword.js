@@ -28,7 +28,7 @@ export function initForgotPassword({
 
       try {
         const res = await fetch(
-          "http://localhost:3000/auth/forgot-password/sendOTP",
+          "http://localhost:3000/auth/forgot-password/send-otp",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ export function initForgotPassword({
 
       try {
         // const verifyRes = await fetch(
-        //   "http://localhost:3000/auth/forgot-password/verifyOTP",
+        //   "http://localhost:3000/auth/forgot-password/verify-otp",
         //   {
         //     method: "POST",
         //     headers: { "Content-Type": "application/json" },

@@ -13,7 +13,7 @@ initOtpInputs();
 
 initSignupForm("signupForm");
 
-initOtpVerification("verifyOTPForm", "verifyEmailModal", () =>
+initOtpVerification("verifyOtpForm", "verifyEmailModal", () =>
   sessionStorage.getItem("signupEmail")
 );
 
