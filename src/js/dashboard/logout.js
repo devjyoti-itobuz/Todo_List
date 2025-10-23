@@ -1,5 +1,7 @@
+import { logoutBtn } from "../utils/domHandler";
+
 export function initLogout() {
-  document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+  logoutBtn?.addEventListener("click", (e) => {
     e.preventDefault();
 
     localStorage.removeItem("access_token");

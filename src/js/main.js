@@ -37,8 +37,8 @@ initPasswordToggle("togglePasswords", "resetNewPassword");
 initTaskForm(loadTasks, renderTasksWrapper);
 
 initFilters(
-  (f) => (currentFilter = f),
-  (p) => (currentPriority = p),
+  (filter) => (currentFilter = filter),
+  (priority) => (currentPriority = priority),
   loadTasks
 );
 

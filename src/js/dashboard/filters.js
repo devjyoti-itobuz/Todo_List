@@ -1,35 +1,51 @@
-import { fetchTasks } from "../api/api.js";
-import {
-  filterButtons,
-  priorityFilterButtons,
-  searchInput,
-} from "../utils/domHandler.js";
+// import { fetchTasks } from "../api/api.js";
+import { filters } from "../utils/domHandler.js";
 
 export function initFilters(setCurrentFilter, setCurrentPriority, loadTasks) {
-  filterButtons.forEach((button) => {
+  initStatusFilters(setCurrentFilter, loadTasks);
+  initPriorityFilters(setCurrentPriority, loadTasks);
+  initSearchFilter(loadTasks);
+}
 
-    button.addEventListener("click", async () => {
-      setCurrentFilter(button.dataset.filter);
-      filterButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      await loadTasks();
-    });
+export function initStatusFilters(setCurrentFilter, loadTasks) {
+  filters.filterButtons.forEach((button) => {
+    button.addEventListener("click", () =>
+      handleStatusFilterClick(button, setCurrentFilter, loadTasks)
+    );
   });
+}
 
-  priorityFilterButtons.forEach((button) => {
-
-    button.addEventListener("click", async () => {
-      setCurrentPriority(button.dataset.filter);
-      priorityFilterButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      await loadTasks();
-    });
+export function initPriorityFilters(setCurrentPriority, loadTasks) {
+  filters.priorityFilterButtons.forEach((button) => {
+    button.addEventListener("click", () =>
+      handlePriorityFilterClick(button, setCurrentPriority, loadTasks)
+    );
   });
+}
 
-  searchInput.addEventListener("input", async () => {
-    
-    await loadTasks();
-  });
+export function initSearchFilter(loadTasks) {
+  filters.searchInput.addEventListener("input", () =>
+    handleSearchInput(loadTasks)
+  );
+}
+
+export async function handleStatusFilterClick(button, setCurrentFilter, loadTasks) {
+  setCurrentFilter(button.dataset.filter);
+  updateActiveButton(filters.filterButtons, button);
+  await loadTasks();
+}
+
+export async function handlePriorityFilterClick(button, setCurrentPriority, loadTasks) {
+  setCurrentPriority(button.dataset.filter);
+  updateActiveButton(filters.priorityFilterButtons, button);
+  await loadTasks();
+}
+
+export async function handleSearchInput(loadTasks) {
+  await loadTasks();
+}
+
+export function updateActiveButton(buttons, activeButton) {
+  buttons.forEach((btn) => btn.classList.remove("active"));
+  activeButton.classList.add("active");
 }

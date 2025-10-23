@@ -1,53 +1,52 @@
 import { sendOtp, showOtpModal } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
+import { login } from "../utils/domHandler.js";
 
-export function initLoginForm(formId) {
-  document.getElementById(formId).addEventListener("submit", async (e) => {
-    e.preventDefault();
+export function initLoginForm() {
+  login.loginForm.addEventListener("submit", handleLoginSubmit);
+}
 
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+export async function handleLoginSubmit(e) {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:3000/user/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  const email = login.loginEmail.value;
+  const password = login.loginPassword.value;
 
-      const data = await res.json();
+  try {
+    const res = await fetch("http://localhost:3000/user/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!res.ok) {
+    const data = await res.json();
 
-        if (res.status === 403) {
-          showError(
-            data.error || "User not verified. Please verify your email."
-          );
-          
-          await sendOtp(email);
-          
-          showOtpModal(email);
-          
-          window.emailForVerification = email;
-        } else {
-          showError(data.error || "Login failed.");
-        }
-        return;
+    if (!res.ok) {
+      if (res.status === 403) {
+        showError(data.error || "User not verified. Please verify your email.");
+
+        await sendOtp(email);
+
+        showOtpModal(email);
+
+        window.emailForVerification = email;
+      } else {
+        showError(data.error || "Login failed.");
       }
-
-      localStorage.setItem("access_token", data.accessToken);
-      localStorage.setItem("refresh_token", data.refreshToken);
-      localStorage.setItem("userEmail", email);
-
-      showSuccess(data.message);
-
-      setTimeout(() => {
-        window.location.href = "/index.html";
-      }, 1000);
-      
-    } catch (err) {
-      console.error("Unexpected login error:", err);
-      showError("An unexpected error occurred during login.");
+      return;
     }
-  });
+
+    localStorage.setItem("access_token", data.accessToken);
+    localStorage.setItem("refresh_token", data.refreshToken);
+    localStorage.setItem("userEmail", email);
+
+    showSuccess(data.message);
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1000);
+  } catch (err) {
+    console.error("Unexpected login error:", err);
+    showError("An unexpected error occurred during login.");
+  }
 }

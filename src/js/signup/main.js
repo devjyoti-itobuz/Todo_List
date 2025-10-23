@@ -11,7 +11,7 @@ initPasswordToggle("toggleConfirmPassword", "confirmPassword");
 
 initOtpInputs();
 
-initSignupForm("signupForm");
+initSignupForm();
 
 initOtpVerification("verifyOtpForm", "verifyEmailModal", () =>
   sessionStorage.getItem("signupEmail")

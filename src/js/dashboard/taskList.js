@@ -1,19 +1,10 @@
 import { updateTaskApi, deleteTaskApi, clearAllTasksApi } from "../api/api.js";
 import { showModal } from "../utils/utilFn.js";
-import {
-  saveEditBtn,
-  editTaskInput,
-  editPrioritySelect,
-  editTagInput,
-  deleteModal,
-  confirmBtn,
-  cancelBtn,
-} from "../utils/domHandler.js";
-import { getISTLocalizedTime } from "../utils/utilFn.js";
+import { dashboard } from "../utils/domHandler.js";
 import * as bootstrap from "bootstrap";
 
 export function renderTasks(tasks, renderTasksCallback, loadTasks) {
-  const taskList = document.getElementById("taskList");
+  const taskList = dashboard.taskList;
   taskList.innerHTML = "";
 
   if (tasks.length === 0) {
@@ -82,23 +73,24 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     editBtn.title = "Edit Task";
 
     editBtn.onclick = () => {
-      editTaskInput.value = task.title;
-      editPrioritySelect.value = task.priority || task.isImportant;
-      editTagInput.value = (task.tags || []).join(", ");
+      dashboard.editTaskInput.value = task.title;
+      dashboard.editPrioritySelect.value = task.priority || task.isImportant;
+      dashboard.editTagInput.value = (task.tags || []).join(", ");
 
-      const editModal = new bootstrap.Modal(
-        document.getElementById("editModal")
-      );
+      const editModal = new bootstrap.Modal(dashboard.editModal);
 
       editModal.show();
 
-      const newSaveBtn = saveEditBtn.cloneNode(true);
-      saveEditBtn.parentNode.replaceChild(newSaveBtn, saveEditBtn);
+      const newSaveBtn = dashboard.saveEditBtn.cloneNode(true);
+      dashboard.saveEditBtn.parentNode.replaceChild(
+        newSaveBtn,
+        dashboard.saveEditBtn
+      );
 
       newSaveBtn.addEventListener("click", async () => {
-        const newTitle = editTaskInput.value.trim();
-        const newPriority = editPrioritySelect.value;
-        const newTags = editTagInput.value
+        const newTitle = dashboard.editTaskInput.value.trim();
+        const newPriority = dashboard.editPrioritySelect.value;
+        const newTags = dashboard.editTagInput.value
           .split(",")
           .map((tag) => tag.trim())
           .filter((tag) => tag);
@@ -137,13 +129,13 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
     deleteBtn.title = "Delete Task";
 
     deleteBtn.onclick = () => {
-      deleteModal.classList.add("show");
+      dashboard.deleteModal.classList.add("show");
       
-      const closeModal = () => deleteModal.classList.remove("show");
+      const closeModal = () => dashboard.deleteModal.classList.remove("show");
 
-      confirmBtn.onclick = async () => {
+      dashboard.confirmBtn.onclick = async () => {
         const success = await deleteTaskApi(task.id);
-        
+
         if (success) {
           tasks = tasks.filter((t) => t.id !== task.id);
           renderTasksCallback();
@@ -153,18 +145,15 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
         closeModal();
       };
-      cancelBtn.onclick = closeModal;
+      dashboard.cancelBtn.onclick = closeModal;
     };
 
-    const clearAllBtn = document.getElementById("clearAllBtn");
-    const clearModal = document.getElementById("deleteModal");
+    dashboard.clearAllBtn.addEventListener("click", () => {
+      dashboard.clearModal.classList.add("show");
 
-    clearAllBtn.addEventListener("click", () => {
-      clearModal.classList.add("show");
+      const closeModal = () => dashboard.clearModal.classList.remove("show");
 
-      const closeModal = () => clearModal.classList.remove("show");
-
-      confirmBtn.onclick = async () => {
+      dashboard.confirmBtn.onclick = async () => {
         const success = await clearAllTasksApi();
 
         if (success) {
@@ -177,7 +166,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
         closeModal();
       };
 
-      cancelBtn.onclick = closeModal;
+      dashboard.cancelBtn.onclick = closeModal;
     });
 
     btnGroup.append(completeBtn, editBtn, deleteBtn);

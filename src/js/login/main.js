@@ -14,7 +14,7 @@ initPasswordToggle("togglePasswords", "newPassword");
 
 initOtpInputs();
 
-initLoginForm("loginForm");
+initLoginForm();
 
 initOtpVerification(
   "verifyOtpForm",

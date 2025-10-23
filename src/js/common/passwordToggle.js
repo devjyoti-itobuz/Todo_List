@@ -1,26 +1,36 @@
-export function initPasswordToggle(toggleBtnId, inputId) {
-  const toggleBtn = document.getElementById(toggleBtnId);
+import { common } from "../utils/domHandler.js";
 
-  if (!toggleBtn) {
+export function initPasswordToggle(toggleBtnId, inputId) {
+  const { toggleBtn, passwordInput } = common.getPasswordToggleElements(
+    toggleBtnId,
+    inputId
+  );
+
+  if (!toggleBtn || !passwordInput) {
     return;
   }
 
-  toggleBtn.addEventListener("click", function () {
-    const passwordInput = document.getElementById(inputId);
+  toggleBtn.addEventListener("click", () =>
+    handlePasswordToggle(passwordInput, toggleBtn)
+  );
+}
 
-    if (!passwordInput) {
-      return;
-    }
+export function handlePasswordToggle(passwordInput, toggleBtn) {
+  const icon = toggleBtn.querySelector("i");
 
-    const icon = this.querySelector("i");
+  if (passwordInput.type === "password") {
+    showPassword(passwordInput, icon);
+  } else {
+    hidePassword(passwordInput, icon);
+  }
+}
 
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      icon?.classList.replace("fa-eye", "fa-eye-slash");
-    } 
-    else {
-      passwordInput.type = "password";
-      icon?.classList.replace("fa-eye-slash", "fa-eye");
-    }
-  });
+export function showPassword(passwordInput, icon) {
+  passwordInput.type = "text";
+  icon?.classList.replace("fa-eye", "fa-eye-slash");
+}
+
+export function hidePassword(passwordInput, icon) {
+  passwordInput.type = "password";
+  icon?.classList.replace("fa-eye-slash", "fa-eye");
 }

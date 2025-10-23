@@ -1,50 +1,56 @@
 import { createTaskApi, fetchTasks } from "../api/api.js";
-import { taskForm, taskInput } from "../utils/domHandler.js";
+import { dashboard } from "../utils/domHandler.js";
 import { showModal } from "../utils/utilFn.js";
 import { getISTLocalizedTime } from "../utils/utilFn.js";
 
 export function initTaskForm(loadTasks, renderTasks) {
-  taskForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  dashboard.taskForm.addEventListener("submit", () =>
+    handleTaskFormSubmit(e, loadTasks, renderTasks)
+  );
+}
 
-    const taskRegex = /^[A-Za-z0-9\s]{3,}$/;
+export async function handleTaskFormSubmit(e, loadTasks, renderTasks) {
+  e.preventDefault();
 
-    if (!taskInput.value.trim() || !taskRegex.test(taskInput.value.trim())) {
-      showModal("Please enter a valid task (min 3 characters).");
-      return;
-    }
+  const taskRegex = /^[A-Za-z0-9\s]{3,}$/;
 
-    const priority = document.getElementById("prioritySelect").value;
+  if (
+    !dashboard.taskInput.value.trim() ||
+    !taskRegex.test(dashboard.taskInput.value.trim())
+  ) {
+    showModal("Please enter a valid task (min 3 characters).");
+    return;
+  }
 
-    if (!priority) {
-      showModal("Please enter priority.");
-      return;
-    }
+  const priority = dashboard.prioritySelect.value;
 
-    const tags = document
-      .getElementById("tagInput")
-      .value.split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
+  if (!priority) {
+    showModal("Please enter priority.");
+    return;
+  }
 
-    const taskData = {
-      title: taskInput.value.trim(),
-      priority,
-      tags,
-      isCompleted: false,
-      createdAt: getISTLocalizedTime(),
-      updatedAt: getISTLocalizedTime(),
-    };
+  const tags = dashboard.tagInput.value
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
 
-    const newTask = await createTaskApi(taskData);
-    
-    if (newTask) {
-      await loadTasks();
-    }
+  const taskData = {
+    title: dashboard.taskInput.value.trim(),
+    priority,
+    tags,
+    isCompleted: false,
+    createdAt: getISTLocalizedTime(),
+    updatedAt: getISTLocalizedTime(),
+  };
 
-    taskInput.value = "";
-    document.getElementById("tagInput").value = "";
+  const newTask = await createTaskApi(taskData);
 
-    renderTasks();
-  });
+  if (newTask) {
+    await loadTasks();
+  }
+
+  dashboard.taskInput.value = "";
+  dashboard.tagInput.value = "";
+
+  renderTasks();
 }

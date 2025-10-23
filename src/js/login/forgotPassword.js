@@ -78,21 +78,6 @@ export function initForgotPassword({
       }
 
       try {
-        // const verifyRes = await fetch(
-        //   "http://localhost:3000/user/auth/forgot-password/verify-otp",
-        //   {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({ email: resetEmailGlobal, otp }),
-        //   }
-        // );
-
-        // const verifyData = await verifyRes.json();
-
-        // if (!verifyRes.ok) {
-        //   showError(verifyData.error);
-        //   return;
-        // }
 
         const resetRes = await fetch(
           "http://localhost:3000/user/auth/forgot-password/reset",

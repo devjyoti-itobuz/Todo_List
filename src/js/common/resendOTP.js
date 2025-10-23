@@ -1,29 +1,40 @@
+// import { getResendButton } from "../utils/domHandler.js";
 import { sendOtp } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
+import { common } from "../utils/domHandler.js";
 
 export function initResendOtp(resendBtnId, getEmail) {
-  document.getElementById(resendBtnId).addEventListener("click", async (e) => {
+  const resendBtn = common.getResendButton(resendBtnId);
 
-    const email = getEmail();
+  if (!resendBtn) {
+    return;
+  }
 
-    if (!email) {
-      showError("Email not found");
-      return;
-    }
+  resendBtn.addEventListener("click", () => handleResendOtp(getEmail));
+}
 
-    try {
-      const response = await sendOtp(email);
+export async function handleResendOtp(getEmail) {
+  const email = getEmail();
 
-      if (response.success) {
-        showSuccess(response.message);
-      } 
-      else {
-        showError(response.error);
-      }
+  if (!email) {
+    showError("Email not found");
+    return;
+  }
 
-    } catch (err) {
-      console.error(err);
-      showError(err.message || "An error occurred while resending OTP");
-    }
-  });
+  try {
+    await processOtpResend(email);
+  } catch (err) {
+    console.error(err);
+    showError(err.message || "An error occurred while resending OTP");
+  }
+}
+
+export async function processOtpResend(email) {
+  const response = await sendOtp(email);
+
+  if (response.success) {
+    showSuccess(response.message);
+  } else {
+    showError(response.error);
+  }
 }

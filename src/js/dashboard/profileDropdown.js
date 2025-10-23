@@ -1,29 +1,26 @@
+import { profileDropdown } from "../utils/domHandler";
+
 export function initProfileDropdown() {
-  const profileBtn = document.getElementById("profileDropdown");
-  const profileMenu = document.getElementById("profileMenu");
   let hideTimeout;
 
-  profileBtn.addEventListener("mouseenter", () => {
-
+  profileDropdown.profileBtn.addEventListener("mouseenter", () => {
     clearTimeout(hideTimeout);
-    profileMenu.style.display = "block";
+    profileDropdown.profileMenu.style.display = "block";
   });
 
-  profileBtn.parentElement.addEventListener("mouseleave", () => {
-
+  profileDropdown.profileBtn.parentElement.addEventListener("mouseleave", () => {
     hideTimeout = setTimeout(() => {
-      profileMenu.style.display = "none";
+      profileDropdown.profileMenu.style.display = "none";
     }, 300);
   });
 
-  profileMenu.addEventListener("mouseenter", () => {
+  profileDropdown.profileMenu.addEventListener("mouseenter", () => {
     clearTimeout(hideTimeout);
   });
 
-  profileMenu.addEventListener("mouseleave", () => {
-    
+  profileDropdown.profileMenu.addEventListener("mouseleave", () => {
     hideTimeout = setTimeout(() => {
-      profileMenu.style.display = "none";
+      profileDropdown.profileMenu.style.display = "none";
     }, 300);
   });
 }
