@@ -4,7 +4,7 @@ import { showModal } from "../utils/utilFn.js";
 import { getISTLocalizedTime } from "../utils/utilFn.js";
 
 export function initTaskForm(loadTasks, renderTasks) {
-  dashboard.taskForm.addEventListener("submit", () =>
+  dashboard.taskForm.addEventListener("submit", (e) =>
     handleTaskFormSubmit(e, loadTasks, renderTasks)
   );
 }
