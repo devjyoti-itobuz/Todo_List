@@ -1,4 +1,4 @@
-import { createTaskApi, fetchTasks } from "../api/api.js";
+import { createTaskApi } from "../api/api.js";
 import { dashboard } from "../utils/domHandler.js";
 import { showModal } from "../utils/utilFn.js";
 import { getISTLocalizedTime } from "../utils/utilFn.js";

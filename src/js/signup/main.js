@@ -1,5 +1,3 @@
-import * as bootstrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm";
-
 import { initPasswordToggle } from "../common/passwordToggle.js";
 import { initOtpInputs } from "../common/otpInputs.js";
 import { initSignupForm } from "./signupForm.js";

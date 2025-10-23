@@ -1,5 +1,4 @@
 import { showError, showSuccess } from "../utils/toastHelper.js";
-import displayTemplates from "../utils/utilFn.js";
 import * as bootstrap from "bootstrap";
 
 export function initForgotPassword(

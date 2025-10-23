@@ -1,3 +1,5 @@
+import * as bootstrap from "bootstrap";
+
 export async function sendOtp(email) {
   try {
     const res = await fetch("http://localhost:3000/user/auth/send-otp", {
