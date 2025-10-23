@@ -1,10 +1,8 @@
-// import { getResendButton } from "../utils/domHandler.js";
+
 import { sendOtp } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
-import { common } from "../utils/domHandler.js";
 
-export function initResendOtp(resendBtnId, getEmail) {
-  const resendBtn = common.getResendButton(resendBtnId);
+export function initResendOtp(resendBtn, getEmail) {
 
   if (!resendBtn) {
     return;
@@ -23,8 +21,9 @@ export async function handleResendOtp(getEmail) {
 
   try {
     await processOtpResend(email);
+
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     showError(err.message || "An error occurred while resending OTP");
   }
 }

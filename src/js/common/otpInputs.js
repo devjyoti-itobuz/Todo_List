@@ -1,7 +1,6 @@
 import { common } from "../utils/domHandler.js";
 
-export function initOtpInputs(prefix = "otp") {
-  // const otpInputs = document.querySelectorAll(`[id^="${prefix}"]`);
+export function initOtpInputs() {
 
   common.otpInputs.forEach((input, index) => {
     input.addEventListener("input", () => otpCheck(index));

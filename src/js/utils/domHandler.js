@@ -1,5 +1,3 @@
-export const searchInput = document.getElementById("searchInput");
-
 export const signup = {
   signupForm: document.getElementById("signupForm"),
   signupEmail: document.getElementById("signupEmail"),
@@ -9,7 +7,7 @@ export const signup = {
 export const login = {
   loginForm: document.getElementById("loginForm"),
   loginEmail: document.getElementById("loginEmail"),
-  loginPassword: document.getElementById("loginPassword")
+  loginPassword: document.getElementById("loginPassword"),
 };
 
 export const dashboard = {
@@ -30,6 +28,16 @@ export const dashboard = {
   clearModal: document.getElementById("deleteModal"),
 };
 
+export const forgotPassword = {
+  sendResetOtpId: document.getElementById("forgotPasswordForm"),
+  resetPasswordBtnId: document.getElementById("resetPasswordForm"),
+  resetEmailInputId: document.getElementById("resetEmail"),
+  otpInputId: document.getElementById("otpInput"),
+  newPasswordInputId: document.getElementById("newPassword"),
+  forgotPasswordModalId: document.getElementById("forgotPasswordModal"),
+  resetPasswordModalId: document.getElementById("resetPasswordModal"),
+};
+
 export const resetPassword = {
   resetPasswordForm: document.getElementById("resetPasswordForm"),
   resetCurrentPassword: document.getElementById("resetCurrentPassword"),
@@ -46,13 +54,15 @@ export const profileDropdown = {
 
 export const common = {
   otpInputs: document.querySelectorAll('[id^="otp"]'),
+  resendBtnId: document.getElementById("resendOtp"),
 
   getPasswordToggleElements: (toggleBtnId, inputId) => ({
     toggleBtn: document.getElementById(toggleBtnId),
     passwordInput: document.getElementById(inputId),
   }),
 
-  getResendButton: (resendBtnId) => document.getElementById(resendBtnId),
+  verifyOtpForm: document.getElementById("verifyOtpForm"),
+  verifyEmailModal: document.getElementById("verifyEmailModal"),
 };
 
 export const filters = {
@@ -61,4 +71,5 @@ export const filters = {
     "#priorityFilterButtons button"
   ),
   searchInput: document.getElementById("searchInput"),
+  userEmail: document.getElementById("userEmail"),
 };

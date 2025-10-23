@@ -31,9 +31,11 @@ export async function handleSignupSubmit(e) {
     await sendOtp(email);
 
     sessionStorage.setItem("signupEmail", email);
+
     showOtpModal(email);
+
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     showError("Something went wrong. Please try again.");
   }
 }

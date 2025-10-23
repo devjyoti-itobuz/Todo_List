@@ -6,17 +6,12 @@ async function fetchWithAuth(url, options = {}, retry = false) {
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
   };
-  // console.log("Sending token:", accessToken);
 
   try {
     const res = await fetch(url, {
       ...options,
       headers,
     });
-
-    // if (res.status !== 401) {
-    //   return res;
-    // }
 
     if (res.status === 401 && !retry) {
       const resClone = res.clone();
@@ -58,10 +53,10 @@ async function fetchWithAuth(url, options = {}, retry = false) {
       }
     }
 
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
-    console.error("fetchWithAuth error:", error);
+    // console.error("fetchWithAuth error:", error);
     throw error;
   }
 }

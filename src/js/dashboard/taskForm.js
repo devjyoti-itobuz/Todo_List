@@ -46,6 +46,7 @@ export async function handleTaskFormSubmit(e, loadTasks, renderTasks) {
   const newTask = await createTaskApi(taskData);
 
   if (newTask) {
+    
     await loadTasks();
   }
 

@@ -57,7 +57,7 @@ async function handleResetPasswordSubmit(e) {
       showError(data.error);
     }
   } catch (error) {
-    console.error("Error resetting password:", error);
+    // console.error("Error resetting password:", error);
 
     showError(error.message || "An error occurred. Please try again later.");
   }

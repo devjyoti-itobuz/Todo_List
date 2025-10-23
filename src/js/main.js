@@ -9,6 +9,7 @@ import { initProfileDropdown } from "./dashboard/profileDropdown.js";
 import { initLogout } from "./dashboard/logout.js";
 import { fetchTasks } from "./api/api.js";
 import { initPasswordToggle } from "./common/passwordToggle.js";
+import { filters } from "./utils/domHandler.js";
 
 let tasks = [];
 let currentFilter = "all";
@@ -18,11 +19,10 @@ if (!localStorage.getItem("access_token")) {
   window.location.href = "../pages/login.html";
 }
 
-document.getElementById("userEmail").textContent =
-  localStorage.getItem("userEmail");
+filters.userEmail.textContent = localStorage.getItem("userEmail");
 
 async function loadTasks() {
-  const searchTerm = document.getElementById("searchInput").value.trim();
+  const searchTerm = filters.searchInput.value.trim();
   tasks = await fetchTasks(searchTerm, currentFilter, currentPriority);
   renderTasks(tasks, renderTasksWrapper, loadTasks);
 }

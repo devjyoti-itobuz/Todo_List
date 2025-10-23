@@ -22,6 +22,7 @@ export async function handleLoginSubmit(e) {
     const data = await res.json();
 
     if (!res.ok) {
+      
       if (res.status === 403) {
         showError(data.error || "User not verified. Please verify your email.");
 
@@ -33,6 +34,7 @@ export async function handleLoginSubmit(e) {
       } else {
         showError(data.error || "Login failed.");
       }
+
       return;
     }
 
@@ -45,8 +47,9 @@ export async function handleLoginSubmit(e) {
     setTimeout(() => {
       window.location.href = "/";
     }, 1000);
+
   } catch (err) {
-    console.error("Unexpected login error:", err);
+    // console.error("Unexpected login error:", err);
     showError("An unexpected error occurred during login.");
   }
 }

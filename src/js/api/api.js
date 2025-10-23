@@ -78,7 +78,7 @@ export async function createTaskApi(taskData) {
 
     return data.task;
   } catch (error) {
-    console.error("Error creating task:", error);
+    // console.error("Error creating task:", error);
 
     showModal("Failed to create task.");
 
@@ -112,7 +112,7 @@ export async function updateTaskApi(taskId, updates) {
 
     return data.task;
   } catch (error) {
-    console.error("Error updating task:", error);
+    // console.error("Error updating task:", error);
 
     showModal("Failed to update task");
 
@@ -136,7 +136,7 @@ export async function deleteTaskApi(taskId) {
     return true;
 
   } catch (error) {
-    console.error("Error deleting task:", error);
+    // console.error("Error deleting task:", error);
 
     showModal("Failed to delete task");
 
@@ -160,7 +160,7 @@ export async function clearAllTasksApi() {
     return true;
     
   } catch (error) {
-    console.error("Error clearing tasks:", error);
+    // console.error("Error clearing tasks:", error);
 
     showModal("Failed to clear all tasks");
     
