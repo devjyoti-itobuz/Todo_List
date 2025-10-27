@@ -1,4 +1,5 @@
 import { profileDropdown } from "../utils/domHandler";
+import { initProfile } from "./profile.js";
 
 export function initProfileDropdown() {
   let hideTimeout;
@@ -28,4 +29,6 @@ export function initProfileDropdown() {
       profileDropdown.profileMenu.style.display = "none";
     }, 300);
   });
+
+  initProfile();
 }

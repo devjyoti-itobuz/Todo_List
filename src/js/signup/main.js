@@ -1,3 +1,6 @@
+// Import our custom CSS
+import "../../scss/styles.scss";
+
 import { initPasswordToggle } from "../common/passwordToggle.js";
 import { initOtpInputs } from "../common/otpInputs.js";
 import { initSignupForm } from "./signupForm.js";

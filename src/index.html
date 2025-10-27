@@ -26,7 +26,7 @@
                 id="profileDropdown"
                 title="Profile"
               >
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user" id="profileIcon"></i>
               </button>
               <ul
                 class="dropdown-menu dropdown-menu-start"
@@ -39,6 +39,18 @@
                     id="userEmail"
                   >
                   </span>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#profileOffcanvas"
+                    aria-controls="profileOffcanvas"
+                  >
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                  </a>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
@@ -347,6 +359,50 @@
             </form>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="profileOffcanvas"
+      aria-labelledby="profileOffcanvasLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 id="profileOffcanvasLabel">Edit Profile</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="text-center">
+          <img
+            src="/assets/profile.webp"
+            alt="Profile Photo"
+            id="profileImage"
+            class="img-fluid rounded-circle mb-3"
+            style="width: 100px; height: 100px"
+          />
+          <br />
+          <button class="btn btn-outline-dark" id="changePhotoBtn">
+            <i class="fas fa-camera"></i> Change Photo
+          </button>
+        </div>
+        <div class="form-group mt-3">
+          <label for="name">Enter your Name</label>
+          <input
+            type="name"
+            class="form-control"
+            id="nameInput"
+            placeholder="Enter your name"
+          />
+        </div>
+        <button class="m-auto btn btn-dark mt-4" id="saveProfileBtn">
+          Save Changes
+        </button>
       </div>
     </div>
   </body>

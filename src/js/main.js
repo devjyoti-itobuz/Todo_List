@@ -19,7 +19,7 @@ if (!localStorage.getItem("access_token")) {
   window.location.href = "../pages/login.html";
 }
 
-filters.userEmail.textContent = localStorage.getItem("userEmail");
+// filters.userEmail.textContent = localStorage.getItem("userEmail");
 
 async function loadTasks() {
   const searchTerm = filters.searchInput.value.trim();

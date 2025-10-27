@@ -10,6 +10,15 @@ export const login = {
   loginPassword: document.getElementById("loginPassword"),
 };
 
+export const profile = {
+  profileImage: document.getElementById("profileImage"),
+  changePhotoBtn: document.getElementById("changePhotoBtn"),
+  nameInput: document.getElementById("nameInput"),
+  userEmail: document.getElementById("userEmail"),
+  saveProfileBtn: document.getElementById("saveProfileBtn"),
+  profileIcon: document.getElementById("profileIcon"),
+};
+
 export const dashboard = {
   taskForm: document.getElementById("taskForm"),
   taskList: document.getElementById("taskList"),

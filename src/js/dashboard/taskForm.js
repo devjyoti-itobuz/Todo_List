@@ -32,7 +32,7 @@ export async function handleTaskFormSubmit(e, loadTasks, renderTasks) {
   const tags = dashboard.tagInput.value
     .split(",")
     .map((tag) => tag.trim())
-    .filter(Boolean);
+    .filter((tag) => Boolean(tag));
 
   const taskData = {
     title: dashboard.taskInput.value.trim(),

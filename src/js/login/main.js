@@ -1,3 +1,6 @@
+// Import our custom CSS
+import "../../scss/styles.scss";
+
 import { initPasswordToggle } from "../common/passwordToggle.js";
 import { initOtpInputs } from "../common/otpInputs.js";
 import { initLoginForm } from "./loginForm.js";
@@ -22,7 +25,7 @@ initOtpVerification(
   common.verifyEmailModal,
   () => window.emailForVerification
 );
- 
+
 initResendOtp(common.resendBtnId, () => window.emailForVerification);
 
 initForgotPassword(
