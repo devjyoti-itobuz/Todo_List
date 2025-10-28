@@ -1,19 +1,19 @@
 import { showError, showSuccess } from "../utils/toastHelper.js";
 import * as bootstrap from "bootstrap";
+import { sendForgotPasswordOtp, resetForgotPassword } from "../api/userApi.js";
 
 export function initForgotPassword(
-  sendResetOtpId,
-  resetPasswordBtnId,
-  resetEmailInputId,
-  otpInputId,
-  newPasswordInputId,
-  forgotPasswordModalId,
-  resetPasswordModalId
+  sendResetOtpForm,
+  resetPasswordForm,
+  resetEmailInput,
+  otpInput,
+  newPasswordInput,
+  forgotPasswordModal,
+  resetPasswordModal
 ) {
-
   async function handleSendOtp(e) {
     e.preventDefault();
-    const email = resetEmailInputId.value.trim();
+    const email = resetEmailInput.value.trim();
 
     if (!email) {
       showError("Please enter your email.");
@@ -21,43 +21,26 @@ export function initForgotPassword(
     }
 
     try {
-      const res = await fetch(
-        "http://localhost:3000/user/auth/forgot-password/send-otp",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
-      );
+      const { ok, data } = await sendForgotPasswordOtp(email);
 
-      const data = await res.json();
-
-      if (res.ok) {
+      if (ok) {
         window.emailForVerification = email;
         showSuccess(data.message);
 
-        const forgotModal = bootstrap.Modal.getInstance(forgotPasswordModalId);
-        forgotModal.hide();
-
-        const resetModal =
-          bootstrap.Modal.getOrCreateInstance(resetPasswordModalId);
-
-        resetModal.show();
+        bootstrap.Modal.getInstance(forgotPasswordModal)?.hide();
+        bootstrap.Modal.getOrCreateInstance(resetPasswordModal).show();
       } else {
         showError(data.error);
       }
-
-    } catch {
-      // console.error(error);
-      showError("Something went wrong while sending OTP.");
+    } catch (error) {
+      showError(error.message || "Something went wrong while sending OTP.");
     }
   }
 
   async function handleResetPassword(e) {
     e.preventDefault();
-
-    const otp = otpInputId.value.trim();
-    const newPassword = newPasswordInputId.value.trim();
+    const otp = otpInput.value.trim();
+    const newPassword = newPasswordInput.value.trim();
 
     if (!otp || !newPassword) {
       showError("Please fill in all fields.");
@@ -65,41 +48,30 @@ export function initForgotPassword(
     }
 
     try {
-      const resetRes = await fetch(
-        "http://localhost:3000/user/auth/forgot-password/reset",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: window.emailForVerification,
-            otp,
-            newPassword,
-          }),
-        }
+      const { ok, data } = await resetForgotPassword(
+        window.emailForVerification,
+        otp,
+        newPassword
       );
 
-      const resetData = await resetRes.json();
+      if (ok) {
+        showSuccess(data.message);
 
-      if (resetRes.ok) {
-        showSuccess(resetData.message);
-
-        const resetModal =
-          bootstrap.Modal.getOrCreateInstance(resetPasswordModalId);
-        resetModal.hide();
-
+        const modal = bootstrap.Modal.getOrCreateInstance(resetPasswordModal);
+        modal.hide();
         document
           .querySelectorAll(".modal-backdrop")
           .forEach((el) => el.remove());
       } else {
-        showError(resetData.error);
+        showError(data.error);
       }
-
-    } catch {
-      // console.error(error);
-      showError("An error occurred while resetting your password.");
+    } catch (error) {
+      showError(
+        error.message || "An error occurred while resetting your password."
+      );
     }
   }
 
-  sendResetOtpId.addEventListener("submit", handleSendOtp);
-  resetPasswordBtnId.addEventListener("submit", handleResetPassword);
+  sendResetOtpForm.addEventListener("submit", handleSendOtp);
+  resetPasswordForm.addEventListener("submit", handleResetPassword);
 }

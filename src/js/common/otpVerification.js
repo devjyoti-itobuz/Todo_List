@@ -1,4 +1,5 @@
-import { verifyOtp, getOtpFromInputs } from "../utils/otpUtils.js";
+import { verifyOtp } from "../api/userApi.js";
+import { getOtpFromInputs } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 import * as bootstrap from "bootstrap";
 

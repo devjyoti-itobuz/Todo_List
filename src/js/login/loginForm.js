@@ -1,4 +1,5 @@
-import { sendOtp, showOtpModal } from "../utils/otpUtils.js";
+import { loginUser, sendOtp } from "../api/userApi.js";
+import { showOtpModal } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 import { login } from "../utils/domHandler.js";
 
@@ -9,32 +10,28 @@ export function initLoginForm() {
 export async function handleLoginSubmit(e) {
   e.preventDefault();
 
-  const email = login.loginEmail.value;
-  const password = login.loginPassword.value;
+  const email = login.loginEmail.value.trim();
+  const password = login.loginPassword.value.trim();
+
+  if (!email || !password) {
+    showError("Please enter both email and password.");
+    return;
+  }
 
   try {
-    const res = await fetch("http://localhost:3000/user/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const { ok, status, data } = await loginUser(email, password);
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      
-      if (res.status === 403) {
+    if (!ok) {
+      if (status === 403) {
         showError(data.error || "User not verified. Please verify your email.");
 
         await sendOtp(email);
 
         showOtpModal(email);
-
         window.emailForVerification = email;
       } else {
         showError(data.error || "Login failed.");
       }
-
       return;
     }
 
@@ -47,9 +44,8 @@ export async function handleLoginSubmit(e) {
     setTimeout(() => {
       window.location.href = "/";
     }, 1000);
-
-  } catch {
-    // console.error("Unexpected login error:", err);
-    showError("An unexpected error occurred during login.");
+    
+  } catch (error) {
+    showError(error.message || "An unexpected error occurred during login.");
   }
 }

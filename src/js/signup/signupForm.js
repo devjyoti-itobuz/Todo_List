@@ -1,4 +1,5 @@
-import { sendOtp, showOtpModal } from "../utils/otpUtils.js";
+import { registerUser, sendOtp } from "../api/userApi.js";
+import { showOtpModal } from "../utils/otpUtils.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 import { signup } from "../utils/domHandler.js";
 
@@ -9,20 +10,19 @@ export function initSignupForm() {
 export async function handleSignupSubmit(e) {
   e.preventDefault();
 
-  const email = signup.signupEmail.value;
-  const password = signup.signupPassword.value;
+  const email = signup.signupEmail.value.trim();
+  const password = signup.signupPassword.value.trim();
+
+  if (!email || !password) {
+    showError("Please enter both email and password.");
+    return;
+  }
 
   try {
-    const res = await fetch("http://localhost:3000/user/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const { ok, data } = await registerUser(email, password);
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      showError(data.error);
+    if (!ok) {
+      showError(data.error || "Signup failed.");
       return;
     }
 
@@ -33,9 +33,8 @@ export async function handleSignupSubmit(e) {
     sessionStorage.setItem("signupEmail", email);
 
     showOtpModal(email);
-
-  } catch{
-    // console.error(err);
-    showError("Something went wrong. Please try again.");
+    
+  } catch (error) {
+    showError(error.message || "Something went wrong. Please try again.");
   }
 }
