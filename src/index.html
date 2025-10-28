@@ -378,31 +378,45 @@
         ></button>
       </div>
       <div class="offcanvas-body">
-        <div class="text-center">
-          <img
-            src="/assets/profile.webp"
-            alt="Profile Photo"
-            id="profileImage"
-            class="img-fluid rounded-circle mb-3"
-            style="width: 100px; height: 100px"
-          />
-          <br />
-          <button class="btn btn-outline-dark" id="changePhotoBtn">
-            <i class="fas fa-camera"></i> Change Photo
-          </button>
-        </div>
-        <div class="form-group mt-3">
-          <label for="name">Enter your Name</label>
-          <input
-            type="name"
-            class="form-control"
-            id="nameInput"
-            placeholder="Enter your name"
-          />
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-          <button class="w-100 btn btn-dark" id="saveProfileBtn">Save Changes</button>
-        </div>
+        <form id="profileForm">
+          <div class="text-center">
+            <img
+              src="/assets/profile.webp"
+              alt="Profile Photo"
+              id="profileImage"
+              class="img-fluid rounded-circle mb-3"
+              style="width: 100px; height: 100px"
+            />
+            <br />
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              id="changePhotoBtn"
+            >
+              <i class="fas fa-camera"></i> Change Photo
+            </button>
+          </div>
+          <div class="form-group mt-3">
+            <label for="nameInput">Enter your Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nameInput"
+              name="name"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div class="d-flex justify-content-center mt-4">
+            <button
+              type="submit"
+              class="w-100 btn btn-dark"
+              id="saveProfileBtn"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </body>

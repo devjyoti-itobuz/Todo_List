@@ -1,7 +1,9 @@
 import fetchWithAuth from "./fetchWithAuth.js";
 
+const API_USER = "http://localhost:3000/user/auth";
+
 export async function registerUser(email, password) {
-  const res = await fetch("http://localhost:3000/user/auth/register", {
+  const res = await fetch(`${API_USER}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -12,7 +14,7 @@ export async function registerUser(email, password) {
 }
 
 export async function loginUser(email, password) {
-  const res = await fetch("http://localhost:3000/user/auth/login", {
+  const res = await fetch(`${API_USER}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -23,23 +25,20 @@ export async function loginUser(email, password) {
 }
 
 export async function resetUserPassword(currentPassword, newPassword) {
-  const response = await fetchWithAuth(
-    "http://localhost:3000/user/auth/reset-password",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ currentPassword, newPassword }),
-    }
-  );
+  const response = await fetchWithAuth(`${API_USER}/reset-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
 
   const data = await response.json();
   return { ok: response.ok, data };
 }
 
 export async function sendOtp(email) {
-  const res = await fetch("http://localhost:3000/user/auth/send-otp", {
+  const res = await fetch(`${API_USER}/send-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -55,7 +54,7 @@ export async function sendOtp(email) {
 }
 
 export async function verifyOtp(email, otp) {
-  const res = await fetch("http://localhost:3000/user/auth/verify-otp", {
+  const res = await fetch(`${API_USER}/verify-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, otp }),
@@ -71,29 +70,39 @@ export async function verifyOtp(email, otp) {
 }
 
 export async function sendForgotPasswordOtp(email) {
-  const res = await fetch(
-    "http://localhost:3000/user/auth/forgot-password/send-otp",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    }
-  );
+  const res = await fetch(`${API_USER}/forgot-password/send-otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
 
   const data = await res.json();
   return { ok: res.ok, data };
 }
 
 export async function resetForgotPassword(email, otp, newPassword) {
-  const res = await fetch(
-    "http://localhost:3000/user/auth/forgot-password/reset",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp, newPassword }),
-    }
-  );
+  const res = await fetch(`${API_USER}/forgot-password/reset`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp, newPassword }),
+  });
 
   const data = await res.json();
   return { ok: res.ok, data };
+}
+
+export async function getUserDetails() {
+  const res = await fetchWithAuth(`${API_USER}/details`, {
+    method: "GET",
+  });
+  return res.json();
+}
+
+export async function updateUserDetails(name, profileImage) {
+  const res = await fetchWithAuth(`${API_USER}/update-details`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, profileImage }),
+  });
+  return res.json();
 }

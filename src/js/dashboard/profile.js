@@ -1,19 +1,12 @@
 import { showError, showSuccess } from "../utils/toastHelper.js";
-import fetchWithAuth from "../api/fetchWithAuth";
 import { profile } from "../utils/domHandler.js";
+import * as bootstrap from "bootstrap";
+import { getUserDetails, updateUserDetails } from "../api/userApi.js";
 
 export function initProfile() {
-
   async function loadUserDetails() {
     try {
-      const res = await fetchWithAuth(
-        "http://localhost:3000/user/auth/details",
-        {
-          method: "GET",
-        }
-      );
-
-      const data = await res.json();
+      const data = await getUserDetails();
       if (data.success) {
         const user = data.details[0];
         profile.userEmail.textContent = user.email;
@@ -41,18 +34,19 @@ export function initProfile() {
         const reader = new FileReader();
         reader.onload = (e) => {
           profile.profileImage.src = e.target.result;
-          profile.profileImage.dataset.newImage = e.target.result; // Store temporary base64 image
+          profile.profileImage.dataset.newImage = e.target.result;
         };
         reader.readAsDataURL(file);
       }
     });
   });
 
-  profile.saveProfileBtn.addEventListener("click", async () => {
+  profile.profileForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     const name = profile.nameInput.value.trim();
     const profileImageData =
       profile.profileImage.dataset.newImage || profile.profileImage.src;
-      console.log(profileImageData)
 
     if (!name) {
       showError("Please enter your name before saving.");
@@ -60,21 +54,7 @@ export function initProfile() {
     }
 
     try {
-      const res = await fetchWithAuth(
-        "http://localhost:3000/user/auth/update-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            profileImage: profileImageData,
-          }),
-        }
-      );
-
-      const data = await res.json();
+      const data = await updateUserDetails(name, profileImageData);
 
       if (data.success) {
         showSuccess("Profile updated successfully!");
@@ -82,6 +62,11 @@ export function initProfile() {
         profile.nameInput.value = data.user.name;
         profile.profileImage.src = data.user.profileImage;
         profile.profileImage.removeAttribute("data-new-image");
+
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(
+          profile.offcanvasEl
+        );
+        offcanvasInstance.hide();
       } else {
         showError(data.error || "Failed to update profile.");
         console.error(data);

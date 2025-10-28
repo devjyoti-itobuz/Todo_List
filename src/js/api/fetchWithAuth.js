@@ -1,5 +1,7 @@
 import { showError } from "../utils/toastHelper";
 
+const API_USER = "http://localhost:3000/user/auth";
+
 async function fetchWithAuth(url, options = {}, retry = false) {
   const accessToken = localStorage.getItem("access_token");
 
@@ -30,7 +32,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
         }
 
         const refreshResponse = await fetch(
-          "http://localhost:3000/user/auth/refresh-token",
+          `${API_USER}/refresh-token`,
           {
             method: "POST",
             headers: {

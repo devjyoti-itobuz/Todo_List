@@ -17,6 +17,8 @@ export const profile = {
   userEmail: document.getElementById("userEmail"),
   saveProfileBtn: document.getElementById("saveProfileBtn"),
   profileIcon: document.getElementById("profileIcon"),
+  profileForm: document.getElementById("profileForm"),
+  offcanvasEl: document.getElementById("profileOffcanvas"),
 };
 
 export const dashboard = {
