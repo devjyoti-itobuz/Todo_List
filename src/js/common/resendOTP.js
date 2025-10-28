@@ -1,5 +1,5 @@
 
-import { sendOtp } from "../utils/otpUtils.js";
+import { sendOtp } from "../api/userApi.js";
 import { showSuccess, showError } from "../utils/toastHelper.js";
 
 export function initResendOtp(resendBtn, getEmail) {

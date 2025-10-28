@@ -1,37 +1,5 @@
 import * as bootstrap from "bootstrap";
 
-export async function sendOtp(email) {
-  const res = await fetch("http://localhost:3000/user/auth/send-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error || "Failed to send OTP");
-  }
-
-  return data;
-}
-
-export async function verifyOtp(email, otp) {
-  const res = await fetch("http://localhost:3000/user/auth/verify-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, otp }),
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error || "OTP verification failed");
-  }
-
-  return data;
-}
-
 export function showOtpModal(email) {
   document.getElementById("verificationEmail").textContent = email;
   const modal = new bootstrap.Modal(
