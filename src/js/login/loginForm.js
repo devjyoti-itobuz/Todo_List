@@ -22,6 +22,7 @@ export async function handleLoginSubmit(e) {
     const { ok, status, data } = await loginUser(email, password);
 
     if (!ok) {
+      
       if (status === 403) {
         showError(data.error || "User not verified. Please verify your email.");
 
@@ -32,6 +33,7 @@ export async function handleLoginSubmit(e) {
       } else {
         showError(data.error || "Login failed.");
       }
+      
       return;
     }
 

@@ -36,4 +36,5 @@ export async function processOtpResend(email) {
   } else {
     showError(response.error);
   }
+  
 }

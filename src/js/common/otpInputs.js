@@ -10,6 +10,7 @@ export function initOtpInputs() {
 }
 
 export function otpCheck(index) {
+  
   if (
     common.otpInputs[index].value.length === 1 &&
     index < common.otpInputs.length - 1
@@ -19,6 +20,7 @@ export function otpCheck(index) {
 }
 
 export function keyCheck(e, index) {
+  
   if (
     e.key === "Backspace" &&
     common.otpInputs[index].value === "" &&

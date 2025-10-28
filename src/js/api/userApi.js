@@ -3,6 +3,7 @@ import fetchWithAuth from "./fetchWithAuth.js";
 const API_USER = "http://localhost:3000/user/auth";
 
 export async function registerUser(email, password) {
+  
   const res = await fetch(`${API_USER}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -14,6 +15,7 @@ export async function registerUser(email, password) {
 }
 
 export async function loginUser(email, password) {
+  
   const res = await fetch(`${API_USER}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -25,6 +27,7 @@ export async function loginUser(email, password) {
 }
 
 export async function resetUserPassword(currentPassword, newPassword) {
+  
   const response = await fetchWithAuth(`${API_USER}/reset-password`, {
     method: "POST",
     headers: {
@@ -38,6 +41,7 @@ export async function resetUserPassword(currentPassword, newPassword) {
 }
 
 export async function sendOtp(email) {
+  
   const res = await fetch(`${API_USER}/send-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -54,6 +58,7 @@ export async function sendOtp(email) {
 }
 
 export async function verifyOtp(email, otp) {
+  
   const res = await fetch(`${API_USER}/verify-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -70,6 +75,7 @@ export async function verifyOtp(email, otp) {
 }
 
 export async function sendForgotPasswordOtp(email) {
+  
   const res = await fetch(`${API_USER}/forgot-password/send-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -81,6 +87,7 @@ export async function sendForgotPasswordOtp(email) {
 }
 
 export async function resetForgotPassword(email, otp, newPassword) {
+  
   const res = await fetch(`${API_USER}/forgot-password/reset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -92,6 +99,7 @@ export async function resetForgotPassword(email, otp, newPassword) {
 }
 
 export async function getUserDetails() {
+  
   const res = await fetchWithAuth(`${API_USER}/details`, {
     method: "GET",
   });
@@ -99,6 +107,7 @@ export async function getUserDetails() {
 }
 
 export async function updateUserDetails(name, profileImage) {
+  
   const res = await fetchWithAuth(`${API_USER}/update-details`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

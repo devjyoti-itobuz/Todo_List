@@ -40,6 +40,7 @@ export async function otpVerify(e, modalId, getEmail) {
           backdrop.remove();
         }
       }
+      
       sessionStorage.removeItem("signupEmail");
     } else {
       showError(data.error);

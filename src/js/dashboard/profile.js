@@ -7,6 +7,7 @@ export function initProfile() {
   async function loadUserDetails() {
     try {
       const data = await getUserDetails();
+      
       if (data.success) {
         const user = data.details[0];
         profile.userEmail.textContent = user.email;
@@ -15,6 +16,7 @@ export function initProfile() {
       } else {
         console.error("Failed to load user details:", data);
       }
+
     } catch (err) {
       console.error("Error loading user details:", err);
     }
@@ -30,6 +32,7 @@ export function initProfile() {
 
     input.addEventListener("change", () => {
       const file = input.files[0];
+      
       if (file) {
         const maxSize = 1 * 1024 * 1024; // 2 MB in bytes
 
@@ -46,6 +49,7 @@ export function initProfile() {
         };
         reader.readAsDataURL(file);
       }
+
     });
   });
 
@@ -79,6 +83,7 @@ export function initProfile() {
         showError(data.error || "Failed to update profile.");
         console.error(data);
       }
+      
     } catch (err) {
       console.error("Error updating profile:", err);
       showError("An error occurred while saving changes.");

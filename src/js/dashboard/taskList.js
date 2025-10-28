@@ -145,6 +145,7 @@ export function renderTasks(tasks, renderTasksCallback, loadTasks) {
 
         closeModal();
       };
+      
       dashboard.cancelBtn.onclick = closeModal;
     };
 

@@ -57,7 +57,6 @@ async function fetchWithAuth(url, options = {}, retry = false) {
       }
     }
 
-    // console.log(res);
     return res;
   } catch (error) {
     showError("Network error, please try again later.");

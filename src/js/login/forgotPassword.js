@@ -32,6 +32,7 @@ export function initForgotPassword(
       } else {
         showError(data.error);
       }
+
     } catch (error) {
       showError(error.message || "Something went wrong while sending OTP.");
     }
@@ -65,6 +66,7 @@ export function initForgotPassword(
       } else {
         showError(data.error);
       }
+      
     } catch (error) {
       showError(
         error.message || "An error occurred while resetting your password."

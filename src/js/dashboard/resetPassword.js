@@ -43,6 +43,7 @@ async function handleResetPasswordSubmit(e) {
     } else {
       showError(data.error || "Failed to reset password.");
     }
+    
   } catch (error) {
     showError(error.message || "An error occurred. Please try again later.");
   }

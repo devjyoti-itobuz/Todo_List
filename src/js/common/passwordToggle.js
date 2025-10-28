@@ -23,6 +23,7 @@ export function handlePasswordToggle(passwordInput, toggleBtn) {
   } else {
     hidePassword(passwordInput, icon);
   }
+  
 }
 
 export function showPassword(passwordInput, icon) {
