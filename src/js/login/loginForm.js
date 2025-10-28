@@ -48,7 +48,7 @@ export async function handleLoginSubmit(e) {
       window.location.href = "/";
     }, 1000);
 
-  } catch (err) {
+  } catch {
     // console.error("Unexpected login error:", err);
     showError("An unexpected error occurred during login.");
   }

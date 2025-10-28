@@ -1,3 +1,5 @@
+import { showError } from "../utils/toastHelper";
+
 async function fetchWithAuth(url, options = {}, retry = false) {
   const accessToken = localStorage.getItem("access_token");
 
@@ -56,7 +58,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
     // console.log(res);
     return res;
   } catch (error) {
-    // console.error("fetchWithAuth error:", error);
+    showError("Network error, please try again later.");
     throw error;
   }
 }

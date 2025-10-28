@@ -34,7 +34,7 @@ export async function handleSignupSubmit(e) {
 
     showOtpModal(email);
 
-  } catch (err) {
+  } catch{
     // console.error(err);
     showError("Something went wrong. Please try again.");
   }

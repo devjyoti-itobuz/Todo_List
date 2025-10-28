@@ -47,7 +47,7 @@ export function initForgotPassword(
         showError(data.error);
       }
 
-    } catch (error) {
+    } catch {
       // console.error(error);
       showError("Something went wrong while sending OTP.");
     }
@@ -94,7 +94,7 @@ export function initForgotPassword(
         showError(resetData.error);
       }
 
-    } catch (error) {
+    } catch {
       // console.error(error);
       showError("An error occurred while resetting your password.");
     }

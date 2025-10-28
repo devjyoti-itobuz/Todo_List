@@ -46,7 +46,7 @@ export async function fetchTasks(
       updatedAt: getISTLocalizedTime(task.updatedAt),
     }));
     
-  } catch (error) {
+  } catch {
     // console.error("Error loading tasks:", error.message);
     showModal("Could not load tasks from server");
     return [];
@@ -77,7 +77,7 @@ export async function createTaskApi(taskData) {
     shownModal(data.message);
 
     return data.task;
-  } catch (error) {
+  } catch {
     // console.error("Error creating task:", error);
 
     showModal("Failed to create task.");
@@ -111,7 +111,7 @@ export async function updateTaskApi(taskId, updates) {
     shownModal(data.message);
 
     return data.task;
-  } catch (error) {
+  } catch {
     // console.error("Error updating task:", error);
 
     showModal("Failed to update task");
@@ -135,7 +135,7 @@ export async function deleteTaskApi(taskId) {
 
     return true;
 
-  } catch (error) {
+  } catch {
     // console.error("Error deleting task:", error);
 
     showModal("Failed to delete task");
@@ -159,7 +159,7 @@ export async function clearAllTasksApi() {
 
     return true;
     
-  } catch (error) {
+  } catch {
     // console.error("Error clearing tasks:", error);
 
     showModal("Failed to clear all tasks");

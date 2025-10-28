@@ -52,6 +52,7 @@ export function initProfile() {
     const name = profile.nameInput.value.trim();
     const profileImageData =
       profile.profileImage.dataset.newImage || profile.profileImage.src;
+      console.log(profileImageData)
 
     if (!name) {
       showError("Please enter your name before saving.");
