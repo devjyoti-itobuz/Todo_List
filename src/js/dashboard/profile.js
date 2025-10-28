@@ -31,6 +31,14 @@ export function initProfile() {
     input.addEventListener("change", () => {
       const file = input.files[0];
       if (file) {
+        const maxSize = 1 * 1024 * 1024; // 2 MB in bytes
+
+        if (file.size > maxSize) {
+          showError("File size exceeds 2MB. Please choose a smaller image.");
+          input.value = "";
+          return;
+        }
+        
         const reader = new FileReader();
         reader.onload = (e) => {
           profile.profileImage.src = e.target.result;
