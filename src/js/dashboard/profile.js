@@ -4,10 +4,12 @@ import * as bootstrap from "bootstrap";
 import { getUserDetails, updateUserDetails } from "../api/userApi.js";
 
 export function initProfile() {
+  
   async function loadUserDetails() {
+    
     try {
       const data = await getUserDetails();
-      
+
       if (data.success) {
         const user = data.details[0];
         profile.userEmail.textContent = user.email;
@@ -24,36 +26,60 @@ export function initProfile() {
 
   loadUserDetails();
 
-  profile.changePhotoBtn.addEventListener("click", () => {
+  profile.changePhotoBtn.addEventListener("click", handleChangePhotoClick);
+
+  function handleChangePhotoClick() {
+    const input = createFileInput();
+    input.addEventListener("change", handleImageSelection);
+    input.click();
+  }
+
+  function handleImageSelection(event) {
+    const file = event.target.files[0];
+    
+    if (!file) {
+      showError("No file selected...");
+      return;
+    }
+
+    if (!validateFileSize(file, 2)) {
+      event.target.value = ""; // Reset input
+      return;
+    }
+
+    readImageFile(file, (imageData) => {
+      profile.profileImage.src = imageData;
+      profile.profileImage.dataset.newImage = imageData;
+    });
+  }
+
+  function readImageFile(file, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => callback(e.target.result);
+    reader.readAsDataURL(file);
+  }
+
+  function createFileInput(accept = "image/*") {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*";
-    input.click();
+    input.accept = accept;
+    return input;
+  }
 
-    input.addEventListener("change", () => {
-      const file = input.files[0];
-      
-      if (file) {
-        const maxSize = 1 * 1024 * 1024; // 2 MB in bytes
+  function validateFileSize(file, maxSizeMB = 2) {
+    const maxSize = maxSizeMB * 1024 * 1024;
+    if (file.size > maxSize) {
+      showError(
+        `File size exceeds ${maxSizeMB}MB. Please choose a smaller image.`
+      );
+      return false;
+    }
+    return true;
+  }
 
-        if (file.size > maxSize) {
-          showError("File size exceeds 2MB. Please choose a smaller image.");
-          input.value = "";
-          return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          profile.profileImage.src = e.target.result;
-          profile.profileImage.dataset.newImage = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
+  profile.profileForm.addEventListener("submit", handleProfileFormSubmit);
 
-    });
-  });
-
-  profile.profileForm.addEventListener("submit", async (e) => {
+  async function handleProfileFormSubmit(e) {
     e.preventDefault();
 
     const name = profile.nameInput.value.trim();
@@ -78,15 +104,17 @@ export function initProfile() {
         const offcanvasInstance = bootstrap.Offcanvas.getInstance(
           profile.offcanvasEl
         );
+
         offcanvasInstance.hide();
+
       } else {
         showError(data.error || "Failed to update profile.");
         console.error(data);
       }
-      
+
     } catch (err) {
       console.error("Error updating profile:", err);
       showError("An error occurred while saving changes.");
     }
-  });
+  }
 }
