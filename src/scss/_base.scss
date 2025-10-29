@@ -13,6 +13,28 @@ body {
   // overflow: hidden;
 }
 
+.display_none {
+  display: none;
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
+.profile_img {
+  width: 100px;
+  height: 100px;
+}
+
+.card_size {
+  max-width: 500px;
+  width: 100%;
+}
+
+.otp_size {
+  width: 44px;
+}
+
 .bg-ligt {
   background: rgb(225, 228, 230);
 }
