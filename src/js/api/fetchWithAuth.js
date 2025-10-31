@@ -21,7 +21,7 @@ async function fetchWithAuth(url, options = {}, retry = false) {
       const resClone = res.clone();
       const resBody = await resClone.json();
 
-      if (resBody.message === "jwt expired") {
+      if (resBody.error === "jwt expired") {
         const refreshToken = localStorage.getItem("refresh_token");
 
         if (!refreshToken) {
